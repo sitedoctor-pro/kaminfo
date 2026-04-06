@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merci | KAM INFO</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body class="thankyou-body">
+  <main class="thankyou-wrap">
+    <div class="thankyou-card glass">
+      <img src="assets/media/rocket-user.png" alt="rocket" class="thankyou-rocket" />
+      <span class="eyebrow">ORDER CONFIRMED</span>
+      <h1>شكراً، الطلب ديالك تزاد بنجاح 🚀</h1>
+      <p>غادي يتم التواصل معاك قريباً باش نأكدوا الطلب والتوصيل.</p>
+      <div id="thankYouData" class="thankyou-data"></div>
+      <div class="thankyou-actions">
+        <a class="btn btn-primary" href="index.html">رجع للرئيسية</a>
+        <a class="btn btn-secondary" href="https://wa.me/212645505322" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </main>
+  <script>
+    const data = JSON.parse(sessionStorage.getItem('kamInfoOrder') || localStorage.getItem('kam_info_order_done_data') || '{}');
+    const root = document.getElementById('thankYouData');
+    root.innerHTML = `
+      <div><strong>الاسم:</strong> ${data.nom || '-'}</div>
+      <div><strong>الهاتف:</strong> ${data.telephone || '-'}</div>
+      <div><strong>العنوان:</strong> ${[data.adresse, data.ville].filter(Boolean).join(' - ') || '-'}</div>
+      <div><strong>التابي:</strong> ${data.type_tapis || '-'}</div>
+      <div><strong>الثمن:</strong> ${data.prix || '289 DH'}</div>
+    `;
+  </script>
+</body>
+</html>
