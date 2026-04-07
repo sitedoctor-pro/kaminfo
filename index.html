@@ -13,9 +13,6 @@
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#12051f" />
   <link rel="preload" href="assets/media/hero-bg.mp4" as="video" type="video/mp4" />
-  <link rel="preload" href="assets/media/keyboard-video.mp4" as="video" type="video/mp4" />
-  <link rel="preload" href="assets/media/mouse-video.mp4" as="video" type="video/mp4" />
-  <link rel="preload" href="assets/media/pad-video.mp4" as="video" type="video/mp4" />
   <link rel="preload" href="assets/img/logo.jpg" as="image" />
   <link rel="preload" href="assets/img/mouse/mouse-front-glow.png" as="image" />
   <link rel="preload" href="assets/img/keyboard/keyboard-box.png" as="image" />
@@ -71,10 +68,14 @@
       </div>
     </a>
 
-    <nav class="nav">
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="القائمة">☰</button>
+    <nav class="nav" id="mainNav">
+      <a href="#home">الرئيسية</a>
       <a href="#pack">الباك</a>
-      <a href="#showcase">الصور</a>
-      <a href="#details">المميزات</a>
+      <a href="#showcase">الستايلات</a>
+      <a href="#reels">الفيديوهات</a>
+      <a href="#reviews">الآراء</a>
+      <a href="#details">الأسئلة</a>
       <a href="#order">الطلب</a>
     </nav>
 
@@ -83,6 +84,16 @@
       <button class="btn btn-primary js-open-order">اطلب الآن</button>
     </div>
   </header>
+
+  <div class="mobile-section-nav glass" id="mobileSectionNav">
+    <a href="#home">الرئيسية</a>
+    <a href="#pack">الباك</a>
+    <a href="#showcase">الستايلات</a>
+    <a href="#reels">الفيديو</a>
+    <a href="#reviews">الآراء</a>
+    <a href="#details">FAQ</a>
+    <a href="#order">الطلب</a>
+  </div>
 
   <main>
     <section id="home" class="hero section">
@@ -162,7 +173,7 @@
               <button class="btn btn-primary btn-small">شوف أكثر</button>
             </div>
           </article>
-        </div></div>
+        </div>
       </div>
     </section>
 
@@ -192,26 +203,24 @@
         <div class="section-heading reveal">
           <span class="eyebrow">VIDEO DROP</span>
           <h2 class="type-target">شوف الباك فالفيديو بوضوح أكثر</h2>
+          <p>فالهاتف الفيديوهات ما كيتحمّلوش حتى تضغط عليهم. هكذا الصفحة كتبقى خفيفة وسريعة.</p>
         </div>
-        <div class="video-grid">
-          <figure class="video-card glass reveal">
-            <video autoplay muted loop playsinline preload="metadata" poster="assets/img/keyboard/keyboard-top.jpg">
-              <source src="assets/media/keyboard-video.mp4" type="video/mp4" />
-            </video>
+        <div class="video-grid lazy-video-grid">
+          <button class="video-card glass reveal lazy-video-trigger" type="button" data-video="assets/media/keyboard-video.mp4" data-poster="assets/img/keyboard/keyboard-top.jpg" data-title="Clavier Gaming">
+            <img src="assets/img/keyboard/keyboard-top.jpg" alt="Clavier Gaming" loading="lazy" />
+            <span class="video-play">▶</span>
             <figcaption>Clavier Gaming</figcaption>
-          </figure>
-          <figure class="video-card glass reveal">
-            <video autoplay muted loop playsinline preload="metadata" poster="assets/img/mouse/mouse-front-glow.png">
-              <source src="assets/media/mouse-video.mp4" type="video/mp4" />
-            </video>
+          </button>
+          <button class="video-card glass reveal lazy-video-trigger" type="button" data-video="assets/media/mouse-video.mp4" data-poster="assets/img/mouse/mouse-front-glow.png" data-title="Logitech G302">
+            <img src="assets/img/mouse/mouse-front-glow.png" alt="Logitech G302" loading="lazy" />
+            <span class="video-play">▶</span>
             <figcaption>Logitech G302</figcaption>
-          </figure>
-          <figure class="video-card glass reveal">
-            <video autoplay muted loop playsinline preload="metadata" poster="assets/img/pads/pad-msi-red.png">
-              <source src="assets/media/pad-video.mp4" type="video/mp4" />
-            </video>
+          </button>
+          <button class="video-card glass reveal lazy-video-trigger" type="button" data-video="assets/media/pad-video.mp4" data-poster="assets/img/pads/pad-msi-red.png" data-title="Tapis 30×90">
+            <img src="assets/img/pads/pad-msi-red.png" alt="Tapis 30×90" loading="lazy" />
+            <span class="video-play">▶</span>
             <figcaption>Tapis 30×90</figcaption>
-          </figure>
+          </button>
         </div>
       </div>
     </section>
@@ -221,35 +230,29 @@
         <div class="section-heading reveal">
           <span class="eyebrow">REVIEWS</span>
           <h2 class="type-target">آراء زبناء خداو الباك وارتاحو معاه</h2>
-          <p>هاد آراء حقيقية بصياغة مختصرة باش تاخد فكرة على الجودة، الشكل، والتوصيل.</p>
+          <p>آراء مختصرة من زبناء عجبهم الشكل، السرعة، والتوصيل.</p>
         </div>
 
         <div class="reviews-grid">
           <article class="review-card glass reveal">
-            <img class="review-avatar pos-1" src="assets/img/reviews/people-collage.png" alt="رأي زبون من الدار البيضاء" />
-            <div class="review-head">
-              <strong>أيوب - الدار البيضاء</strong>
-              <span>★★★★★</span>
-            </div>
-            <p>الباك جا منظم والتابي كبير فعلاً. الماوس خفيفة ومريحة والكلافي عطاني setup شكله زوين بزاف.</p>
+            <img class="review-avatar" src="assets/img/reviews/review1.png" alt="صاحب رأي من الدار البيضاء" />
+            <div class="review-head"><strong>من الدار البيضاء</strong><span>★★★★★</span></div>
+            <p>بصراحة الباك جا أحسن من المتوقع، التابي كبير ومريح والماوس خفيفة بزاف فالاستعمال.</p>
           </article>
-
           <article class="review-card glass reveal">
-            <img class="review-avatar pos-2" src="assets/img/reviews/people-collage.png" alt="رأي زبونة من الرباط" />
-            <div class="review-head">
-              <strong>سلمى - الرباط</strong>
-              <span>★★★★★</span>
-            </div>
-            <p>عجبني أكثر اختيار الستايل ديال التابي وسهولة الطلب. التوصيل كان مزيان والدفع عند الاستلام خلاني مرتاحة.</p>
+            <img class="review-avatar" src="assets/img/reviews/review2.png" alt="صاحبة رأي من الرباط" />
+            <div class="review-head"><strong>من الرباط</strong><span>★★★★★</span></div>
+            <p>التوصيل كان سريع والدفع عند الاستلام خلاني نطلب مرتاحة. الستايلات ديال التابي زوينين بزاف.</p>
           </article>
-
           <article class="review-card glass reveal">
-            <img class="review-avatar pos-3" src="assets/img/reviews/people-collage.png" alt="رأي زبون من مراكش" />
-            <div class="review-head">
-              <strong>ياسين - مراكش</strong>
-              <span>★★★★★</span>
-            </div>
-            <p>بالنسبة للثمن، الباك مناسب بزاف. الصور مطابقة والsetup بان عندي مرتب من أول نهار خدمت به.</p>
+            <img class="review-avatar" src="assets/img/reviews/review3.png" alt="صاحب رأي من مراكش" />
+            <div class="review-head"><strong>من مراكش</strong><span>★★★★★</span></div>
+            <p>الكلافي والماوس عطاوني setup مرتب بثمن مناسب. فعلاً صفقة زوينة للي باغي pack جاهز.</p>
+          </article>
+          <article class="review-card glass reveal">
+            <img class="review-avatar" src="assets/img/reviews/review4.png" alt="صاحبة رأي من طنجة" />
+            <div class="review-head"><strong>من طنجة</strong><span>★★★★★</span></div>
+            <p>خديتو هدية وخذا إعجاب كبير. الطلب كان واضح والتأكيد سهل، والمنتجات باين عليهم مزيانين.</p>
           </article>
         </div>
       </div>
@@ -353,9 +356,7 @@
       <button class="sheet-close" id="closeWizard" type="button">×</button>
       <div class="sheet-step active" data-step="intro">
         <div class="sheet-video-wrap">
-          <video id="kazooVideo" class="sheet-video" autoplay muted loop playsinline poster="assets/img/keyboard/keyboard-lifestyle.jpg">
-            <source src="assets/media/kazoo.mp4" type="video/mp4" />
-          </video>
+          <video id="kazooVideo" class="sheet-video" muted loop playsinline preload="none" poster="assets/img/keyboard/keyboard-lifestyle.jpg" data-src="assets/media/kazoo.mp4"></video>
         </div>
         <div class="sheet-copy">
           <span class="eyebrow">KAM INFO ORDER FLOW</span>
@@ -466,6 +467,18 @@
     <div class="product-modal glass image-lightbox-shell">
       <button class="sheet-close" id="closeImageLightbox" type="button">×</button>
       <img id="lightboxImage" src="" alt="Preview image" class="lightbox-image" />
+    </div>
+  </div>
+
+
+  <div class="modal-shell" id="videoModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="product-modal glass video-modal-shell">
+      <button class="sheet-close" id="closeVideoModal" type="button">×</button>
+      <div class="video-modal-body">
+        <video id="videoModalPlayer" controls playsinline preload="none"></video>
+        <h3 id="videoModalTitle"></h3>
+      </div>
     </div>
   </div>
 
