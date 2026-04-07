@@ -15,7 +15,7 @@ const BASE_DURATION_MS = 4 * 60 * 1000;
 
 const state = {
   price: Number(localStorage.getItem(STORAGE.price) || BASE_PRICE),
-  selectedPad: 'ROG Style',
+  selectedPad: 'MSI Dragon',
   clavier: 'Clavier Gaming Standard',
   souris: 'Logitech G302',
   audioReady: false,
@@ -24,29 +24,34 @@ const state = {
   typingPlayed: new WeakSet(),
 };
 
+
 const productData = {
   'pad-modal': {
     title: 'Tapis Gaming 30×90',
-    desc: 'Tapis long et large pour setup gamer, avec 4 styles disponibles dans ce pack. الهدف منه يعطي المكتب شكل قوي ومريح للحركة.',
-    images: ['assets/img/pad-msi-desk.jpeg','assets/img/pad-rog.jpg','assets/img/pad-msi.webp','assets/img/pad-black.webp'],
+    desc: 'اختار التابي 30×90 بالتصميم اللي مناسب setup ديالك من بين جميع الصور المتوفرة.',
+    images: [
+      'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-msi-red.png',
+      'assets/img/pads/pad-luffy-vintage.png','assets/img/pads/pad-luffy-color.png','assets/img/pads/pad-luffy-manga.png','assets/img/pads/pad-one-piece-logos.png'
+    ],
     video: 'assets/media/pad-video.mp4',
-    bullets: ['Dimension 30×90', '4 styles au choix', 'Look setup premium', 'Surface كبيرة ومرتبة']
+    bullets: ['Dimension 30×90', 'اختيار بين عدة تصاميم', 'Surface كبيرة ومريحة', 'مناسب للمكتب كامل']
   },
   'mouse-modal': {
     title: 'Logitech G302',
-    desc: 'سوريس gaming معروفة وسط الناس ديال الجيمينغ، design compact، وتحكم بالإعدادات من خلال logiciel Logitech compatible.',
-    images: ['assets/img/mouse-front.jpg','assets/img/mouse-box.webp','assets/img/mouse-inhand.jpg','assets/img/mouse-detail.jpg'],
+    desc: 'سوريس Logitech G302 بالصور الحقيقية وبفيديو جديد أوضح باش يبان الشكل ديالها مزيان.',
+    images: ['assets/img/mouse/mouse-front-glow.png','assets/img/mouse/mouse-blue-glow.png','assets/img/mouse/mouse-side-glow.png','assets/img/mouse/mouse-close-glow.png'],
     video: 'assets/media/mouse-video.mp4',
-    bullets: ['Tracking rapide', 'Design gamer compact', 'Software support', 'Parfaite pour FPS / MOBA vibe']
+    bullets: ['شكل gamer واضح', 'إمساك مريح', 'Software support', 'مناسبة ل setup gaming']
   },
   'keyboard-modal': {
     title: 'Clavier Gaming',
-    desc: 'كلافي gaming داخل العرض باش يكمل setup ديالك فالشكل والاستعمال. موديل واحد داخل هذا الباك لتسريع الطلب.',
-    images: ['assets/img/keyboard-top.jpg','assets/img/keyboard-hero.jpeg','assets/img/keyboard-detail.jpeg','assets/img/keyboard-hero2.png'],
+    desc: 'كلافي gaming داخل الباك مع صور واضحة وفيديو جديد باش تشوف التفاصيل أكثر.',
+    images: ['assets/img/keyboard/keyboard-top.jpg','assets/img/keyboard/keyboard-box.png','assets/img/keyboard/keyboard-lifestyle.jpg'],
     video: 'assets/media/keyboard-video.mp4',
-    bullets: ['Look gamer', 'Format confortable', 'Visuel fort sur bureau', 'Ready pour setup neon']
+    bullets: ['Look gamer', 'إضاءة RGB', 'شكل منظم فوق المكتب', 'داخل الباك الجاهز']
   }
 };
+
 
 function initCursorGlow() {
   const glow = qs('.cursor-glow');
@@ -100,18 +105,21 @@ function bindInteractionAudio() {
   window.addEventListener('touchmove', unlock, { once: true, passive: true });
   window.addEventListener('click', unlock, { once: true });
 
-  qsa('button, a').forEach(el => {
+  qsa('button, a, summary, .pad-option, .choice-card, .product-card').forEach(el => {
     el.addEventListener('mouseenter', () => playTone(520, 0.03, 'sine', 0.009));
-    el.addEventListener('click', () => playTone(760, 0.06, 'sawtooth', 0.02));
+    const clickFx = () => { playTone(760, 0.07, 'sawtooth', 0.026); setTimeout(() => playTone(980, 0.04, 'triangle', 0.016), 22); };
+    el.addEventListener('click', clickFx);
+    el.addEventListener('touchstart', clickFx, { passive: true });
   });
 }
 
 function preloadExperience() {
   const assets = [
-    'assets/img/logo.jpg','assets/img/mouse-front.jpg','assets/img/keyboard-top.jpg','assets/img/pad-rog.jpg',
-    'assets/img/pad-msi.webp','assets/img/pad-union.webp','assets/img/pad-black.webp','assets/img/mouse-hero.png',
-    'assets/img/keyboard-hero2.png','assets/img/keyboard-hero.jpeg','assets/media/hero-bg.mp4',
-    'assets/media/kazoo.mp4','assets/media/rocket.avif','assets/media/kazoo-audio.mp3',
+    'assets/img/logo.jpg','assets/img/mouse/mouse-front-glow.png','assets/img/keyboard/keyboard-top.jpg','assets/img/pads/pad-msi-dragon.png',
+    'assets/img/pads/pad-rog-black.png','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-luffy-vintage.png',
+    'assets/img/pads/pad-luffy-color.png','assets/img/pads/pad-luffy-manga.png','assets/img/pads/pad-one-piece-logos.png',
+    'assets/img/keyboard/keyboard-box.png','assets/img/keyboard/keyboard-lifestyle.jpg','assets/media/hero-bg.mp4',
+    'assets/media/kazoo.mp4','assets/media/rocket.gif','assets/media/kazoo-audio.mp3',
     'assets/media/keyboard-video.mp4','assets/media/mouse-video.mp4','assets/media/pad-video.mp4'
   ];
   const progress = qs('#loaderProgress');
@@ -250,13 +258,18 @@ function showFortySecondWarning() {
   playTone(880, 0.12, 'square', 0.03);
 }
 
+
 function showExpiredModal() {
   if (qs('#expiredModal')?.classList.contains('active')) return;
   localStorage.setItem(STORAGE.offerExpiredSeen, '1');
+  setPrice(BASE_PRICE + 15);
+  const priceEl = qs('#newPrice');
+  if (priceEl) priceEl.textContent = `${BASE_PRICE + 15} DH`;
   qs('#expiredModal')?.classList.add('active');
   playAudioEl(qs('#gameOverVoice'), { currentTime: 0, volume: 1 });
-  setTimeout(() => playAudioEl(qs('#gameOverSfx'), { currentTime: 0, volume: 1 }), 500);
+  setTimeout(() => playAudioEl(qs('#gameOverSfx'), { currentTime: 0, volume: 1 }), 400);
 }
+
 
 function formatMoney(value) {
   return Number.isInteger(value) ? `${value}` : value.toFixed(1);
@@ -277,36 +290,14 @@ function resetOfferAndOrderForNewRequest() {
   setPrice(BASE_PRICE);
 }
 
+
 function initExtendOffer() {
-  const range = qs('#extendRange');
-  const hoursLabel = qs('#extendHoursLabel');
-  const extendPrice = qs('#extendPrice');
-  const newPrice = qs('#newPrice');
-  if (!range) return;
-  const update = () => {
-    const hours = Number(range.value);
-    const extra = hours * 5;
-    hoursLabel.textContent = `${hours} ${hours === 1 ? 'ساعة' : 'ساعات'}`;
-    extendPrice.textContent = `${formatMoney(extra)} DH`;
-    newPrice.textContent = `${formatMoney(BASE_PRICE + extra)} DH`;
-  };
-  range.addEventListener('input', update);
-  update();
-  qs('#extendOffer')?.addEventListener('click', () => {
-    const hours = Number(range.value);
-    const extra = hours * 5;
-    const newEnd = Date.now() + hours * 60 * 60 * 1000;
-    localStorage.setItem(STORAGE.offerEnd, String(newEnd));
-    localStorage.setItem(STORAGE.offerExtended, '1');
-    localStorage.removeItem(STORAGE.offerExpiredSeen);
-    setPrice(BASE_PRICE + extra);
+  qs('#continueUpdatedOffer')?.addEventListener('click', () => {
     qs('#expiredModal')?.classList.remove('active');
-    const warn = qs('#fortyWarn');
-    if (warn) warn.remove();
-    initCountdown();
-    playTone(520, 0.12, 'triangle', 0.03);
+    openWizard('intro');
   });
 }
+
 
 function toggleOrderFocus() {
   const section = qs('.observe-order');
@@ -411,18 +402,18 @@ async function submitOrder() {
 function launchRocketTransition() {
   const rocket = document.createElement('div');
   rocket.className = 'rocket-flight';
-  rocket.innerHTML = '<img src="assets/media/rocket-launch.gif" alt="rocket">';
+  rocket.innerHTML = '<img src="assets/media/rocket.gif" alt="rocket">';
   document.body.appendChild(rocket);
   playAudioEl(qs('#rocketLaunchAudio'), { currentTime: 0, volume: 0.95 });
   playTone(220, 0.14, 'sawtooth', 0.03);
   setTimeout(() => playTone(300, 0.16, 'sawtooth', 0.035), 180);
   setTimeout(() => playTone(420, 0.18, 'triangle', 0.04), 420);
   rocket.animate([
-    { left: '-38vw', bottom: '20vh', transform: 'translate3d(0,0,0) rotate(0deg) scale(.88)' },
-    { left: '-10vw', bottom: '20vh', transform: 'translate3d(0,0,0) rotate(1deg) scale(.9)', offset: 0.38 },
-    { left: '35vw', bottom: '21vh', transform: 'translate3d(0,0,0) rotate(-1deg) scale(.98)', offset: 0.72 },
-    { left: '118vw', bottom: '24vh', transform: 'translate3d(0,0,0) rotate(-3deg) scale(1.06)' }
-  ], { duration: 2500, easing: 'cubic-bezier(.22,.1,.12,1)', fill: 'forwards' });
+    { left: '50%', bottom: '-28vh', transform: 'translateX(-50%) rotate(-82deg) scale(.82)' },
+    { left: '50%', bottom: '6vh', transform: 'translateX(-50%) rotate(-84deg) scale(.86)', offset: 0.34 },
+    { left: '50%', bottom: '44vh', transform: 'translateX(-50%) rotate(-86deg) scale(.96)', offset: 0.72 },
+    { left: '50%', bottom: '118vh', transform: 'translateX(-50%) rotate(-88deg) scale(1.05)' }
+  ], { duration: 2500, easing: 'cubic-bezier(.2,.75,.18,1)', fill: 'forwards' });
   setTimeout(() => { window.location.href = 'thank-you.html'; }, 2380);
 }
 
@@ -438,8 +429,8 @@ function openProductModal(id) {
   root.innerHTML = `
     <div class="product-modal-grid">
       <div class="product-gallery">
-        ${data.video ? `<video class="modal-product-video" autoplay muted loop playsinline preload="metadata"><source src="${data.video}" type="video/mp4"></video>` : ''}
-        ${data.images.map(src => `<img src="${src}" alt="${data.title}">`).join('')}
+        ${data.video ? `<video class="modal-product-video" autoplay muted loop playsinline preload="metadata" controlslist="nodownload noplaybackrate"><source src="${data.video}" type="video/mp4"></video>` : ''}
+        ${data.images.map((src, index) => `<img class="gallery-zoom" data-full="${src}" src="${src}" alt="${data.title} ${index + 1}">`).join('')}
       </div>
       <div class="product-copy">
         <span class="eyebrow">KAM INFO PRODUCT VIEW</span>
@@ -450,11 +441,35 @@ function openProductModal(id) {
       </div>
     </div>`;
   qs('#productModal')?.classList.add('active');
+  qsa('.gallery-zoom', root).forEach(img => {
+    img.addEventListener('click', () => openImageLightbox(img.dataset.full || img.src, img.alt || data.title));
+  });
   qs('.js-modal-order', root)?.addEventListener('click', () => {
     qs('#productModal')?.classList.remove('active');
     document.getElementById('order')?.scrollIntoView({ behavior: 'smooth' });
     setTimeout(() => openWizard('intro'), 500);
   });
+}
+
+function openImageLightbox(src, alt = '') {
+  const shell = qs('#imageLightbox');
+  const img = qs('#lightboxImage');
+  if (!shell || !img || !src) return;
+  img.src = src;
+  img.alt = alt;
+  shell.classList.add('active');
+}
+
+
+function initQuicklookLightbox() {
+  qsa('.quicklook-grid .gallery-card img').forEach(img => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => openImageLightbox(img.currentSrc || img.src, img.alt || 'pad image'));
+  });
+}
+
+function initImageLightbox() {
+  qs('#closeImageLightbox')?.addEventListener('click', () => qs('#imageLightbox')?.classList.remove('active'));
 }
 
 function bindCloseBackdrops() {
@@ -496,7 +511,11 @@ window.addEventListener('load', () => {
   showFollowUp();
   initWizard();
   initProductModal();
+  initImageLightbox();
+  initQuicklookLightbox();
   bindCloseBackdrops();
   initOrderSuccessModal();
   qs('#submitOrder')?.addEventListener('click', submitOrder);
 });
+
+document.addEventListener('click', (e) => { const btn = e.target.closest('#showMorePads'); if (btn) openProductModal('pad-modal'); });
