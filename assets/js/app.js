@@ -30,8 +30,7 @@ const productData = {
     title: 'Tapis Gaming 30×90',
     desc: 'اختار التابي 30×90 بالتصميم اللي مناسب setup ديالك من بين جميع الصور المتوفرة.',
     images: [
-      'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-msi-red.png',
-      'assets/img/pads/pad-luffy-vintage.png','assets/img/pads/pad-luffy-color.png','assets/img/pads/pad-luffy-manga.png','assets/img/pads/pad-one-piece-logos.png'
+      'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-style-1.jpeg','assets/img/pads/pad-style-2.jpeg','assets/img/pads/pad-style-3.jpeg','assets/img/pads/pad-style-4.jpeg','assets/img/pads/pad-union-jack.png'
     ],
     video: 'assets/media/pad-video.mp4',
     bullets: ['Dimension 30×90', 'اختيار بين عدة تصاميم', 'Surface كبيرة ومريحة', 'مناسب للمكتب كامل']
@@ -121,9 +120,13 @@ function preloadExperience() {
     'assets/img/mouse/mouse-front-glow.png',
     'assets/img/keyboard/keyboard-top.jpg',
     'assets/img/pads/pad-msi-dragon.png',
-    'assets/img/pads/pad-rog-black.png',
-    'assets/img/pads/pad-union-jack.png',
     'assets/img/pads/pad-msi-red.png',
+    'assets/img/pads/pad-rog-black.png',
+    'assets/img/pads/pad-style-1.jpeg',
+    'assets/img/pads/pad-style-2.jpeg',
+    'assets/img/pads/pad-style-3.jpeg',
+    'assets/img/pads/pad-style-4.jpeg',
+    'assets/img/pads/pad-union-jack.png',
     'assets/media/hero-bg.mp4',
     'assets/media/rocket.gif'
   ];
