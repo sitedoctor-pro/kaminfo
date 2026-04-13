@@ -24,30 +24,50 @@ const state = {
   typingPlayed: new WeakSet(),
 };
 
+const PHONE_REGEX = /^0[5-7][0-9]{8}$/;
+
 
 const productData = {
   'pad-modal': {
     title: 'Tapis Gaming 30×90',
-    desc: 'اختار التابي 30×90 بالتصميم اللي مناسب setup ديالك من بين جميع الصور المتوفرة.',
+    desc: 'تابي كبير 30×90 كيغطّي المساحة ديال clavier والسوريس كاملة، وكيخليك تختار من عدد كبير ديال الستايلات اللي زادت دابا فالموقع.',
     images: [
-      'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-style-1.jpeg','assets/img/pads/pad-style-2.jpeg','assets/img/pads/pad-style-3.jpeg','assets/img/pads/pad-style-4.jpeg','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-rog-gradient.png','assets/img/pads/pad-razer-acid.png'
+      'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-style-1.jpeg','assets/img/pads/pad-style-2.jpeg','assets/img/pads/pad-style-3.jpeg','assets/img/pads/pad-style-4.jpeg','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-rog-crimson.png','assets/img/pads/pad-rog-spectrum.png','assets/img/pads/pad-rog-city.png','assets/img/pads/pad-msi-splash.png','assets/img/pads/pad-logitech-blue.png'
     ],
     video: 'assets/media/pad-video.mp4',
-    bullets: ['Dimension 30×90', 'اختيار بين عدة تصاميم', 'Surface كبيرة ومريحة', 'مناسب للمكتب كامل']
+    bullets: ['Dimension 30×90 cm', 'Surface واسعة ومريحة للحركة', 'تصاميم كثيرة متوفرة دابا', 'مناسب للـ clavier + souris فوق نفس التابي'],
+    details: [
+      ['المقاس', '30×90 cm'],
+      ['الاستعمال', 'Gaming / bureau / setup'],
+      ['الاختيارات', '13 styles disponibles'],
+      ['داخل العرض', 'كتختار تصميم واحد حسب الذوق ديالك']
+    ]
   },
   'mouse-modal': {
     title: 'Logitech G302',
-    desc: 'سوريس Logitech G302 بالصور الحقيقية وبفيديو جديد أوضح باش يبان الشكل ديالها مزيان.',
+    desc: 'سوريس Logitech G302 بالشكل gaming المعروف ديالها، خفيفة فالاستخدام ومناسبة للـ setup اللي كيبغي look احترافي مع مسكة مريحة.',
     images: ['assets/img/mouse/mouse-front-glow.png','assets/img/mouse/mouse-blue-glow.png','assets/img/mouse/mouse-side-glow.png','assets/img/mouse/mouse-close-glow.png'],
     video: 'assets/media/mouse-video.mp4',
-    bullets: ['شكل gamer واضح', 'إمساك مريح', 'Software support', 'مناسبة ل setup gaming']
+    bullets: ['Design gamer واضح', 'مسكة مريحة فاللعب والاستعمال اليومي', 'Software support', 'كتجي داخلة فالباك جاهزة'],
+    details: [
+      ['الموديل', 'Logitech G302'],
+      ['اللون', 'Noir avec éclairage bleu'],
+      ['الاستعمال', 'Gaming + usage quotidien'],
+      ['الميزة', 'تحكم مريح وشكل احترافي']
+    ]
   },
   'keyboard-modal': {
     title: 'Clavier Gaming',
-    desc: 'كلافي gaming داخل الباك مع صور واضحة وفيديو جديد باش تشوف التفاصيل أكثر.',
+    desc: 'كلافي gaming داخل الباك كيكمل ليك الsetup بشكل منظم وجذاب، ومعاه look gamer وإضاءة كتخلي المكتب ديالك يبان أحسن.',
     images: ['assets/img/keyboard/keyboard-top.jpg','assets/img/keyboard/keyboard-box.png','assets/img/keyboard/keyboard-lifestyle.jpg'],
     video: 'assets/media/keyboard-video.mp4',
-    bullets: ['Look gamer', 'إضاءة RGB', 'شكل منظم فوق المكتب', 'داخل الباك الجاهز']
+    bullets: ['Look gamer', 'إضاءة RGB', 'تنظيم مزيان فوق المكتب', 'داخل الباك الجاهز بثمن العرض'],
+    details: [
+      ['النوع', 'Clavier Gaming Standard'],
+      ['الإضاءة', 'RGB style'],
+      ['التنسيق', 'كيوافق tapis و souris ديال العرض'],
+      ['داخل العرض', 'جاهز ضمن pack gaming']
+    ]
   }
 };
 
@@ -127,8 +147,11 @@ function preloadExperience() {
     'assets/img/pads/pad-style-3.jpeg',
     'assets/img/pads/pad-style-4.jpeg',
     'assets/img/pads/pad-union-jack.png',
-    'assets/img/pads/pad-rog-gradient.png',
-    'assets/img/pads/pad-razer-acid.png',
+    'assets/img/pads/pad-rog-crimson.png',
+    'assets/img/pads/pad-rog-spectrum.png',
+    'assets/img/pads/pad-rog-city.png',
+    'assets/img/pads/pad-msi-splash.png',
+    'assets/img/pads/pad-logitech-blue.png',
     'assets/media/hero-bg.mp4',
     'assets/media/rocket.gif'
   ];
@@ -393,12 +416,53 @@ function goToStep(step) {
   }
 }
 
+function validateField(input) {
+  if (!input) return true;
+  const value = input.value.trim();
+  let valid = true;
+  if (input.hasAttribute('required') && !value) valid = false;
+  if (valid && input.id === 'customerPhone' && !PHONE_REGEX.test(value)) valid = false;
+  if (valid && input.id === 'customerQty') {
+    const qty = Number(value);
+    valid = Number.isFinite(qty) && qty >= 1 && qty <= 10;
+  }
+  input.classList.toggle('invalid', !valid);
+  return valid;
+}
+
+function validateStep(step) {
+  const fields = {
+    intro: [qs('#customerName')],
+    contact: [qs('#customerPhone'), qs('#customerAddress'), qs('#customerCity'), qs('#customerQty')],
+    pad: [qs('#customerNotes')]
+  }[step] || [];
+  const firstInvalid = fields.find(field => !validateField(field));
+  if (firstInvalid) firstInvalid.focus();
+  return !firstInvalid;
+}
+
+function refreshWizardButtons() {
+  const introOk = validateField(qs('#customerName'));
+  const contactOk = [qs('#customerPhone'), qs('#customerAddress'), qs('#customerCity'), qs('#customerQty')].every(validateField);
+  const padOk = validateField(qs('#customerNotes'));
+  const introBtn = qs('.btn-next[data-next="contact"]');
+  const contactBtn = qs('.btn-next[data-next="pad"]');
+  const submitBtn = qs('#submitOrder');
+  if (introBtn) introBtn.disabled = !introOk;
+  if (contactBtn) contactBtn.disabled = !contactOk;
+  if (submitBtn) submitBtn.disabled = !padOk;
+}
+
 function initWizard() {
   qsa('.js-open-order').forEach(btn => btn.addEventListener('click', () => openWizard('intro')));
+  qsa('#customerName, #customerPhone, #customerAddress, #customerCity, #customerQty, #customerNotes').forEach(input => {
+    ['input','change','blur'].forEach(evt => input.addEventListener(evt, () => { validateField(input); refreshWizardButtons(); }));
+  });
   qs('#closeWizard')?.addEventListener('click', closeWizard);
   qsa('.btn-next').forEach(btn => btn.addEventListener('click', () => {
-    if (btn.dataset.next === 'contact' && !qs('#customerName').value.trim()) {
-      qs('#customerName').focus();
+    const currentStep = btn.closest('.sheet-step')?.dataset.step;
+    if (currentStep && !validateStep(currentStep)) {
+      refreshWizardButtons();
       return;
     }
     playTone(780, 0.07, 'sawtooth', 0.02);
@@ -411,6 +475,7 @@ function initWizard() {
     state.selectedPad = opt.dataset.pad;
     playTone(630, 0.05, 'triangle', 0.02);
   }));
+  refreshWizardButtons();
 }
 
 async function submitOrder() {
@@ -426,8 +491,9 @@ async function submitOrder() {
     notes: qs('#customerNotes').value.trim(),
     prix: `${formatMoney(state.price)} DH`
   };
-  if (!data.nom || !data.telephone || !data.adresse) {
-    alert('دخل الاسم، الهاتف والعنوان من فضلك.');
+  if (!validateStep('intro') || !validateStep('contact') || !validateStep('pad')) {
+    refreshWizardButtons();
+    alert('من فضلك عمّر جميع الخانات المطلوبة قبل تأكيد الطلب.');
     return;
   }
 
@@ -531,6 +597,7 @@ function openProductModal(id) {
         <h3>${data.title}</h3>
         <p>${data.desc}</p>
         <ul>${data.bullets.map(x => `<li>${x}</li>`).join('')}</ul>
+        <div class="product-specs">${(data.details || []).map(([label, value]) => `<div class="product-spec-item"><span>${label}</span><strong>${value}</strong></div>`).join('')}</div>
         <button class="btn btn-primary js-modal-order">اطلب الآن</button>
       </div>
     </div>`;
@@ -559,6 +626,19 @@ function initQuicklookLightbox() {
   qsa('.quicklook-grid .gallery-card img').forEach(img => {
     img.style.cursor = 'zoom-in';
     img.addEventListener('click', () => openImageLightbox(img.currentSrc || img.src, img.alt || 'pad image'));
+  });
+}
+
+function initQuicklookToggle() {
+  const btn = qs('#showMorePads');
+  const extras = qsa('.quicklook-extra');
+  if (!btn || !extras.length) return;
+
+  btn.addEventListener('click', () => {
+    const expanded = btn.dataset.expanded === 'true';
+    extras.forEach(card => card.classList.toggle('is-visible', !expanded));
+    btn.dataset.expanded = expanded ? 'false' : 'true';
+    btn.textContent = expanded ? 'عرض المزيد من الستايلات' : 'عرض أقل';
   });
 }
 
@@ -624,9 +704,9 @@ window.addEventListener('load', () => {
   initMobileMenu();
   initImageLightbox();
   initQuicklookLightbox();
+  initQuicklookToggle();
   bindCloseBackdrops();
   initOrderSuccessModal();
   qs('#submitOrder')?.addEventListener('click', submitOrder);
 });
 
-document.addEventListener('click', (e) => { const btn = e.target.closest('#showMorePads'); if (btn) openProductModal('pad-modal'); });
