@@ -32,15 +32,15 @@ const productData = {
     title: 'Tapis Gaming 30×90',
     desc: 'تابي كبير 30×90 كيغطّي المساحة ديال clavier والسوريس كاملة، وكيخليك تختار من عدد كبير ديال الستايلات اللي زادت دابا فالموقع.',
     images: [
-      'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-style-1.jpeg','assets/img/pads/pad-style-2.jpeg','assets/img/pads/pad-style-3.jpeg','assets/img/pads/pad-style-4.jpeg','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-rog-crimson.png','assets/img/pads/pad-rog-spectrum.png','assets/img/pads/pad-rog-city.png','assets/img/pads/pad-msi-splash.png','assets/img/pads/pad-logitech-blue.png'
+      'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-style-1.jpeg','assets/img/pads/pad-style-2.jpeg','assets/img/pads/pad-style-3.jpeg','assets/img/pads/pad-style-4.jpeg','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-rog-crimson.png','assets/img/pads/pad-rog-spectrum.png','assets/img/pads/pad-rog-city.png','assets/img/pads/pad-msi-splash.png','assets/img/pads/pad-logitech-blue.png','assets/img/pads/pad-razer-acid-green.jpeg'
     ],
     video: 'assets/media/pad-video.mp4',
-    bullets: ['Dimension 30×90 cm', 'Surface واسعة ومريحة للحركة', 'تصاميم كثيرة متوفرة دابا', 'مناسب للـ clavier + souris فوق نفس التابي'],
+    bullets: ['Dimension 30×90 cm', 'Surface واسعة ومريحة للحركة', 'تصاميم كثيرة متوفرة دابا من بينها ستايل Razer Acid Green', 'مناسب للـ clavier + souris فوق نفس التابي'],
     details: [
       ['المقاس', '30×90 cm'],
       ['الاستعمال', 'Gaming / bureau / setup'],
-      ['الاختيارات', '13 styles disponibles'],
-      ['داخل العرض', 'كتختار تصميم واحد حسب الذوق ديالك']
+      ['الاختيارات', '14 styles disponibles'],
+      ['داخل العرض', 'كتختار تصميم واحد حسب الذوق ديالك من بين 14 ستايل']
     ]
   },
   'mouse-modal': {
