@@ -29,15 +29,15 @@ const PHONE_REGEX = /^0[5-7][0-9]{8}$/;
 
 const productData = {
   'pad-modal': {
-    title: 'Tapis Gaming 30×90',
-    desc: 'تابي كبير 30×90 كيغطّي المساحة ديال clavier والسوريس كاملة، وكيخليك تختار من عدد كبير ديال الستايلات اللي زادت دابا فالموقع.',
+    title: 'Tapis Gaming 30×70',
+    desc: 'تابي كبير 30×70 كيغطّي المساحة ديال clavier والسوريس كاملة، وكيخليك تختار من عدد كبير ديال الستايلات اللي زادت دابا فالموقع.',
     images: [
       'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-style-1.jpeg','assets/img/pads/pad-style-2.jpeg','assets/img/pads/pad-style-3.jpeg','assets/img/pads/pad-style-4.jpeg','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-rog-crimson.png','assets/img/pads/pad-rog-spectrum.png','assets/img/pads/pad-rog-city.png','assets/img/pads/pad-msi-splash.png','assets/img/pads/pad-logitech-blue.png','assets/img/pads/pad-razer-acid-green.jpeg'
     ],
     video: 'assets/media/pad-video.mp4',
-    bullets: ['Dimension 30×90 cm', 'Surface واسعة ومريحة للحركة', 'تصاميم كثيرة متوفرة دابا من بينها ستايل Razer Acid Green', 'مناسب للـ clavier + souris فوق نفس التابي'],
+    bullets: ['Dimension 30×70 cm', 'Surface واسعة ومريحة للحركة', 'تصاميم كثيرة متوفرة دابا من بينها ستايل Razer Acid Green', 'مناسب للـ clavier + souris فوق نفس التابي'],
     details: [
-      ['المقاس', '30×90 cm'],
+      ['المقاس', '30×70 cm'],
       ['الاستعمال', 'Gaming / bureau / setup'],
       ['الاختيارات', '14 styles disponibles'],
       ['داخل العرض', 'كتختار تصميم واحد حسب الذوق ديالك من بين 14 ستايل']
@@ -58,11 +58,22 @@ const productData = {
   },
   'keyboard-modal': {
     title: 'Clavier Gaming',
-    desc: 'كلافي gaming داخل الباك كيكمل ليك الsetup بشكل منظم وجذاب، ومعاه look gamer وإضاءة كتخلي المكتب ديالك يبان أحسن.',
+    desc: 'تعتبر لوحة مفاتيح ميتيون K9520 خيارا احترافيا للاعبين، حيث تأتي بتصميم مريح يتضمن مسندا مغناطيسيا للمعصم قابل للفصل لتوفير راحة قصوى. تتميز بإضاءة RGB خلفية قابلة للتخصيص بالكامل لتناسب جو الألعاب الخاص بك.',
     images: ['assets/img/keyboard/keyboard-top.jpg','assets/img/keyboard/keyboard-box.png','assets/img/keyboard/keyboard-lifestyle.jpg'],
     video: 'assets/media/keyboard-video.mp4',
-    bullets: ['Look gamer', 'إضاءة RGB', 'تنظيم مزيان فوق المكتب', 'داخل الباك الجاهز بثمن العرض'],
-    details: [
+bullets: [
+    'Look gamer عصري وجذاب',
+    'إضاءة RGB خلفية قابلة للتخصيص',
+    'تنظيم مزيان فوق المكتب بفضل التصميم المدمج',
+    'داخل الباك الجاهز بثمن العرض المميز',
+    'مسند معصم مغناطيسي مريح وقابل للفصل',
+    '26 مفتاح Anti-ghosting لمنع تعارض الأوامر',
+    'بكرة (Wheel) مخصصة للتحكم السريع في مستوى الصوت',
+    '12 مفتاح اختصار للميديا والوظائف الذكية',
+    'كابل USB مضفر (Braided) شديد التحمل',
+    'غطاء علوي معدني يمنح صلابة واستقرار أكبر'
+  ],
+      details: [
       ['النوع', 'Clavier Gaming Standard'],
       ['الإضاءة', 'RGB style'],
       ['التنسيق', 'كيوافق tapis و souris ديال العرض'],
