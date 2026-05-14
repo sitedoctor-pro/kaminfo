@@ -1,723 +1,118 @@
-const qs = (s, c = document) => c.querySelector(s);
-const qsa = (s, c = document) => [...c.querySelectorAll(s)];
+const qs=(s,c=document)=>c.querySelector(s);const qsa=(s,c=document)=>[...c.querySelectorAll(s)];const sb=window.caminfoSupabase;const WHATSAPP_NUMBER='212645505322';const PRICE=289;const PHONE_REGEX=/^0[5-7][0-9]{8}$/;const STORAGE={visitor:'kaminfo_visitor_id',session:'kaminfo_session_id'};
+const state={selectedPad:'MSI Dragon',rating:5,audioCtx:null,audioReady:false,typingPlayed:new WeakSet(),pads:[['MSI Dragon','assets/img/pads/pad-msi-dragon.png'],['MSI Red','assets/img/pads/pad-msi-red.png'],['ROG Black','assets/img/pads/pad-rog-black.png'],['MSI Spiral','assets/img/pads/pad-style-1.jpeg'],['Ryzen Red','assets/img/pads/pad-style-2.jpeg'],['ROG Neon','assets/img/pads/pad-style-3.jpeg'],['Panther Red','assets/img/pads/pad-style-4.jpeg'],['Union Jack','assets/img/pads/pad-union-jack.png'],['ROG Crimson Slash','assets/img/pads/pad-rog-crimson.png'],['ROG Neon Spectrum','assets/img/pads/pad-rog-spectrum.png'],['ROG Cyber City','assets/img/pads/pad-rog-city.png'],['MSI Dragon Splash','assets/img/pads/pad-msi-splash.png'],['Logitech Blue Circuit','assets/img/pads/pad-logitech-blue.png'],['Razer Acid Green','assets/img/pads/pad-razer-acid-green.jpeg']],productData:{'pad-modal':{title:'Tapis Gaming 30×70',desc:'تابي كبير 30×70 كيغطّي المساحة ديال clavier والسوريس كاملة، وكيخليك تختار من عدد كبير ديال الستايلات اللي زادت دابا فالموقع.',images:['assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-style-1.jpeg','assets/img/pads/pad-style-2.jpeg','assets/img/pads/pad-style-3.jpeg','assets/img/pads/pad-style-4.jpeg','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-rog-crimson.png','assets/img/pads/pad-rog-spectrum.png','assets/img/pads/pad-rog-city.png','assets/img/pads/pad-msi-splash.png','assets/img/pads/pad-logitech-blue.png','assets/img/pads/pad-razer-acid-green.jpeg'],video:'assets/media/pad-video.mp4',poster:'assets/img/pads/pad-msi-dragon.png',bullets:['Dimension 30×70 cm','Surface واسعة ومريحة للحركة','تصاميم كثيرة متوفرة دابا من بينها ستايل Razer Acid Green','مناسب للـ clavier + souris فوق نفس التابي']},'mouse-modal':{title:'Logitech G302',desc:'سوريس Logitech G302 بالشكل gaming المعروف ديالها، خفيفة فالاستخدام ومناسبة للـ setup اللي كيبغي look احترافي مع مسكة مريحة.',images:['assets/img/mouse/mouse-front-glow.png','assets/img/mouse/mouse-blue-glow.png','assets/img/mouse/mouse-side-glow.png','assets/img/mouse/mouse-close-glow.png'],video:'assets/media/mouse-video.mp4',poster:'assets/img/mouse/mouse-front-glow.png',bullets:['Design gamer واضح','مسكة مريحة فاللعب والاستعمال اليومي','Software support','كتجي داخلة فالباك جاهزة']},'keyboard-modal':{title:'Clavier Gaming',desc:'تعتبر لوحة مفاتيح ميتيون K9520 خيارا احترافيا للاعبين، حيث تأتي بتصميم مريح يتضمن مسندا مغناطيسيا للمعصم قابل للفصل لتوفير راحة قصوى. تتميز بإضاءة RGB خلفية قابلة للتخصيص بالكامل لتناسب جو الألعاب الخاص بك.',images:['assets/img/keyboard/keyboard-top.jpg','assets/img/keyboard/keyboard-box.png','assets/img/keyboard/keyboard-lifestyle.jpg'],video:'assets/media/keyboard-video.mp4',poster:'assets/img/keyboard/keyboard-top.jpg',bullets:['Look gamer عصري وجذاب','إضاءة RGB خلفية قابلة للتخصيص','تنظيم مزيان فوق المكتب بفضل التصميم المدمج','مسند معصم مغناطيسي مريح وقابل للفصل','26 مفتاح Anti-ghosting لمنع تعارض الأوامر','12 مفتاح اختصار للميديا والوظائف الذكية']}}};
+function uuid(){return crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(16).slice(2)}`}function visitorId(){let v=localStorage.getItem(STORAGE.visitor);if(!v){v=uuid();localStorage.setItem(STORAGE.visitor,v)}return v}function sessionId(){let v=sessionStorage.getItem(STORAGE.session);if(!v){v=uuid();sessionStorage.setItem(STORAGE.session,v)}return v}async function track(event_type='page_view',metadata={}){if(!sb)return;try{await sb.from('page_views').insert({visitor_id:visitorId(),session_id:sessionId(),page_path:location.pathname||'/',page_title:document.title,event_type,referrer:document.referrer||null,user_agent:navigator.userAgent,utm_source:new URLSearchParams(location.search).get('utm_source'),utm_medium:new URLSearchParams(location.search).get('utm_medium'),utm_campaign:new URLSearchParams(location.search).get('utm_campaign'),metadata})}catch(e){}}function toast(msg){const el=qs('#toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),3600)}function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+async function ensureAudio(){if(!state.audioCtx)state.audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(state.audioCtx.state==='suspended')await state.audioCtx.resume();state.audioReady=true}function playTone(freq=440,duration=.04,type='triangle',gainValue=.016){if(!state.audioReady||!state.audioCtx)return;const osc=state.audioCtx.createOscillator(),gain=state.audioCtx.createGain();osc.type=type;osc.frequency.value=freq;gain.gain.setValueAtTime(.0001,state.audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(gainValue,state.audioCtx.currentTime+.01);gain.gain.exponentialRampToValueAtTime(.0001,state.audioCtx.currentTime+duration);osc.connect(gain);gain.connect(state.audioCtx.destination);osc.start();osc.stop(state.audioCtx.currentTime+duration)}function initAudio(){const unlock=async()=>{await ensureAudio();playTone(680,.08,'triangle',.03)};['pointerdown','touchstart','click'].forEach(evt=>window.addEventListener(evt,unlock,{once:true,passive:true}));document.addEventListener('click',e=>{if(e.target.closest('button,a,summary,.product-card,.pad-option')){playTone(760,.06,'sawtooth',.022);setTimeout(()=>playTone(980,.035,'triangle',.014),24)}})}
+function preloadExperience(){const assets=['assets/img/logo.jpg','assets/img/keyboard/keyboard-box.png','assets/img/mouse/mouse-front-glow.png','assets/img/pads/pad-msi-dragon.png'];const progress=qs('#loaderProgress'),text=qs('#loaderState');let loaded=0;const mark=()=>{loaded++;const pct=Math.min(100,Math.round(loaded/assets.length*100));if(progress)progress.style.width=`${pct}%`;if(text)text.textContent=`${pct}%`;if(loaded>=assets.length)setTimeout(()=>qs('#preloader')?.classList.add('hidden'),300)};assets.forEach(src=>{const img=new Image();img.onload=mark;img.onerror=mark;img.src=src})}
+function initHeroVideo(){
+  const video=qs('#heroVideo');
+  if(!video||!video.dataset.src)return;
 
-const STORAGE = {
-  price: 'kam_info_price',
-  offerEnd: 'kam_info_offer_end',
-  offerExtended: 'kam_info_offer_extended',
-  offerExpiredSeen: 'kam_info_offer_expired_seen',
-  orderDone: 'kam_info_order_done',
-  orderDoneData: 'kam_info_order_done_data'
-};
+  if(video.dataset.loaded==='1')return;
 
-const BASE_PRICE = 289;
-const BASE_DURATION_MS = 4 * 60 * 1000;
-
-const state = {
-  price: Number(localStorage.getItem(STORAGE.price) || BASE_PRICE),
-  selectedPad: 'MSI Dragon',
-  clavier: 'Clavier Gaming Standard',
-  souris: 'Logitech G302',
-  audioReady: false,
-  audioCtx: null,
-  followShown: false,
-  typingPlayed: new WeakSet(),
-};
-
-const PHONE_REGEX = /^0[5-7][0-9]{8}$/;
-
-
-const productData = {
-  'pad-modal': {
-    title: 'Tapis Gaming 30×70',
-    desc: 'تابي كبير 30×70 كيغطّي المساحة ديال clavier والسوريس كاملة، وكيخليك تختار من عدد كبير ديال الستايلات اللي زادت دابا فالموقع.',
-    images: [
-      'assets/img/pads/pad-msi-dragon.png','assets/img/pads/pad-msi-red.png','assets/img/pads/pad-rog-black.png','assets/img/pads/pad-style-1.jpeg','assets/img/pads/pad-style-2.jpeg','assets/img/pads/pad-style-3.jpeg','assets/img/pads/pad-style-4.jpeg','assets/img/pads/pad-union-jack.png','assets/img/pads/pad-rog-crimson.png','assets/img/pads/pad-rog-spectrum.png','assets/img/pads/pad-rog-city.png','assets/img/pads/pad-msi-splash.png','assets/img/pads/pad-logitech-blue.png','assets/img/pads/pad-razer-acid-green.jpeg'
-    ],
-    video: 'assets/media/pad-video.mp4',
-    bullets: ['Dimension 30×70 cm', 'Surface واسعة ومريحة للحركة', 'تصاميم كثيرة متوفرة دابا من بينها ستايل Razer Acid Green', 'مناسب للـ clavier + souris فوق نفس التابي'],
-    details: [
-      ['المقاس', '30×70 cm'],
-      ['الاستعمال', 'Gaming / bureau / setup'],
-      ['الاختيارات', '14 styles disponibles'],
-      ['داخل العرض', 'كتختار تصميم واحد حسب الذوق ديالك من بين 14 ستايل']
-    ]
-  },
-  'mouse-modal': {
-    title: 'Logitech G302',
-    desc: 'سوريس Logitech G302 بالشكل gaming المعروف ديالها، خفيفة فالاستخدام ومناسبة للـ setup اللي كيبغي look احترافي مع مسكة مريحة.',
-    images: ['assets/img/mouse/mouse-front-glow.png','assets/img/mouse/mouse-blue-glow.png','assets/img/mouse/mouse-side-glow.png','assets/img/mouse/mouse-close-glow.png'],
-    video: 'assets/media/mouse-video.mp4',
-    bullets: ['Design gamer واضح', 'مسكة مريحة فاللعب والاستعمال اليومي', 'Software support', 'كتجي داخلة فالباك جاهزة'],
-    details: [
-      ['الموديل', 'Logitech G302'],
-      ['اللون', 'Noir avec éclairage bleu'],
-      ['الاستعمال', 'Gaming + usage quotidien'],
-      ['الميزة', 'تحكم مريح وشكل احترافي']
-    ]
-  },
-  'keyboard-modal': {
-    title: 'Clavier Gaming',
-    desc: 'تعتبر لوحة مفاتيح ميتيون K9520 خيارا احترافيا للاعبين، حيث تأتي بتصميم مريح يتضمن مسندا مغناطيسيا للمعصم قابل للفصل لتوفير راحة قصوى. تتميز بإضاءة RGB خلفية قابلة للتخصيص بالكامل لتناسب جو الألعاب الخاص بك.',
-    images: ['assets/img/keyboard/keyboard-top.jpg','assets/img/keyboard/keyboard-box.png','assets/img/keyboard/keyboard-lifestyle.jpg'],
-    video: 'assets/media/keyboard-video.mp4',
-bullets: [
-    'Look gamer عصري وجذاب',
-    'إضاءة RGB خلفية قابلة للتخصيص',
-    'تنظيم مزيان فوق المكتب بفضل التصميم المدمج',
-    'داخل الباك الجاهز بثمن العرض المميز',
-    'مسند معصم مغناطيسي مريح وقابل للفصل',
-    '26 مفتاح Anti-ghosting لمنع تعارض الأوامر',
-    'بكرة (Wheel) مخصصة للتحكم السريع في مستوى الصوت',
-    '12 مفتاح اختصار للميديا والوظائف الذكية',
-    'كابل USB مضفر (Braided) شديد التحمل',
-    'غطاء علوي معدني يمنح صلابة واستقرار أكبر'
-  ],
-      details: [
-      ['النوع', 'Clavier Gaming Standard'],
-      ['الإضاءة', 'RGB style'],
-      ['التنسيق', 'كيوافق tapis و souris ديال العرض'],
-      ['داخل العرض', 'جاهز ضمن pack gaming']
-    ]
-  }
-};
-
-
-function initCursorGlow() {
-  const glow = qs('.cursor-glow');
-  if (!glow) return;
-  window.addEventListener('pointermove', e => {
-    glow.style.left = `${e.clientX}px`;
-    glow.style.top = `${e.clientY}px`;
-  });
-}
-
-async function ensureAudio() {
-  if (!state.audioCtx) state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (state.audioCtx.state === 'suspended') await state.audioCtx.resume();
-  state.audioReady = true;
-}
-
-function playTone(freq = 440, duration = 0.06, type = 'triangle', gainValue = 0.02) {
-  if (!state.audioReady || !state.audioCtx) return;
-  const osc = state.audioCtx.createOscillator();
-  const gain = state.audioCtx.createGain();
-  osc.type = type;
-  osc.frequency.value = freq;
-  gain.gain.setValueAtTime(0.0001, state.audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(gainValue, state.audioCtx.currentTime + 0.01);
-  gain.gain.exponentialRampToValueAtTime(0.0001, state.audioCtx.currentTime + duration);
-  osc.connect(gain);
-  gain.connect(state.audioCtx.destination);
-  osc.start();
-  osc.stop(state.audioCtx.currentTime + duration);
-}
-
-function playAudioEl(el, opts = {}) {
-  if (!el) return;
-  if (typeof opts.currentTime === 'number') el.currentTime = opts.currentTime;
-  if (typeof opts.loop === 'boolean') el.loop = opts.loop;
-  if (typeof opts.volume === 'number') el.volume = opts.volume;
-  el.play().catch(() => {});
-}
-
-function bindInteractionAudio() {
-  const unlock = async () => {
-    await ensureAudio();
-    playTone(680, 0.08, 'triangle', 0.03);
-    window.removeEventListener('pointerdown', unlock);
-    window.removeEventListener('touchstart', unlock);
-    window.removeEventListener('touchmove', unlock);
-    window.removeEventListener('click', unlock);
-  };
-  window.addEventListener('pointerdown', unlock, { once: true });
-  window.addEventListener('touchstart', unlock, { once: true, passive: true });
-  window.addEventListener('touchmove', unlock, { once: true, passive: true });
-  window.addEventListener('click', unlock, { once: true });
-
-  qsa('button, a, summary, .pad-option, .choice-card, .product-card').forEach(el => {
-    el.addEventListener('mouseenter', () => playTone(520, 0.03, 'sine', 0.009));
-    const clickFx = () => { playTone(760, 0.07, 'sawtooth', 0.026); setTimeout(() => playTone(980, 0.04, 'triangle', 0.016), 22); };
-    el.addEventListener('click', clickFx);
-    el.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') clickFx();
-    });
-  });
-}
-
-function preloadExperience() {
-  const assets = [
-    'assets/img/logo.jpg',
-    'assets/img/mouse/mouse-front-glow.png',
-    'assets/img/keyboard/keyboard-top.jpg',
-    'assets/img/pads/pad-msi-dragon.png',
-    'assets/img/pads/pad-msi-red.png',
-    'assets/img/pads/pad-rog-black.png',
-    'assets/img/pads/pad-style-1.jpeg',
-    'assets/img/pads/pad-style-2.jpeg',
-    'assets/img/pads/pad-style-3.jpeg',
-    'assets/img/pads/pad-style-4.jpeg',
-    'assets/img/pads/pad-union-jack.png',
-    'assets/img/pads/pad-rog-crimson.png',
-    'assets/img/pads/pad-rog-spectrum.png',
-    'assets/img/pads/pad-rog-city.png',
-    'assets/img/pads/pad-msi-splash.png',
-    'assets/img/pads/pad-logitech-blue.png',
-    'assets/media/hero-bg.mp4',
-    'assets/media/rocket.gif'
-  ];
-  const progress = qs('#loaderProgress');
-  const stateText = qs('#loaderState');
-  let loaded = 0;
-  const mark = () => {
-    loaded += 1;
-    const percent = Math.min(100, Math.round((loaded / assets.length) * 100));
-    if (progress) progress.style.width = `${percent}%`;
-    if (stateText) stateText.textContent = `${percent}%`;
-    if (loaded >= assets.length) {
-      const heroVideo = qs('.hero-video');
-      if (heroVideo) heroVideo.play().catch(() => {});
-      setTimeout(() => qs('#preloader')?.classList.add('hidden'), 350);
-    }
-  };
-  assets.forEach(src => {
-    if (src.endsWith('.mp4')) {
-      const v = document.createElement('video');
-      v.preload = 'auto';
-      v.src = src;
-      v.onloadeddata = mark;
-      v.onerror = mark;
-    } else {
-      const img = new Image();
-      img.onload = mark;
-      img.onerror = mark;
-      img.src = src;
-    }
-  });
-}
-
-
-function initHeroVisibility() {
-  const hero = qs('#home');
-  const media = qs('.hero-media');
-  const video = qs('.hero-video');
-  if (!hero || !media || !video) return;
-  const io = new IntersectionObserver((entries) => {
-    const entry = entries[0];
-    const visible = !!entry && entry.isIntersecting && entry.intersectionRatio > 0.12;
-    media.classList.toggle('is-hidden', !visible);
-    if (visible) video.play().catch(() => {});
-    else {
-      video.pause();
-      try { video.currentTime = 0; } catch (e) {}
-    }
-  }, { threshold: [0, 0.12, 0.25, 0.5] });
-  io.observe(hero);
-}
-
-function initReveal() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('visible');
-      if (entry.target.classList.contains('type-target') && !state.typingPlayed.has(entry.target)) {
-        typeText(entry.target);
-        state.typingPlayed.add(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  qsa('.reveal, .type-target').forEach(el => observer.observe(el));
-}
-
-function typeText(el) {
-  const raw = el.dataset.raw || el.innerHTML;
-  el.dataset.raw = raw;
-  const temp = document.createElement('div');
-  temp.innerHTML = raw;
-  const text = temp.textContent || temp.innerText || '';
-  let i = 0;
-  el.innerHTML = '';
-  const interval = setInterval(() => {
-    el.textContent = text.slice(0, i + 1);
-    if (state.audioReady) playTone(300 + (i % 8) * 40, 0.02, 'square', 0.006);
-    i += 1;
-    if (i >= text.length) {
-      clearInterval(interval);
-      el.innerHTML = raw;
-    }
-  }, 24);
-}
-
-function initTilt() {
-  qsa('.tilt-card').forEach(card => {
-    card.addEventListener('pointermove', e => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `translateY(-8px) rotateX(${y * -10}deg) rotateY(${x * 12}deg)`;
-    });
-    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
-  });
-}
-
-let countdownTimer = null;
-
-function getOrCreateOfferEnd() {
-  let endAt = Number(localStorage.getItem(STORAGE.offerEnd));
-  const extended = localStorage.getItem(STORAGE.offerExtended) === '1';
-  if (!endAt) {
-    endAt = Date.now() + BASE_DURATION_MS;
-    localStorage.setItem(STORAGE.offerEnd, String(endAt));
-    localStorage.setItem(STORAGE.offerExtended, '0');
-    localStorage.removeItem(STORAGE.offerExpiredSeen);
-  }
-  if (!extended && endAt <= Date.now() && !localStorage.getItem(STORAGE.offerExpiredSeen)) {
-    return endAt;
-  }
-  if (!extended && endAt <= Date.now() && localStorage.getItem(STORAGE.offerExpiredSeen)) {
-    return endAt;
-  }
-  return endAt;
-}
-
-function initCountdown() {
-  const countdownEl = qs('#countdown');
-  const endAt = getOrCreateOfferEnd();
-  const tick = () => {
-    const left = Math.max(0, endAt - Date.now());
-    const totalSeconds = Math.floor(left / 1000);
-    const hr = Math.floor(totalSeconds / 3600);
-    const min = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-    const sec = String(totalSeconds % 60).padStart(2, '0');
-    countdownEl.textContent = hr > 0 ? `${String(hr).padStart(2, '0')}:${min}:${sec}` : `${min}:${sec}`;
-    countdownEl.classList.toggle('warning-pulse', totalSeconds <= 40 && totalSeconds > 0);
-    if (totalSeconds === 40) showFortySecondWarning();
-    if (left <= 0) {
-      clearInterval(countdownTimer);
-      countdownEl.textContent = '00:00';
-      showExpiredModal();
-    }
-  };
-  if (countdownTimer) clearInterval(countdownTimer);
-  countdownTimer = setInterval(tick, 1000);
-  tick();
-}
-
-function showFortySecondWarning() {
-  if (qs('#fortyWarn')) return;
-  const warn = document.createElement('div');
-  warn.id = 'fortyWarn';
-  warn.className = 'expired-banner';
-  warn.textContent = '⚠️ باقي 40 ثانية فقط على العرض';
-  qs('.top-strip-inner')?.appendChild(warn);
-  playTone(880, 0.12, 'square', 0.03);
-}
-
-
-function showExpiredModal() {
-  if (qs('#expiredModal')?.classList.contains('active')) return;
-  localStorage.setItem(STORAGE.offerExpiredSeen, '1');
-  setPrice(BASE_PRICE + 15);
-  const priceEl = qs('#newPrice');
-  if (priceEl) priceEl.textContent = `${BASE_PRICE + 15} DH`;
-  qs('#expiredModal')?.classList.add('active');
-  playAudioEl(qs('#gameOverVoice'), { currentTime: 0, volume: 1 });
-  setTimeout(() => playAudioEl(qs('#gameOverSfx'), { currentTime: 0, volume: 1 }), 400);
-}
-
-
-function formatMoney(value) {
-  return Number.isInteger(value) ? `${value}` : value.toFixed(1);
-}
-
-function setPrice(newPrice) {
-  state.price = newPrice;
-  qsa('#heroPrice, #footerPrice, #stickyPrice').forEach(el => { if (el) el.textContent = `${formatMoney(newPrice)} DH`; });
-  localStorage.setItem(STORAGE.price, String(newPrice));
-}
-
-function resetOfferAndOrderForNewRequest() {
-  localStorage.removeItem(STORAGE.orderDone);
-  localStorage.removeItem(STORAGE.orderDoneData);
-  localStorage.setItem(STORAGE.offerEnd, String(Date.now() + BASE_DURATION_MS));
-  localStorage.setItem(STORAGE.offerExtended, '0');
-  localStorage.removeItem(STORAGE.offerExpiredSeen);
-  setPrice(BASE_PRICE);
-}
-
-
-function initExtendOffer() {
-  qs('#continueUpdatedOffer')?.addEventListener('click', () => {
-    qs('#expiredModal')?.classList.remove('active');
-    openWizard('intro');
-  });
-}
-
-
-function toggleOrderFocus() {
-  const section = qs('.observe-order');
-  if (!section) return;
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => document.body.classList.toggle('order-focus', entry.isIntersecting));
-  }, { threshold: 0.45 });
-  observer.observe(section);
-}
-
-function showFollowUp() {
-  setTimeout(() => {
-    if (state.followShown) return;
-    qs('#followUp')?.classList.add('active');
-    qs('#followUp')?.setAttribute('aria-hidden', 'false');
-    state.followShown = true;
-    playTone(620, 0.12, 'square', 0.03);
-  }, 10000);
-  qs('#closeFollowUp')?.addEventListener('click', () => qs('#followUp')?.classList.remove('active'));
-}
-
-function loadWizardVideo() {
-  const video = qs('#kazooVideo');
-  if (!video || video.dataset.loaded === '1') return;
-  const src = video.dataset.src;
-  if (!src) return;
-  video.innerHTML = `<source src="${src}" type="video/mp4" />`;
-  video.dataset.loaded = '1';
+  video.innerHTML=`<source src="${video.dataset.src}" type="video/mp4">`;
+  video.dataset.loaded='1';
   video.load();
+  video.play().catch(()=>{});
 }
+function initCursorGlow(){const glow=qs('.cursor-glow');if(!glow)return;window.addEventListener('pointermove',e=>{glow.style.left=`${e.clientX}px`;glow.style.top=`${e.clientY}px`},{passive:true})}function initReveal(){const obs=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;entry.target.classList.add('visible');if(entry.target.classList.contains('type-target')&&!state.typingPlayed.has(entry.target)){typeText(entry.target);state.typingPlayed.add(entry.target)}})},{threshold:.15});qsa('.reveal,.type-target').forEach(el=>obs.observe(el))}function typeText(el){const raw=el.dataset.raw||el.innerHTML;el.dataset.raw=raw;const tmp=document.createElement('div');tmp.innerHTML=raw;const text=tmp.textContent||tmp.innerText||'';let i=0;el.innerHTML='';const interval=setInterval(()=>{el.textContent=text.slice(0,i+1);playTone(300+(i%8)*40,.018,'square',.005);i++;if(i>=text.length){clearInterval(interval);el.innerHTML=raw}},22)}function initTilt(){qsa('.tilt-card').forEach(card=>{card.addEventListener('pointermove',e=>{if(matchMedia('(max-width:760px)').matches)return;const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`translateY(-8px) rotateX(${y*-10}deg) rotateY(${x*12}deg)`});card.addEventListener('pointerleave',()=>card.style.transform='')})}
+function initMenu(){const btn=qs('#menuToggle'),nav=qs('#mainNav');btn?.addEventListener('click',()=>{btn.classList.toggle('active');nav.classList.toggle('active')});qsa('#mainNav a,.mobile-section-nav a').forEach(a=>a.addEventListener('click',()=>{btn?.classList.remove('active');nav?.classList.remove('active')}));document.addEventListener('click',e=>{if(!e.target.closest('.site-header')&&nav?.classList.contains('active')){btn.classList.remove('active');nav.classList.remove('active')}})}
+function openShell(id){qs(id)?.classList.add('active');qs(id)?.setAttribute('aria-hidden','false');document.body.classList.add('modal-open')}function closeShell(id){qs(id)?.classList.remove('active');qs(id)?.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open')}
+function initPads(){const grid=qs('#padChoiceGrid');if(!grid)return;grid.innerHTML=state.pads.map(([name,img],i)=>`<button class="pad-option ${i===0?'active':''}" type="button" data-pad="${escapeHtml(name)}"><img src="${img}" alt="${escapeHtml(name)}" loading="lazy"><span>${escapeHtml(name)}</span></button>`).join('');grid.addEventListener('click',e=>{const opt=e.target.closest('.pad-option');if(!opt)return;qsa('.pad-option',grid).forEach(x=>x.classList.remove('active'));opt.classList.add('active');state.selectedPad=opt.dataset.pad;updateSummary()})}
+function validate(input){if(!input)return true;const val=input.value.trim();let ok=true;if(input.required&&!val)ok=false;if(input.id==='customerPhone'&&val&&!PHONE_REGEX.test(val))ok=false;if(input.id==='customerQty'){const n=Number(val);ok=Number.isFinite(n)&&n>=1&&n<=10}input.classList.toggle('invalid',!ok);return ok}function validateStep(step){const map={0:['#customerName','#customerPhone','#customerAddress','#customerCity','#customerQty'],1:[],2:[]};const invalid=(map[step]||[]).map(sel=>qs(sel)).find(el=>!validate(el));if(invalid){invalid.focus();toast('من فضلك عمّر المعلومات المطلوبة بشكل صحيح.');return false}return true}function goStep(step){qsa('#orderForm .sheet-step').forEach(el=>el.classList.toggle('active',Number(el.dataset.step)===step));qsa('.wizard-progress span').forEach((el,i)=>el.classList.toggle('active',i<=step));updateSummary()}function currentStep(){return Number(qs('#orderForm .sheet-step.active')?.dataset.step||0)}function updateSummary(){const qty=Math.max(1,Number(qs('#customerQty')?.value||1));const el=qs('#orderSummary');if(!el)return;el.innerHTML=`<strong>ملخص الطلب:</strong><br>الاسم: ${escapeHtml(qs('#customerName')?.value||'-')}<br>الهاتف: ${escapeHtml(qs('#customerPhone')?.value||'-')}<br>المدينة: ${escapeHtml(qs('#customerCity')?.value||'-')}<br>العنوان: ${escapeHtml(qs('#customerAddress')?.value||'-')}<br>التابي: ${escapeHtml(state.selectedPad)}<br>الكمية: ${qty}<br>المجموع: <strong>${qty*PRICE} DH</strong>`}
+function initWizard(){qsa('.js-open-order').forEach(btn=>btn.addEventListener('click',()=>{openShell('#orderWizard');goStep(0);track('order_open')}));qs('#closeWizard')?.addEventListener('click',()=>closeShell('#orderWizard'));qs('[data-close="order"]')?.addEventListener('click',()=>closeShell('#orderWizard'));qsa('#orderForm input,#orderForm textarea').forEach(el=>['input','change','blur'].forEach(evt=>el.addEventListener(evt,()=>{validate(el);updateSummary()})));qsa('.btn-next').forEach(btn=>btn.addEventListener('click',()=>{const step=currentStep();if(!validateStep(step))return;goStep(Number(btn.dataset.next))}));qsa('.btn-back').forEach(btn=>btn.addEventListener('click',()=>goStep(Number(btn.dataset.back))));qs('#orderForm')?.addEventListener('submit',submitOrder)}
+async function submitOrder(e){e.preventDefault();if(!validateStep(0))return;const qty=Number(qs('#customerQty').value||1);const payload={customer_name:qs('#customerName').value.trim(),phone:qs('#customerPhone').value.trim(),city:qs('#customerCity').value.trim(),address:qs('#customerAddress').value.trim(),quantity:qty,keyboard_choice:'Clavier Gaming Standard',mouse_choice:'Logitech G302',pad_choice:state.selectedPad,notes:qs('#customerNotes').value.trim()||null,product_name:'Pack Gaming KAM INFO',unit_price:PRICE,currency:'MAD',source:'landing_page',user_agent:navigator.userAgent,referrer:document.referrer||null,utm_source:new URLSearchParams(location.search).get('utm_source'),utm_medium:new URLSearchParams(location.search).get('utm_medium'),utm_campaign:new URLSearchParams(location.search).get('utm_campaign')};const btn=qs('#submitOrder');btn.disabled=true;btn.textContent='جاري إرسال الطلب...';try{const{error}=await sb.from('orders').insert(payload);if(error)throw error;await track('click',{target:'submit_order',total:qty*PRICE});closeShell('#orderWizard');toast('تم إرسال الطلب بنجاح. غادي نتواصلو معاك قريباً ✅');qs('#orderForm').reset();qs('#customerQty').value=1;state.selectedPad='MSI Dragon';initPads();updateSummary()}catch(err){console.error(err);toast('وقع خطأ أثناء إرسال الطلب. حاول مرة أخرى.')}finally{btn.disabled=false;btn.textContent='تأكيد الطلب'}}
+async function loadReviews(){
+  const grid=qs('#reviewsGrid');
+  if(!grid||!sb)return;
 
-function unloadWizardVideo() {
-  const video = qs('#kazooVideo');
-  if (!video) return;
-  video.pause();
-  video.removeAttribute('src');
-  video.innerHTML = '';
-  video.load();
-  video.dataset.loaded = '0';
-}
+  try{
+    const{data,error}=await sb
+      .from('reviews')
+      .select('customer_name,city,rating,emoji,review_text,created_at')
+      .eq('status','approved')
+      .order('created_at',{ascending:false})
+      .limit(12);
 
-function openWizard(targetStep = 'intro') {
-  const shell = qs('#orderWizard');
-  shell?.classList.add('active');
-  shell?.setAttribute('aria-hidden', 'false');
-  goToStep(targetStep);
-  if (targetStep === 'intro') {
-    loadWizardVideo();
-    const video = qs('#kazooVideo');
-    video?.play().catch(() => {});
-    playAudioEl(qs('#kazooAudio'), { currentTime: 0, volume: 1, loop: false });
+    if(error)throw error;
+
+    grid.innerHTML=(data||[]).map(r=>`
+      <article class="review-card glass reveal visible">
+        <div class="review-head">
+          <strong>${escapeHtml(r.customer_name)}${r.city?' - '+escapeHtml(r.city):''}</strong>
+          <span>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+        </div>
+        <p>${r.emoji||'😊'} ${escapeHtml(r.review_text)}</p>
+      </article>
+    `).join('');
+  }catch(e){
+    console.error(e);
   }
 }
 
-function closeWizard() {
-  qs('#orderWizard')?.classList.remove('active');
-  qs('#orderWizard')?.setAttribute('aria-hidden', 'true');
-  const a = qs('#kazooAudio');
-  if (a) { a.pause(); a.currentTime = 0; }
-  unloadWizardVideo();
-}
+function initReviewModal(){const emojis={1:'😞',2:'🙁',3:'🙂',4:'😄',5:'🤩'};const setRating=n=>{state.rating=n;qs('#reviewEmoji').textContent=emojis[n];qsa('#starPicker button').forEach(b=>b.classList.toggle('active',Number(b.dataset.rating)<=n))};setRating(5);qs('#openReviewModal')?.addEventListener('click',()=>{openShell('#reviewModal');track('review_open')});qs('#closeReviewModal')?.addEventListener('click',()=>closeShell('#reviewModal'));qs('[data-close="review"]')?.addEventListener('click',()=>closeShell('#reviewModal'));qs('#starPicker')?.addEventListener('click',e=>{const b=e.target.closest('button[data-rating]');if(b)setRating(Number(b.dataset.rating))});qs('#reviewForm')?.addEventListener('submit',async e=>{e.preventDefault();const name=qs('#reviewName'),text=qs('#reviewText');if(!validate(name)||!validate(text)){toast('من فضلك كتب الاسم والرأي.');return}try{const{error}=await sb.from('reviews').insert({customer_name:name.value.trim(),city:qs('#reviewCity').value.trim()||null,rating:state.rating,emoji:emojis[state.rating],review_text:text.value.trim(),status:'pending',user_agent:navigator.userAgent,referrer:document.referrer||null});if(error)throw error;closeShell('#reviewModal');qs('#reviewForm').reset();setRating(5);toast('شكراً لك! رأيك وصل للإدارة للموافقة ✅')}catch(err){console.error(err);toast('تعذر إرسال الرأي حالياً.')}})}
+function initProductModal(){qsa('.product-card').forEach(card=>card.addEventListener('click',()=>openProductModal(card.dataset.modal)));qs('#closeProductModal')?.addEventListener('click',closeProductModal);qs('[data-close="product"]')?.addEventListener('click',closeProductModal)}
+function openProductModal(id){const data=state.productData[id],root=qs('#productModalContent');if(!data||!root)return;root.innerHTML=`<div class="product-modal-grid"><div class="product-gallery"><video class="modal-product-video" controls playsinline preload="none" poster="${data.poster}" data-src="${data.video}"></video>${data.images.map(src=>`<img src="${src}" alt="${escapeHtml(data.title)}" loading="lazy">`).join('')}</div><div class="product-copy"><span class="eyebrow">SHOW MORE</span><h3>${escapeHtml(data.title)}</h3><p>${escapeHtml(data.desc)}</p><ul>${data.bullets.map(b=>`<li>${escapeHtml(b)}</li>`).join('')}</ul><button class="btn btn-primary js-open-order" type="button">اطلب الآن</button></div></div>`;openShell('#productModal');const video=qs('.modal-product-video',root);if(video&&video.dataset.src){video.innerHTML=`<source src="${video.dataset.src}" type="video/mp4">`;video.load();video.play().catch(()=>{})}qs('.product-copy .js-open-order',root)?.addEventListener('click',()=>{closeProductModal();openShell('#orderWizard');goStep(0)})}
+function closeProductModal(){const vid=qs('.modal-product-video');if(vid){vid.pause();vid.removeAttribute('src');vid.innerHTML='';vid.load()}closeShell('#productModal');qs('#productModalContent').innerHTML=''}
+function initLazyVideos(){qsa('.lazy-video-trigger').forEach(btn=>btn.addEventListener('click',()=>openVideoModal(btn.dataset.video,btn.dataset.title,btn.dataset.poster)));qs('#closeVideoModal')?.addEventListener('click',closeVideoModal);qs('[data-close="video"]')?.addEventListener('click',closeVideoModal)}
+function openVideoModal(src,title='',poster=''){const video=qs('#videoModalPlayer'),loading=qs('#videoLoading');if(!video||!src)return;loading.style.display='block';video.poster=poster;video.innerHTML='';openShell('#videoModal');track('video_play',{title,src});setTimeout(()=>{if(!qs('#videoModal').classList.contains('active'))return;video.innerHTML=`<source src="${src}" type="video/mp4">`;video.load();video.oncanplay=()=>{loading.style.display='none';video.play().catch(()=>{})};qs('#videoModalTitle').textContent=title},120)}
+function closeVideoModal(){const video=qs('#videoModalPlayer');if(video){video.pause();video.removeAttribute('src');video.innerHTML='';video.load();video.oncanplay=null}closeShell('#videoModal')}
+function initYoutube(){qs('#youtubeThumb')?.addEventListener('click',e=>{const btn=e.currentTarget,id=btn.dataset.youtubeId;if(!id){toast('أضف YouTube video ID فـ data-youtube-id باش يتشغل الفيديو.');return}btn.outerHTML=`<iframe title="KAM INFO Video Drop" src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;track('video_play',{provider:'youtube',id})})}
+function initShowMore(){
+  const btn=qs('#showMorePads');
+  if(!btn)return;
 
-function goToStep(step) {
-  qsa('.sheet-step').forEach(el => el.classList.toggle('active', el.dataset.step === step));
-  if (step !== 'intro') {
-    const a = qs('#kazooAudio');
-    if (a) { a.pause(); a.currentTime = 0; }
-    unloadWizardVideo();
-  } else {
-    loadWizardVideo();
-    qs('#kazooVideo')?.play().catch(() => {});
-  }
-}
+  btn.dataset.expanded='0';
+  btn.textContent='Voir plus';
 
-function validateField(input) {
-  if (!input) return true;
-  const value = input.value.trim();
-  let valid = true;
-  if (input.hasAttribute('required') && !value) valid = false;
-  if (valid && input.id === 'customerPhone' && !PHONE_REGEX.test(value)) valid = false;
-  if (valid && input.id === 'customerQty') {
-    const qty = Number(value);
-    valid = Number.isFinite(qty) && qty >= 1 && qty <= 10;
-  }
-  input.classList.toggle('invalid', !valid);
-  return valid;
-}
+  btn.addEventListener('click',()=>{
+    const shouldShow=btn.dataset.expanded!=='1';
 
-function validateStep(step) {
-  const fields = {
-    intro: [qs('#customerName')],
-    contact: [qs('#customerPhone'), qs('#customerAddress'), qs('#customerCity'), qs('#customerQty')],
-    pad: [qs('#customerNotes')]
-  }[step] || [];
-  const firstInvalid = fields.find(field => !validateField(field));
-  if (firstInvalid) firstInvalid.focus();
-  return !firstInvalid;
-}
-
-function refreshWizardButtons() {
-  const introOk = validateField(qs('#customerName'));
-  const contactOk = [qs('#customerPhone'), qs('#customerAddress'), qs('#customerCity'), qs('#customerQty')].every(validateField);
-  const padOk = validateField(qs('#customerNotes'));
-  const introBtn = qs('.btn-next[data-next="contact"]');
-  const contactBtn = qs('.btn-next[data-next="pad"]');
-  const submitBtn = qs('#submitOrder');
-  if (introBtn) introBtn.disabled = !introOk;
-  if (contactBtn) contactBtn.disabled = !contactOk;
-  if (submitBtn) submitBtn.disabled = !padOk;
-}
-
-function initWizard() {
-  qsa('.js-open-order').forEach(btn => btn.addEventListener('click', () => openWizard('intro')));
-  qsa('#customerName, #customerPhone, #customerAddress, #customerCity, #customerQty, #customerNotes').forEach(input => {
-    ['input','change','blur'].forEach(evt => input.addEventListener(evt, () => { validateField(input); refreshWizardButtons(); }));
-  });
-  qs('#closeWizard')?.addEventListener('click', closeWizard);
-  qsa('.btn-next').forEach(btn => btn.addEventListener('click', () => {
-    const currentStep = btn.closest('.sheet-step')?.dataset.step;
-    if (currentStep && !validateStep(currentStep)) {
-      refreshWizardButtons();
-      return;
-    }
-    playTone(780, 0.07, 'sawtooth', 0.02);
-    goToStep(btn.dataset.next);
-  }));
-  qsa('.btn-back').forEach(btn => btn.addEventListener('click', () => goToStep(btn.dataset.back)));
-  qsa('.pad-option').forEach(opt => opt.addEventListener('click', () => {
-    qsa('.pad-option').forEach(x => x.classList.remove('active'));
-    opt.classList.add('active');
-    state.selectedPad = opt.dataset.pad;
-    playTone(630, 0.05, 'triangle', 0.02);
-  }));
-  refreshWizardButtons();
-}
-
-async function submitOrder() {
-  const data = {
-    nom: qs('#customerName').value.trim(),
-    telephone: qs('#customerPhone').value.trim(),
-    adresse: qs('#customerAddress').value.trim(),
-    ville: qs('#customerCity').value.trim(),
-    quantite: qs('#customerQty').value.trim() || '1',
-    type_tapis: state.selectedPad,
-    clavier_prefere: state.clavier,
-    souris: state.souris,
-    notes: qs('#customerNotes').value.trim(),
-    prix: `${formatMoney(state.price)} DH`
-  };
-  if (!validateStep('intro') || !validateStep('contact') || !validateStep('pad')) {
-    refreshWizardButtons();
-    alert('من فضلك عمّر جميع الخانات المطلوبة قبل تأكيد الطلب.');
-    return;
-  }
-
-  const form = qs('#hiddenForm');
-  Object.entries(data).forEach(([k, v]) => {
-    const field = form.querySelector(`[name="${k}"]`);
-    if (field) field.value = v;
-  });
-
-  const formData = new FormData(form);
-  try {
-    await fetch(form.action, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
+    qsa('.quicklook-extra').forEach(el=>{
+      el.classList.toggle('is-visible',shouldShow);
     });
-  } catch (e) {}
 
-  sessionStorage.setItem('kamInfoOrder', JSON.stringify(data));
-  localStorage.setItem(STORAGE.orderDone, '1');
-  localStorage.setItem(STORAGE.orderDoneData, JSON.stringify(data));
-  launchRocketTransition();
-}
-
-function launchRocketTransition() {
-  const rocket = document.createElement('div');
-  rocket.className = 'rocket-flight';
-  rocket.innerHTML = '<img src="assets/media/rocket.gif" alt="rocket">';
-  document.body.appendChild(rocket);
-  playAudioEl(qs('#rocketLaunchAudio'), { currentTime: 0, volume: 0.95 });
-  playTone(220, 0.14, 'sawtooth', 0.03);
-  setTimeout(() => playTone(300, 0.16, 'sawtooth', 0.035), 180);
-  setTimeout(() => playTone(420, 0.18, 'triangle', 0.04), 420);
-  rocket.animate([
-    { left: '50%', bottom: '-28vh', transform: 'translateX(-50%) rotate(-82deg) scale(.82)' },
-    { left: '50%', bottom: '6vh', transform: 'translateX(-50%) rotate(-84deg) scale(.86)', offset: 0.34 },
-    { left: '50%', bottom: '44vh', transform: 'translateX(-50%) rotate(-86deg) scale(.96)', offset: 0.72 },
-    { left: '50%', bottom: '118vh', transform: 'translateX(-50%) rotate(-88deg) scale(1.05)' }
-  ], { duration: 2500, easing: 'cubic-bezier(.2,.75,.18,1)', fill: 'forwards' });
-  setTimeout(() => { window.location.href = 'thank-you.html'; }, 2380);
-}
-
-function initVideoModal() {
-  qsa('.lazy-video-trigger').forEach(card => card.addEventListener('click', () => openVideoModal(card.dataset.video, card.dataset.title)));
-  qs('#closeVideoModal')?.addEventListener('click', closeVideoModal);
-}
-
-function openVideoModal(src, title = '') {
-  const shell = qs('#videoModal');
-  const video = qs('#videoModalPlayer');
-  const titleEl = qs('#videoModalTitle');
-  if (!shell || !video || !src) return;
-  titleEl.textContent = title;
-  video.innerHTML = `<source src="${src}" type="video/mp4">`;
-  video.muted = true;
-  video.controls = true;
-  video.setAttribute('playsinline', '');
-  video.load();
-  shell.classList.add('active');
-  shell.setAttribute('aria-hidden', 'false');
-  video.play().catch(() => {});
-}
-
-function closeVideoModal() {
-  const shell = qs('#videoModal');
-  const video = qs('#videoModalPlayer');
-  if (video) {
-    video.pause();
-    video.removeAttribute('src');
-    video.innerHTML = '';
-    video.load();
-  }
-  shell?.classList.remove('active');
-  shell?.setAttribute('aria-hidden', 'true');
-}
-
-function closeProductModal() {
-  const modal = qs('#productModal');
-  modal?.classList.remove('active');
-  const vid = qs('.modal-product-video');
-  if (vid) { vid.pause(); vid.removeAttribute('src'); vid.innerHTML = ''; vid.load(); }
-}
-
-function initProductModal() {
-  qsa('.product-card').forEach(card => card.addEventListener('click', () => openProductModal(card.dataset.modal)));
-  qs('#closeProductModal')?.addEventListener('click', closeProductModal);
-}
-
-function openProductModal(id) {
-  const data = productData[id];
-  const root = qs('#productModalContent');
-  if (!data || !root) return;
-  root.innerHTML = `
-    <div class="product-modal-grid">
-      <div class="product-gallery">
-        ${data.video ? `<video class="modal-product-video" autoplay muted loop playsinline preload="metadata" controlslist="nodownload noplaybackrate"><source src="${data.video}" type="video/mp4"></video>` : ''}
-        ${data.images.map((src, index) => `<img class="gallery-zoom" data-full="${src}" src="${src}" alt="${data.title} ${index + 1}">`).join('')}
-      </div>
-      <div class="product-copy">
-        <span class="eyebrow">KAM INFO PRODUCT VIEW</span>
-        <h3>${data.title}</h3>
-        <p>${data.desc}</p>
-        <ul>${data.bullets.map(x => `<li>${x}</li>`).join('')}</ul>
-        <div class="product-specs">${(data.details || []).map(([label, value]) => `<div class="product-spec-item"><span>${label}</span><strong>${value}</strong></div>`).join('')}</div>
-        <button class="btn btn-primary js-modal-order">اطلب الآن</button>
-      </div>
-    </div>`;
-  qs('#productModal')?.classList.add('active');
-  qsa('.gallery-zoom', root).forEach(img => {
-    img.addEventListener('click', () => openImageLightbox(img.dataset.full || img.src, img.alt || data.title));
-  });
-  qs('.js-modal-order', root)?.addEventListener('click', () => {
-    closeProductModal();
-    document.getElementById('order')?.scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => openWizard('intro'), 500);
+    btn.dataset.expanded=shouldShow?'1':'0';
+    btn.textContent=shouldShow?'Voir moins':'Voir plus';
   });
 }
 
-function openImageLightbox(src, alt = '') {
-  const shell = qs('#imageLightbox');
-  const img = qs('#lightboxImage');
-  if (!shell || !img || !src) return;
-  img.src = src;
-  img.alt = alt;
-  shell.classList.add('active');
-}
 
+function initImageLightbox(){
+  const shell=qs('#imageLightbox');
+  const img=qs('#lightboxImage');
+  const caption=qs('#lightboxCaption');
 
-function initQuicklookLightbox() {
-  qsa('.quicklook-grid .gallery-card img').forEach(img => {
-    img.style.cursor = 'zoom-in';
-    img.addEventListener('click', () => openImageLightbox(img.currentSrc || img.src, img.alt || 'pad image'));
+  if(!shell||!img)return;
+
+  qs('#quicklookGrid')?.addEventListener('click',e=>{
+    const card=e.target.closest('.gallery-card');
+    if(!card)return;
+
+    const source=card.querySelector('img');
+    if(!source)return;
+
+    const text=card.querySelector('figcaption')?.textContent||source.alt||'';
+
+    img.src=source.src;
+    img.alt=source.alt||text;
+
+    if(caption)caption.textContent=text;
+
+    openShell('#imageLightbox');
   });
+
+  qs('#closeImageLightbox')?.addEventListener('click',closeImageLightbox);
+  qs('[data-close="lightbox"]')?.addEventListener('click',closeImageLightbox);
 }
 
-function initQuicklookToggle() {
-  const btn = qs('#showMorePads');
-  const extras = qsa('.quicklook-extra');
-  if (!btn || !extras.length) return;
+function closeImageLightbox(){
+  const img=qs('#lightboxImage');
 
-  btn.addEventListener('click', () => {
-    const expanded = btn.dataset.expanded === 'true';
-    extras.forEach(card => card.classList.toggle('is-visible', !expanded));
-    btn.dataset.expanded = expanded ? 'false' : 'true';
-    btn.textContent = expanded ? 'عرض المزيد من الستايلات' : 'عرض أقل';
-  });
+  closeShell('#imageLightbox');
+
+  if(img)img.src='';
 }
 
-function initImageLightbox() {
-  qs('#closeImageLightbox')?.addEventListener('click', () => qs('#imageLightbox')?.classList.remove('active'));
-}
-
-function bindCloseBackdrops() {
-  qsa('.modal-shell').forEach(shell => {
-    shell.addEventListener('click', e => {
-      if (e.target.classList.contains('modal-backdrop')) {
-        if (shell.id === 'videoModal') closeVideoModal();
-        else if (shell.id === 'orderWizard') closeWizard();
-        else if (shell.id === 'productModal') closeProductModal();
-        else shell.classList.remove('active');
-      }
-    });
-  });
-  qsa('.modal-dismiss').forEach(btn => btn.addEventListener('click', () => {
-    const shell = btn.closest('.modal-shell');
-    if (!shell) return;
-    if (shell.id === 'videoModal') closeVideoModal();
-    else if (shell.id === 'orderWizard') closeWizard();
-    else if (shell.id === 'productModal') closeProductModal();
-    else shell.classList.remove('active');
-  }));
-}
-
-function initMobileMenu() {
-  qs('#menuToggle')?.addEventListener('click', () => qs('#mainNav')?.classList.toggle('open'));
-  qsa('#mainNav a, #mobileSectionNav a').forEach(a => a.addEventListener('click', () => qs('#mainNav')?.classList.remove('open')));
-}
-
-function initOrderSuccessModal() {
-  if (localStorage.getItem(STORAGE.orderDone) !== '1') return;
-  const modal = qs('#orderSuccessModal');
-  if (!modal) return;
-  modal.classList.add('active');
-  qs('#restartOrderFlow')?.addEventListener('click', () => {
-    modal.classList.remove('active');
-    resetOfferAndOrderForNewRequest();
-    initCountdown();
-    openWizard('intro');
-  });
-  qs('#keepOrderState')?.addEventListener('click', () => modal.classList.remove('active'));
-}
-
-window.addEventListener('load', () => {
-  setPrice(state.price);
-  initCursorGlow();
-  bindInteractionAudio();
-  preloadExperience();
-  initReveal();
-  initHeroVisibility();
-  initTilt();
-  initCountdown();
-  initExtendOffer();
-  toggleOrderFocus();
-  showFollowUp();
-  initWizard();
-  initVideoModal();
-  initProductModal();
-  initMobileMenu();
-  initImageLightbox();
-  initQuicklookLightbox();
-  initQuicklookToggle();
-  bindCloseBackdrops();
-  initOrderSuccessModal();
-  qs('#submitOrder')?.addEventListener('click', submitOrder);
-});
-
+function initWhatsApp(){const panel=qs('#waWidget'),toggle=qs('#waToggleBtn');const close=()=>{panel.classList.remove('active');panel.setAttribute('aria-hidden','true')};const open=()=>{panel.classList.add('active');panel.setAttribute('aria-hidden','false')};toggle?.addEventListener('click',e=>{e.stopPropagation();panel.classList.contains('active')?close():open()});qs('#waClose')?.addEventListener('click',e=>{e.stopPropagation();close()});panel?.addEventListener('click',e=>e.stopPropagation());document.addEventListener('click',()=>{if(panel?.classList.contains('active'))close()});qsa('.wa-q-btn').forEach(b=>b.addEventListener('click',()=>{qs('#waInput').value=b.dataset.wa;sendWa()}));qs('#waSend')?.addEventListener('click',sendWa);qs('#waInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')sendWa()})}function sendWa(){const msg=qs('#waInput')?.value.trim()||'سلام KAM INFO بغيت معلومات على pack gaming';window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank','noopener')}
+function initRealtime(){if(!sb)return;sb.channel('public-approved-reviews').on('postgres_changes',{event:'UPDATE',schema:'public',table:'reviews'},payload=>{if(payload.new?.status==='approved')loadReviews()}).subscribe()}function initServiceWorker(){if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{})}
+function init(){preloadExperience();initAudio();initCursorGlow();initHeroVideo();initReveal();initTilt();initMenu();initPads();initWizard();initReviewModal();initProductModal();initLazyVideos();initYoutube();initShowMore();initImageLightbox();initWhatsApp();loadReviews();initRealtime();initServiceWorker();track('page_view');updateSummary()}document.addEventListener('DOMContentLoaded',init);
