@@ -821,8 +821,7 @@ function initRealtime() {
     .subscribe();
 }
 function initServiceWorker() {
-  if ("serviceWorker" in navigator)
-    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  // تم إيقاف السيرفيس وركر القديم باش ما يبلوكيش OneSignal
 }
 function init() {
   preloadExperience();
