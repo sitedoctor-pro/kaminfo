@@ -5,13 +5,14 @@
 .quicklook-grid .gallery-card {
   cursor: zoom-in;
 }
-
-@media(max-width:760px) {
+@media(max-width:760px){
   .quicklook-grid {
+    display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 14px !important;
+    justify-items: center !important;
   }
-
+}
   .quicklook-grid .gallery-card {
     width: 100%;
     min-width: 0;
@@ -24,7 +25,7 @@
     height: auto;
     object-fit: cover;
   }
-}
+
 
 .image-lightbox {
   position: relative;
@@ -470,13 +471,13 @@
 html {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden !important;
+  overflow-x: clip !important;
 }
 
 body {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden !important;
+  overflow-x: clip !important;
   position: relative;
 }
 
