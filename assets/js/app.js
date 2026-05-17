@@ -491,6 +491,7 @@ async function submitOrder(e) {
 
 function initReviewModal() {
   const emojis = { 1: "😞", 2: "🙁", 3: "🙂", 4: "😄", 5: "🤩" };
+
   const setRating = (n) => {
     state.rating = n;
     qs("#reviewEmoji").textContent = emojis[n];
@@ -498,29 +499,38 @@ function initReviewModal() {
       b.classList.toggle("active", Number(b.dataset.rating) <= n),
     );
   };
+
   setRating(5);
+
   qs("#openReviewModal")?.addEventListener("click", () => {
     openShell("#reviewModal");
     track("review_open");
   });
+
   qs("#closeReviewModal")?.addEventListener("click", () =>
     closeShell("#reviewModal"),
   );
+
   qs('[data-close="review"]')?.addEventListener("click", () =>
     closeShell("#reviewModal"),
   );
+
   qs("#starPicker")?.addEventListener("click", (e) => {
     const b = e.target.closest("button[data-rating]");
     if (b) setRating(Number(b.dataset.rating));
   });
+
   qs("#reviewForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const name = qs("#reviewName"),
-      text = qs("#reviewText");
+
+    const name = qs("#reviewName");
+    const text = qs("#reviewText");
+
     if (!validate(name) || !validate(text)) {
       toast("من فضلك كتب الاسم والرأي.");
       return;
     }
+
     try {
       const { error } = await sb
         .from("reviews")
@@ -534,6 +544,7 @@ function initReviewModal() {
           user_agent: navigator.userAgent,
           referrer: document.referrer || null,
         });
+
       if (error) throw error;
 
       closeShell("#reviewModal");
@@ -546,6 +557,7 @@ function initReviewModal() {
     }
   });
 }
+
 async function loadReviews() {
   const grid = qs("#reviewsGrid");
   if (!grid || !sb) return;
@@ -578,84 +590,6 @@ async function loadReviews() {
   }
 }
 
-function initReviewModal() {
-  const emojis = { 1: "😞", 2: "🙁", 3: "🙂", 4: "😄", 5: "🤩" };
-  const setRating = (n) => {
-    state.rating = n;
-    qs("#reviewEmoji").textContent = emojis[n];
-    qsa("#starPicker button").forEach((b) =>
-      b.classList.toggle("active", Number(b.dataset.rating) <= n),
-    );
-  };
-  setRating(5);
-  qs("#openReviewModal")?.addEventListener("click", () => {
-    openShell("#reviewModal");
-    track("review_open");
-  });
-  qs("#closeReviewModal")?.addEventListener("click", () =>
-    closeShell("#reviewModal"),
-  );
-  qs('[data-close="review"]')?.addEventListener("click", () =>
-    closeShell("#reviewModal"),
-  );
-  qs("#starPicker")?.addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-rating]");
-    if (b) setRating(Number(b.dataset.rating));
-  });
-  qs("#reviewForm")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = qs("#reviewName"),
-      text = qs("#reviewText");
-    if (!validate(name) || !validate(text)) {
-      toast("من فضلك كتب الاسم والرأي.");
-      return;
-    }
-    try {
-      const { error } = await sb
-        .from("reviews")
-        .insert({
-          customer_name: name.value.trim(),
-          city: qs("#reviewCity").value.trim() || null,
-          rating: state.rating,
-          emoji: emojis[state.rating],
-          review_text: text.value.trim(),
-          status: "pending",
-          user_agent: navigator.userAgent,
-          referrer: document.referrer || null,
-        });
-      if (error) throw error;
-
-      // --- إشعار تقييم جديد من OneSignal ---
-      try {
-        await fetch("https://onesignal.com/api/v1/notifications", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Basic os_v2_app_wdfbpr3vzne3xp55snthpkavdhtsiyrzyk4ex3fdslkpeqvivsmu2ullsohthrjbu4yeknj5kimcmzvgkhvncyr63b7ma7pqkvpsn4a"
-          },
-          body: JSON.stringify({
-            app_id: "b0ca17c7-75cb-49bb-bfbd-936677a81519",
-            included_segments: ["Subscribed Users"],
-            headings: { "en": "تقييم جديد! ⭐" },
-            contents: { "en": `من: ${name.value.trim()} | التقييم: ${emojis[state.rating]}` },
-            url: "https://panel.kaminfo.shop"
-          })
-        });
-      } catch (err) {
-        console.error("OneSignal Error:", err);
-      }
-      // ------------------------------------
-
-      closeShell("#reviewModal");
-      qs("#reviewForm").reset();
-      setRating(5);
-      toast("شكراً لك! رأيك وصل للإدارة للموافقة ✅");
-    } catch (err) {
-      console.error(err);
-      toast("تعذر إرسال الرأي حالياً.");
-    }
-  });
-}
 function initProductModal() {
   qsa(".product-card").forEach((card) =>
     card.addEventListener("click", () => openProductModal(card.dataset.modal)),
