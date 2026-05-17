@@ -437,78 +437,114 @@ function initWizard() {
   );
   qs("#orderForm")?.addEventListener("submit", submitOrder);
 }
-async function submitOrder(e){
+async function submitOrder(e) {
   e.preventDefault();
-  if(!validateStep(0))return;
-  
-  const qty=Number(qs('#customerQty').value||1);
-  const payload={
-    customer_name:qs('#customerName').value.trim(),
-    phone:qs('#customerPhone').value.trim(),
-    city:qs('#customerCity').value.trim(),
-    address:qs('#customerAddress').value.trim(),
-    quantity:qty,
-    keyboard_choice:'Clavier Gaming Standard',
-    mouse_choice:'Logitech G302',
-    pad_choice:state.selectedPad,
-    notes:qs('#customerNotes').value.trim()||null,
-    product_name:'Pack Gaming KAM INFO',
-    unit_price:PRICE,
-    currency:'MAD',
-    source:'landing_page',
-    user_agent:navigator.userAgent,
-    referrer:document.referrer||null,
-    utm_source:new URLSearchParams(location.search).get('utm_source'),
-    utm_medium:new URLSearchParams(location.search).get('utm_medium'),
-    utm_campaign:new URLSearchParams(location.search).get('utm_campaign')
+  if (!validateStep(0)) return;
+
+  const qty = Number(qs('#customerQty').value || 1);
+  const payload = {
+    customer_name: qs('#customerName').value.trim(),
+    phone: qs('#customerPhone').value.trim(),
+    city: qs('#customerCity').value.trim(),
+    address: qs('#customerAddress').value.trim(),
+    quantity: qty,
+    keyboard_choice: 'Clavier Gaming Standard',
+    mouse_choice: 'Logitech G302',
+    pad_choice: state.selectedPad,
+    notes: qs('#customerNotes').value.trim() || null,
+    product_name: 'Pack Gaming KAM INFO',
+    unit_price: PRICE,
+    currency: 'MAD',
+    source: 'landing_page',
+    user_agent: navigator.userAgent,
+    referrer: document.referrer || null,
+    utm_source: new URLSearchParams(location.search).get('utm_source'),
+    utm_medium: new URLSearchParams(location.search).get('utm_medium'),
+    utm_campaign: new URLSearchParams(location.search).get('utm_campaign')
   };
-  
-  const btn=qs('#submitOrder');
-  btn.disabled=true;
-  btn.textContent='جاري إرسال الطلب...';
-  
-  try{
-    // 1. تسجيل الطلب فقاعدة البيانات
-    const{error}=await sb.from('orders').insert(payload);
-    if(error)throw error;
 
-    // 2. إرسال إشعار OneSignal (هادا هو الكود اللي زدت ليك)
-    try {
-      await fetch("https://onesignal.com/api/v1/notifications", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Basic os_v2_app_wdfbpr3vzne3xp55snthpkavdhtsiyrzyk4ex3fdslkpeqvivsmu2ullsohthrjbu4yeknj5kimcmzvgkhvncyr63b7ma7pqkvpsn4a"
-        },
-        body: JSON.stringify({
-          app_id: "b0ca17c7-75cb-49bb-bfbd-936677a81519",
-          included_segments: ["Subscribed Users"],
-          headings: { "en": "طلب جديد! 🚀" },
-          contents: { "en": `الاسم: ${payload.customer_name} | التليفون: ${payload.phone} | المدينة: ${payload.city}` },
-          url: "https://panel.kaminfo.shop"
-        })
-      });
-    } catch (err) {
-      console.error("OneSignal Error:", err);
-    }
+  const btn = qs('#submitOrder');
+  btn.disabled = true;
+  btn.textContent = 'جاري إرسال الطلب...';
 
-    // 3. إكمال باقي الإجراءات
-    await track('click',{target:'submit_order',total:qty*PRICE});
+  try {
+    const { error } = await sb.from('orders').insert(payload);
+    if (error) throw error;
+
+    await track('click', { target: 'submit_order', total: qty * PRICE });
     closeShell('#orderWizard');
     toast('تم إرسال الطلب بنجاح. غادي نتواصلو معاك قريباً ✅');
     qs('#orderForm').reset();
-    qs('#customerQty').value=1;
-    state.selectedPad='MSI Dragon';
+    qs('#customerQty').value = 1;
+    state.selectedPad = 'MSI Dragon';
     initPads();
     updateSummary();
-    
-  }catch(err){
+
+  } catch (err) {
     console.error(err);
     toast('وقع خطأ أثناء إرسال الطلب. حاول مرة أخرى.');
-  }finally{
-    btn.disabled=false;
-    btn.textContent='تأكيد الطلب';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'تأكيد الطلب';
   }
+}
+
+function initReviewModal() {
+  const emojis = { 1: "😞", 2: "🙁", 3: "🙂", 4: "😄", 5: "🤩" };
+  const setRating = (n) => {
+    state.rating = n;
+    qs("#reviewEmoji").textContent = emojis[n];
+    qsa("#starPicker button").forEach((b) =>
+      b.classList.toggle("active", Number(b.dataset.rating) <= n),
+    );
+  };
+  setRating(5);
+  qs("#openReviewModal")?.addEventListener("click", () => {
+    openShell("#reviewModal");
+    track("review_open");
+  });
+  qs("#closeReviewModal")?.addEventListener("click", () =>
+    closeShell("#reviewModal"),
+  );
+  qs('[data-close="review"]')?.addEventListener("click", () =>
+    closeShell("#reviewModal"),
+  );
+  qs("#starPicker")?.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-rating]");
+    if (b) setRating(Number(b.dataset.rating));
+  });
+  qs("#reviewForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = qs("#reviewName"),
+      text = qs("#reviewText");
+    if (!validate(name) || !validate(text)) {
+      toast("من فضلك كتب الاسم والرأي.");
+      return;
+    }
+    try {
+      const { error } = await sb
+        .from("reviews")
+        .insert({
+          customer_name: name.value.trim(),
+          city: qs("#reviewCity").value.trim() || null,
+          rating: state.rating,
+          emoji: emojis[state.rating],
+          review_text: text.value.trim(),
+          status: "pending",
+          user_agent: navigator.userAgent,
+          referrer: document.referrer || null,
+        });
+      if (error) throw error;
+
+      closeShell("#reviewModal");
+      qs("#reviewForm").reset();
+      setRating(5);
+      toast("شكراً لك! رأيك وصل للإدارة للموافقة ✅");
+    } catch (err) {
+      console.error(err);
+      toast("تعذر إرسال الرأي حالياً.");
+    }
+  });
 }
 async function loadReviews() {
   const grid = qs("#reviewsGrid");
