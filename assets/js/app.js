@@ -1,819 +1,570 @@
-const qs = (s, c = document) => c.querySelector(s);
-const qsa = (s, c = document) => [...c.querySelectorAll(s)];
-const sb = window.caminfoSupabase;
-const WHATSAPP_NUMBER = "212645505322";
-const PRICE = 289;
-const PHONE_REGEX = /^0[5-7][0-9]{8}$/;
-const STORAGE = {
-  visitor: "kaminfo_visitor_id",
-  session: "kaminfo_session_id",
-};
-const state = {
-  selectedPad: "MSI Dragon",
-  rating: 5,
-  audioCtx: null,
-  audioReady: false,
-  typingPlayed: new WeakSet(),
-  pads: [
-    ["MSI Dragon", "assets/img/pads/pad-msi-dragon.png"],
-    ["MSI Red", "assets/img/pads/pad-msi-red.png"],
-    ["ROG Black", "assets/img/pads/pad-rog-black.png"],
-    ["MSI Spiral", "assets/img/pads/pad-style-1.jpeg"],
-    ["Ryzen Red", "assets/img/pads/pad-style-2.jpeg"],
-    ["ROG Neon", "assets/img/pads/pad-style-3.jpeg"],
-    ["Panther Red", "assets/img/pads/pad-style-4.jpeg"],
-    ["Union Jack", "assets/img/pads/pad-union-jack.png"],
-    ["ROG Crimson Slash", "assets/img/pads/pad-rog-crimson.png"],
-    ["ROG Neon Spectrum", "assets/img/pads/pad-rog-spectrum.png"],
-    ["ROG Cyber City", "assets/img/pads/pad-rog-city.png"],
-    ["MSI Dragon Splash", "assets/img/pads/pad-msi-splash.png"],
-    ["Logitech Blue Circuit", "assets/img/pads/pad-logitech-blue.png"],
-    ["Razer Acid Green", "assets/img/pads/pad-razer-acid-green.jpeg"],
-  ],
-  productData: {
-    "pad-modal": {
-      title: "Tapis Gaming 30×70",
-      desc: "تابي كبير 30×70 كيغطّي المساحة ديال clavier والسوريس كاملة، وكيخليك تختار من عدد كبير ديال الستايلات اللي زادت دابا فالموقع.",
-      images: [
-        "assets/img/pads/pad-msi-dragon.png",
-        "assets/img/pads/pad-msi-red.png",
-        "assets/img/pads/pad-rog-black.png",
-        "assets/img/pads/pad-style-1.jpeg",
-        "assets/img/pads/pad-style-2.jpeg",
-        "assets/img/pads/pad-style-3.jpeg",
-        "assets/img/pads/pad-style-4.jpeg",
-        "assets/img/pads/pad-union-jack.png",
-        "assets/img/pads/pad-rog-crimson.png",
-        "assets/img/pads/pad-rog-spectrum.png",
-        "assets/img/pads/pad-rog-city.png",
-        "assets/img/pads/pad-msi-splash.png",
-        "assets/img/pads/pad-logitech-blue.png",
-        "assets/img/pads/pad-razer-acid-green.jpeg",
-      ],
-      video: "assets/media/pad-video.mp4",
-      poster: "assets/img/pads/pad-msi-dragon.png",
-      bullets: [
-        "Dimension 30×70 cm",
-        "Surface واسعة ومريحة للحركة",
-        "تصاميم كثيرة متوفرة دابا من بينها ستايل Razer Acid Green",
-        "مناسب للـ clavier + souris فوق نفس التابي",
-      ],
-    },
-    "mouse-modal": {
-      title: "Logitech G302",
-      desc: "سوريس Logitech G302 بالشكل gaming المعروف ديالها، خفيفة فالاستخدام ومناسبة للـ setup اللي كيبغي look احترافي مع مسكة مريحة.",
-      images: [
-        "assets/img/mouse/mouse-front-glow.png",
-        "assets/img/mouse/mouse-blue-glow.png",
-        "assets/img/mouse/mouse-side-glow.png",
-        "assets/img/mouse/mouse-close-glow.png",
-      ],
-      video: "assets/media/mouse-video.mp4",
-      poster: "assets/img/mouse/mouse-front-glow.png",
-      bullets: [
-        "Design gamer واضح",
-        "مسكة مريحة فاللعب والاستعمال اليومي",
-        "Software support",
-        "كتجي داخلة فالباك جاهزة",
-      ],
-    },
-    "keyboard-modal": {
-      title: "Clavier Gaming",
-      desc: "تعتبر لوحة مفاتيح ميتيون K9520 خيارا احترافيا للاعبين، حيث تأتي بتصميم مريح يتضمن مسندا مغناطيسيا للمعصم قابل للفصل لتوفير راحة قصوى. تتميز بإضاءة RGB خلفية قابلة للتخصيص بالكامل لتناسب جو الألعاب الخاص بك.",
-      images: [
-        "assets/img/keyboard/keyboard-top.jpg",
-        "assets/img/keyboard/keyboard-box.png",
-        "assets/img/keyboard/keyboard-lifestyle.jpg",
-      ],
-      video: "assets/media/keyboard-video.mp4",
-      poster: "assets/img/keyboard/keyboard-top.jpg",
-      bullets: [
-        "Look gamer عصري وجذاب",
-        "إضاءة RGB خلفية قابلة للتخصيص",
-        "تنظيم مزيان فوق المكتب بفضل التصميم المدمج",
-        "مسند معصم مغناطيسي مريح وقابل للفصل",
-        "26 مفتاح Anti-ghosting لمنع تعارض الأوامر",
-        "12 مفتاح اختصار للميديا والوظائف الذكية",
-      ],
-    },
-  },
-};
-function uuid() {
-  return crypto.randomUUID
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-function visitorId() {
-  let v = localStorage.getItem(STORAGE.visitor);
-  if (!v) {
-    v = uuid();
-    localStorage.setItem(STORAGE.visitor, v);
-  }
-  return v;
-}
-function sessionId() {
-  let v = sessionStorage.getItem(STORAGE.session);
-  if (!v) {
-    v = uuid();
-    sessionStorage.setItem(STORAGE.session, v);
-  }
-  return v;
-}
-async function track(event_type = "page_view", metadata = {}) {
-  if (!sb) return;
-  try {
-    await sb
-      .from("page_views")
-      .insert({
-        visitor_id: visitorId(),
-        session_id: sessionId(),
-        page_path: location.pathname || "/",
-        page_title: document.title,
-        event_type,
-        referrer: document.referrer || null,
-        user_agent: navigator.userAgent,
-        utm_source: new URLSearchParams(location.search).get("utm_source"),
-        utm_medium: new URLSearchParams(location.search).get("utm_medium"),
-        utm_campaign: new URLSearchParams(location.search).get("utm_campaign"),
-        metadata,
-      });
-  } catch (e) {}
-}
-function toast(msg) {
-  const el = qs("#toast");
-  if (!el) return;
-  el.textContent = msg;
-  el.classList.add("show");
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => el.classList.remove("show"), 3600);
-}
-function escapeHtml(s = "") {
-  return String(s).replace(
-    /[&<>"']/g,
-    (m) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        m
-      ],
-  );
-}
-async function ensureAudio() {
-  if (!state.audioCtx)
-    state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (state.audioCtx.state === "suspended") await state.audioCtx.resume();
-  state.audioReady = true;
-}
-function playTone(
-  freq = 440,
-  duration = 0.04,
-  type = "triangle",
-  gainValue = 0.016,
-) {
-  if (!state.audioReady || !state.audioCtx) return;
-  const osc = state.audioCtx.createOscillator(),
-    gain = state.audioCtx.createGain();
-  osc.type = type;
-  osc.frequency.value = freq;
-  gain.gain.setValueAtTime(0.0001, state.audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(
-    gainValue,
-    state.audioCtx.currentTime + 0.01,
-  );
-  gain.gain.exponentialRampToValueAtTime(
-    0.0001,
-    state.audioCtx.currentTime + duration,
-  );
-  osc.connect(gain);
-  gain.connect(state.audioCtx.destination);
-  osc.start();
-  osc.stop(state.audioCtx.currentTime + duration);
-}
-function initAudio() {
-  const unlock = async () => {
-    await ensureAudio();
-    playTone(680, 0.08, "triangle", 0.03);
-  };
-  ["pointerdown", "touchstart", "click"].forEach((evt) =>
-    window.addEventListener(evt, unlock, { once: true, passive: true }),
-  );
-  document.addEventListener("click", (e) => {
-    if (e.target.closest("button,a,summary,.product-card,.pad-option")) {
-      playTone(760, 0.06, "sawtooth", 0.022);
-      setTimeout(() => playTone(980, 0.035, "triangle", 0.014), 24);
-    }
-  });
-}
-function preloadExperience() {
-  const assets = [
-    "assets/img/logo.jpg",
-    "assets/img/keyboard/keyboard-box.png",
-    "assets/img/mouse/mouse-front-glow.png",
-    "assets/img/pads/pad-msi-dragon.png",
-  ];
-  const progress = qs("#loaderProgress"),
-    text = qs("#loaderState");
-  let loaded = 0;
-  const mark = () => {
-    loaded++;
-    const pct = Math.min(100, Math.round((loaded / assets.length) * 100));
-    if (progress) progress.style.width = `${pct}%`;
-    if (text) text.textContent = `${pct}%`;
-    if (loaded >= assets.length)
-      setTimeout(() => qs("#preloader")?.classList.add("hidden"), 300);
-  };
-  assets.forEach((src) => {
-    const img = new Image();
-    img.onload = mark;
-    img.onerror = mark;
-    img.src = src;
-  });
-}
-function initHeroVideo() {
-  const video = qs("#heroVideo");
-  if (!video || !video.dataset.src) return;
+(() => {
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  const body = document.body;
 
-  if (video.dataset.loaded === "1") return;
-
-  video.innerHTML = `<source src="${video.dataset.src}" type="video/mp4">`;
-  video.dataset.loaded = "1";
-  video.load();
-  video.play().catch(() => {});
-}
-function initCursorGlow() {
-  const glow = qs(".cursor-glow");
-  if (!glow) return;
-  window.addEventListener(
-    "pointermove",
-    (e) => {
-      glow.style.left = `${e.clientX}px`;
-      glow.style.top = `${e.clientY}px`;
-    },
-    { passive: true },
-  );
-}
-function initReveal() {
-  const obs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("visible");
-        if (
-          entry.target.classList.contains("type-target") &&
-          !state.typingPlayed.has(entry.target)
-        ) {
-          typeText(entry.target);
-          state.typingPlayed.add(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15 },
-  );
-  qsa(".reveal,.type-target").forEach((el) => obs.observe(el));
-}
-function typeText(el) {
-  const raw = el.dataset.raw || el.innerHTML;
-  el.dataset.raw = raw;
-  const tmp = document.createElement("div");
-  tmp.innerHTML = raw;
-  const text = tmp.textContent || tmp.innerText || "";
-  let i = 0;
-  el.innerHTML = "";
-  const interval = setInterval(() => {
-    el.textContent = text.slice(0, i + 1);
-    playTone(300 + (i % 8) * 40, 0.018, "square", 0.005);
-    i++;
-    if (i >= text.length) {
-      clearInterval(interval);
-      el.innerHTML = raw;
+  const siteLoader = $('#siteLoader');
+  const finishLoader = () => {
+    body.classList.add('loaded');
+    if (siteLoader) {
+      siteLoader.classList.add('hidden');
+      setTimeout(() => siteLoader.remove(), 500);
     }
-  }, 22);
-}
-function initTilt() {
-  qsa(".tilt-card").forEach((card) => {
-    card.addEventListener("pointermove", (e) => {
-      if (matchMedia("(max-width:760px)").matches) return;
-      const r = card.getBoundingClientRect(),
-        x = (e.clientX - r.left) / r.width - 0.5,
-        y = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `translateY(-8px) rotateX(${y * -10}deg) rotateY(${x * 12}deg)`;
+  };
+  window.addEventListener('load', () => setTimeout(finishLoader, 700));
+  setTimeout(finishLoader, 2400);
+
+  const year = $('#currentYear');
+  if (year) year.textContent = new Date().getFullYear();
+  const header = $('#siteHeader');
+  const mobileMenu = $('#mobileMenu');
+  const burger = $('#burger');
+
+  const setMobileMenu = (open) => {
+    if (!burger || !mobileMenu) return;
+    body.classList.toggle('menu-open', open);
+    burger.classList.toggle('active', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    mobileMenu.classList.toggle('open', open);
+    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    body.style.overflow = open ? 'hidden' : '';
+  };
+
+  if (burger && mobileMenu) {
+    burger.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setMobileMenu(!body.classList.contains('menu-open'));
     });
-    card.addEventListener("pointerleave", () => (card.style.transform = ""));
-  });
-}
-function initMenu() {
-  const btn = qs("#menuToggle"),
-    nav = qs("#mainNav");
-  btn?.addEventListener("click", () => {
-    btn.classList.toggle("active");
-    nav.classList.toggle("active");
-  });
-  qsa("#mainNav a,.mobile-section-nav a").forEach((a) =>
-    a.addEventListener("click", () => {
-      btn?.classList.remove("active");
-      nav?.classList.remove("active");
-    }),
-  );
-  document.addEventListener("click", (e) => {
-    if (
-      !e.target.closest(".site-header") &&
-      nav?.classList.contains("active")
-    ) {
-      btn.classList.remove("active");
-      nav.classList.remove("active");
+
+    $$('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => setMobileMenu(false));
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 980 && body.classList.contains('menu-open')) {
+        setMobileMenu(false);
+      }
+    });
+  }
+
+  const headerLinks = $$('.desktop-nav a');
+  const sections = ['home', 'pack', 'videos', 'reviews', 'faq', 'order']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+  const setActiveLink = () => {
+    let current = 'home';
+    const threshold = innerHeight * 0.3;
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= threshold && rect.bottom > threshold) current = section.id;
+    });
+    headerLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === `#${current}`));
+  };
+  window.addEventListener('scroll', setActiveLink, { passive: true });
+  setActiveLink();
+
+  const normalizePhone = (value = '') => value.trim().replace(/[\s().-]/g, '');
+  const isValidMoroccanPhone = (value = '') => /^(?:\+212|00212|0)[5-7]\d{8}$/.test(normalizePhone(value));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        if (entry.target.id === 'statsPanel') entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.18 });
+  $$('.reveal-up, #statsPanel').forEach(el => observer.observe(el));
+
+  const lockBody = () => { body.style.overflow = 'hidden'; };
+  const unlockBody = () => { if (!body.classList.contains('menu-open')) body.style.overflow = ''; };
+
+  const productData = {
+    keyboard: {
+      label: '01 · Clavier Gaming RGB',
+      title: 'Clavier Gaming RGB',
+      intro: 'Un clavier pensé pour offrir une frappe réactive, un look RGB marqué et une présence forte sur le bureau. Il complète parfaitement le pack KAM INFO.',
+      images: [
+        'assets/img/keyboard/keyboard-top.webp',
+        'assets/img/keyboard/keyboard-lifestyle.webp',
+        'assets/img/keyboard/keyboard-box.webp'
+      ],
+      specs: [
+        { icon: 'keyboard', title: 'Rétroéclairage RGB', text: 'Effet lumineux gaming pour un setup plus immersif.' },
+        { icon: 'response', title: 'Touches réactives', text: 'Frappe fluide et réponse rapide au quotidien.' },
+        { icon: 'shield', title: 'Anti-ghosting', text: 'Meilleure précision lors des actions rapides.' },
+        { icon: 'target', title: 'Format complet', text: 'Disposition pratique pour jeu et bureautique.' }
+      ]
+    },
+    mouse: {
+      label: '02 · Logitech G302',
+      title: 'Logitech G302',
+      intro: 'Une souris légère et précise qui accompagne parfaitement le clavier du pack. Son design favorise la maîtrise et la rapidité des mouvements.',
+      images: [
+        'assets/img/mouse/mouse-blue-glow.webp',
+        'assets/img/mouse/mouse-side-glow.webp',
+        'assets/img/mouse/mouse-front-glow.webp',
+        'assets/img/mouse/mouse-close-glow.webp'
+      ],
+      specs: [
+        { icon: 'target', title: 'Capteur précis', text: 'Suivi rapide et fiable pour jouer avec précision.' },
+        { icon: 'feather', title: 'Format léger', text: 'Bonne prise en main et mouvements plus fluides.' },
+        { icon: 'mouse', title: 'Contrôle accessible', text: 'Conception pensée pour le confort et la vitesse.' },
+        { icon: 'shield', title: 'Qualité Logitech', text: 'Un choix reconnu pour la fiabilité du setup.' }
+      ]
+    },
+    pad: {
+      label: '03 · Tapis Gaming 30×70 cm',
+      title: 'Tapis Gaming 30×70 cm',
+      intro: 'Un tapis large pour stabiliser vos mouvements et valoriser visuellement votre bureau. Plusieurs designs sont proposés pour personnaliser votre setup.',
+      images: [
+        'assets/img/pads/pad-style-1.webp',
+        'assets/img/pads/pad-style-2.webp',
+        'assets/img/pads/pad-style-3.webp',
+        'assets/img/pads/pad-style-4.webp'
+      ],
+      specs: [
+        { icon: 'size', title: 'Dimension 30×70 cm', text: 'Espace confortable pour souris et clavier.' },
+        { icon: 'glide', title: 'Glisse fluide', text: 'Mouvement plus souple pour les longues sessions.' },
+        { icon: 'base', title: 'Base stable', text: 'Meilleure tenue sur le bureau.' },
+        { icon: 'target', title: 'Design au choix', text: 'Choisissez le visuel qui correspond à votre style.' }
+      ]
     }
-  });
-}
-function openShell(id) {
-  qs(id)?.classList.add("active");
-  qs(id)?.setAttribute("aria-hidden", "false");
-  document.body.classList.add("modal-open");
-}
-function closeShell(id) {
-  qs(id)?.classList.remove("active");
-  qs(id)?.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-open");
-}
-function initPads() {
-  const grid = qs("#padChoiceGrid");
-  if (!grid) return;
-  grid.innerHTML = state.pads
-    .map(
-      ([name, img], i) =>
-        `<button class="pad-option ${i === 0 ? "active" : ""}" type="button" data-pad="${escapeHtml(name)}"><img src="${img}" alt="${escapeHtml(name)}" loading="lazy"><span>${escapeHtml(name)}</span></button>`,
-    )
-    .join("");
-  grid.addEventListener("click", (e) => {
-    const opt = e.target.closest(".pad-option");
-    if (!opt) return;
-    qsa(".pad-option", grid).forEach((x) => x.classList.remove("active"));
-    opt.classList.add("active");
-    state.selectedPad = opt.dataset.pad;
-    updateSummary();
-  });
-}
-function validate(input) {
-  if (!input) return true;
-  const val = input.value.trim();
-  let ok = true;
-  if (input.required && !val) ok = false;
-  if (input.id === "customerPhone" && val && !PHONE_REGEX.test(val)) ok = false;
-  if (input.id === "customerQty") {
-    const n = Number(val);
-    ok = Number.isFinite(n) && n >= 1 && n <= 10;
-  }
-  input.classList.toggle("invalid", !ok);
-  return ok;
-}
-function validateStep(step) {
-  const map = {
-    0: [
-      "#customerName",
-      "#customerPhone",
-      "#customerAddress",
-      "#customerCity",
-      "#customerQty",
-    ],
-    1: [],
-    2: [],
-  };
-  const invalid = (map[step] || [])
-    .map((sel) => qs(sel))
-    .find((el) => !validate(el));
-  if (invalid) {
-    invalid.focus();
-    toast("من فضلك عمّر المعلومات المطلوبة بشكل صحيح.");
-    return false;
-  }
-  return true;
-}
-function goStep(step) {
-  qsa("#orderForm .sheet-step").forEach((el) =>
-    el.classList.toggle("active", Number(el.dataset.step) === step),
-  );
-  qsa(".wizard-progress span").forEach((el, i) =>
-    el.classList.toggle("active", i <= step),
-  );
-  updateSummary();
-}
-function currentStep() {
-  return Number(qs("#orderForm .sheet-step.active")?.dataset.step || 0);
-}
-function updateSummary() {
-  const qty = Math.max(1, Number(qs("#customerQty")?.value || 1));
-  const el = qs("#orderSummary");
-  if (!el) return;
-  el.innerHTML = `<strong>ملخص الطلب:</strong><br>الاسم: ${escapeHtml(qs("#customerName")?.value || "-")}<br>الهاتف: ${escapeHtml(qs("#customerPhone")?.value || "-")}<br>المدينة: ${escapeHtml(qs("#customerCity")?.value || "-")}<br>العنوان: ${escapeHtml(qs("#customerAddress")?.value || "-")}<br>التابي: ${escapeHtml(state.selectedPad)}<br>الكمية: ${qty}<br>المجموع: <strong>${qty * PRICE} DH</strong>`;
-}
-function initWizard() {
-  qsa(".js-open-order").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      openShell("#orderWizard");
-      goStep(0);
-      track("order_open");
-    }),
-  );
-  qs("#closeWizard")?.addEventListener("click", () =>
-    closeShell("#orderWizard"),
-  );
-  qs('[data-close="order"]')?.addEventListener("click", () =>
-    closeShell("#orderWizard"),
-  );
-  qsa("#orderForm input,#orderForm textarea").forEach((el) =>
-    ["input", "change", "blur"].forEach((evt) =>
-      el.addEventListener(evt, () => {
-        validate(el);
-        updateSummary();
-      }),
-    ),
-  );
-  qsa(".btn-next").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      const step = currentStep();
-      if (!validateStep(step)) return;
-      goStep(Number(btn.dataset.next));
-    }),
-  );
-  qsa(".btn-back").forEach((btn) =>
-    btn.addEventListener("click", () => goStep(Number(btn.dataset.back))),
-  );
-  qs("#orderForm")?.addEventListener("submit", submitOrder);
-}
-async function submitOrder(e) {
-  e.preventDefault();
-  if (!validateStep(0)) return;
-
-  const qty = Number(qs('#customerQty').value || 1);
-  const payload = {
-    customer_name: qs('#customerName').value.trim(),
-    phone: qs('#customerPhone').value.trim(),
-    city: qs('#customerCity').value.trim(),
-    address: qs('#customerAddress').value.trim(),
-    quantity: qty,
-    keyboard_choice: 'Clavier Gaming Standard',
-    mouse_choice: 'Logitech G302',
-    pad_choice: state.selectedPad,
-    notes: qs('#customerNotes').value.trim() || null,
-    product_name: 'Pack Gaming KAM INFO',
-    unit_price: PRICE,
-    currency: 'MAD',
-    source: 'landing_page',
-    user_agent: navigator.userAgent,
-    referrer: document.referrer || null,
-    utm_source: new URLSearchParams(location.search).get('utm_source'),
-    utm_medium: new URLSearchParams(location.search).get('utm_medium'),
-    utm_campaign: new URLSearchParams(location.search).get('utm_campaign')
   };
 
-  const btn = qs('#submitOrder');
-  btn.disabled = true;
-  btn.textContent = 'جاري إرسال الطلب...';
-
-  try {
-    const { error } = await sb.from('orders').insert(payload);
-    if (error) throw error;
-
-    await track('click', { target: 'submit_order', total: qty * PRICE });
-    closeShell('#orderWizard');
-    toast('تم إرسال الطلب بنجاح. غادي نتواصلو معاك قريباً ✅');
-    qs('#orderForm').reset();
-    qs('#customerQty').value = 1;
-    state.selectedPad = 'MSI Dragon';
-    initPads();
-    updateSummary();
-
-  } catch (err) {
-    console.error(err);
-    toast('وقع خطأ أثناء إرسال الطلب. حاول مرة أخرى.');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'تأكيد الطلب';
-  }
-}
-
-function initReviewModal() {
-  const emojis = { 1: "😞", 2: "🙁", 3: "🙂", 4: "😄", 5: "🤩" };
-
-  const setRating = (n) => {
-    state.rating = n;
-    qs("#reviewEmoji").textContent = emojis[n];
-    qsa("#starPicker button").forEach((b) =>
-      b.classList.toggle("active", Number(b.dataset.rating) <= n),
-    );
+  const iconSvg = {
+    keyboard: `<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M10 10h.01M13 10h.01M16 10h.01M7 13h10M7 16h7"/></svg>`,
+    response: `<svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>`,
+    shield: `<svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.7 2.9 8.3 7 10 4.1-1.7 7-5.3 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>`,
+    target: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>`,
+    feather: `<svg viewBox="0 0 24 24"><path d="M20.24 4.76a6 6 0 0 0-8.49 0L5 11.51V19h7.49l6.75-6.75a6 6 0 0 0 0-8.49Z"/><path d="m13 6 5 5M7 17l4-4"/></svg>`,
+    mouse: `<svg viewBox="0 0 24 24"><path d="M12 3a5 5 0 0 0-5 5v8a5 5 0 0 0 10 0V8a5 5 0 0 0-5-5Z"/><path d="M12 3v6"/></svg>`,
+    size: `<svg viewBox="0 0 24 24"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>`,
+    glide: `<svg viewBox="0 0 24 24"><path d="M3 14c3-5 15-5 18 0M5 18c3-3 11-3 14 0"/></svg>`,
+    base: `<svg viewBox="0 0 24 24"><path d="M4 18h16M7 14l2-8h6l2 8"/></svg>`
   };
 
-  setRating(5);
+  const productModal = $('#productModal');
+  const modalMainImage = $('#modalMainImage');
+  const modalThumbs = $('#modalThumbs');
+  const modalLabel = $('#modalLabel');
+  const modalTitle = $('#modalTitle');
+  const modalIntro = $('#modalIntro');
+  const modalSpecs = $('#modalSpecs');
 
-  qs("#openReviewModal")?.addEventListener("click", () => {
-    openShell("#reviewModal");
-    track("review_open");
+  const openProductModal = (key) => {
+    const product = productData[key];
+    if (!product || !productModal) return;
+    modalLabel.textContent = product.label;
+    modalTitle.textContent = product.title;
+    modalIntro.textContent = product.intro;
+    modalMainImage.src = product.images[0];
+    modalMainImage.alt = product.title;
+    modalThumbs.innerHTML = product.images.map((src, index) => `
+      <button type="button" class="${index === 0 ? 'active' : ''}" data-src="${src}" aria-label="Voir image ${index + 1}">
+        <img src="${src}" alt="${product.title} miniature ${index + 1}">
+      </button>`).join('');
+    modalSpecs.innerHTML = product.specs.map(item => `
+      <article class="spec-row">
+        <span class="spec-icon">${iconSvg[item.icon] || ''}</span>
+        <b>${item.title}</b>
+        <small>${item.text}</small>
+      </article>`).join('');
+    modalThumbs.querySelectorAll('button').forEach(btn => btn.addEventListener('click', () => {
+      modalThumbs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      modalMainImage.src = btn.dataset.src;
+    }));
+    productModal.classList.add('open');
+    productModal.setAttribute('aria-hidden', 'false');
+    lockBody();
+  };
+  const closeProductModal = () => {
+    productModal?.classList.remove('open');
+    productModal?.setAttribute('aria-hidden', 'true');
+    unlockBody();
+  };
+  $$('[data-open-product]').forEach(btn => btn.addEventListener('click', () => openProductModal(btn.dataset.openProduct)));
+  $$('[data-close-product]').forEach(btn => btn.addEventListener('click', closeProductModal));
+
+  const videoMap = {
+    keyboard: { src: 'assets/media/keyboard-video.mp4', title: 'Clavier Gaming RGB', eyebrow: '01 · CLAVIER GAMING RGB' },
+    mouse: { src: 'assets/media/mouse-video.mp4', title: 'Logitech G302', eyebrow: '02 · LOGITECH G302' },
+    pad: { src: 'assets/media/pad-video.mp4', title: 'Tapis Gaming 30×70 cm', eyebrow: '03 · TAPIS GAMING 30×70 CM' }
+  };
+  const videoModal = $('#videoModal');
+  const player = $('#player');
+  const dialogTitle = $('#dialogTitle');
+  const dialogEyebrow = $('#dialogEyebrow');
+  const openVideo = (key) => {
+    const data = videoMap[key];
+    if (!data || !videoModal || !player) return;
+    dialogTitle.textContent = data.title;
+    dialogEyebrow.textContent = data.eyebrow;
+    player.src = data.src;
+    videoModal.classList.add('open');
+    videoModal.setAttribute('aria-hidden', 'false');
+    lockBody();
+    setTimeout(() => player.play().catch(() => {}), 120);
+  };
+  const closeVideo = () => {
+    if (player) { player.pause(); player.removeAttribute('src'); player.load(); }
+    videoModal?.classList.remove('open');
+    videoModal?.setAttribute('aria-hidden', 'true');
+    unlockBody();
+  };
+  $$('.video-preview').forEach(btn => btn.addEventListener('click', () => openVideo(btn.dataset.video)));
+  $$('[data-close-video]').forEach(btn => btn.addEventListener('click', closeVideo));
+
+  const reviewModal = $('#reviewModal');
+  const openReviewModalBtn = $('#openReviewModal');
+  const closeReviewModal = () => {
+    reviewModal?.classList.remove('open');
+    reviewModal?.setAttribute('aria-hidden', 'true');
+    unlockBody();
+  };
+  openReviewModalBtn?.addEventListener('click', () => {
+    reviewModal?.classList.add('open');
+    reviewModal?.setAttribute('aria-hidden', 'false');
+    lockBody();
   });
+  $$('[data-close-review]').forEach(btn => btn.addEventListener('click', closeReviewModal));
 
-  qs("#closeReviewModal")?.addEventListener("click", () =>
-    closeShell("#reviewModal"),
-  );
-
-  qs('[data-close="review"]')?.addEventListener("click", () =>
-    closeShell("#reviewModal"),
-  );
-
-  qs("#starPicker")?.addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-rating]");
-    if (b) setRating(Number(b.dataset.rating));
+  let rating = 0;
+  const starButtons = $$('#starPicker button');
+  const paintStars = (value) => starButtons.forEach(btn => btn.classList.toggle('active', Number(btn.dataset.rating) <= value));
+  starButtons.forEach(btn => {
+    btn.addEventListener('mouseenter', () => paintStars(Number(btn.dataset.rating)));
+    btn.addEventListener('click', () => { rating = Number(btn.dataset.rating); paintStars(rating); });
   });
+  $('#starPicker')?.addEventListener('mouseleave', () => paintStars(rating));
 
-  qs("#reviewForm")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  const reviewsTrack = $('#reviewsTrack');
+  const carouselDots = $('#carouselDots');
+  const reviewsState = { items: [] };
+  const starsLabel = (note) => `${note.toFixed(1)}`;
+  const renderReviewCard = (review) => {
+    const name = (review.customer_name || 'Client').trim();
+    const city = (review.city || 'Maroc').trim();
+    const initials = name.split(/\s+/).slice(0, 2).map(s => s[0]?.toUpperCase() || '').join('');
+    const content = ((review.review_text ?? review.review) || '').trim();
+    const note = Number(review.rating || 5);
+    return `
+      <article class="review-card">
+        <div class="review-top">
+          <div class="review-stars" aria-label="${note} sur 5">${'★'.repeat(note)}${'☆'.repeat(5 - note)}</div>
+          <span class="review-rating">${starsLabel(note)}/5</span>
+        </div>
+        <p class="review-quote">${content || 'Très satisfait du pack KAM INFO.'}</p>
+        <div class="reviewer">
+          <div class="avatar">${initials || 'K'}</div>
+          <div>
+            <strong>${name}</strong>
+            <small>${city}</small>
+          </div>
+          <span class="verified" aria-label="Avis vérifié"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
+        </div>
+      </article>`;
+  };
 
-    const name = qs("#reviewName");
-    const text = qs("#reviewText");
+  const setStats = (items) => {
+    const count = items.length;
+    const avg = count ? items.reduce((s, i) => s + Number(i.rating || 0), 0) / count : 0;
+    const recommend = count ? Math.round(items.filter(i => Number(i.rating || 0) >= 4).length / count * 100) : 0;
+    $('[data-stat="average"]').textContent = avg ? avg.toFixed(1) : '0.0';
+    $('[data-stat="count"]').textContent = count;
+    $('[data-stat="recommend"]').textContent = recommend;
+  };
 
-    if (!validate(name) || !validate(text)) {
-      toast("من فضلك كتب الاسم والرأي.");
+  const syncMobileDots = () => {
+    if (!reviewsTrack || !carouselDots || !reviewsState.items.length || window.innerWidth > 760) {
+      if (carouselDots) carouselDots.innerHTML = '';
       return;
     }
+    carouselDots.innerHTML = reviewsState.items.map((_, i) => `<span class="${i===0?'active':''}"></span>`).join('');
+    const dots = $$('#carouselDots span');
+    const cardWidth = reviewsTrack.firstElementChild?.getBoundingClientRect().width || 1;
+    const updateDots = () => {
+      const idx = Math.round(reviewsTrack.scrollLeft / (cardWidth + 14));
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    };
+    reviewsTrack.addEventListener('scroll', updateDots, { passive: true });
+    updateDots();
+  };
 
+  const renderReviews = (items) => {
+    reviewsState.items = items;
+    if (!reviewsTrack) return;
+    if (!items.length) {
+      reviewsTrack.innerHTML = `<div class="reviews-empty">Aucun avis publié pour le moment. Soyez le premier à partager votre expérience.</div>`;
+      setStats([]);
+      syncMobileDots();
+      return;
+    }
+    reviewsTrack.innerHTML = items.map(renderReviewCard).join('');
+    setStats(items);
+    syncMobileDots();
+  };
+
+  const fallbackReviews = [
+    { customer_name: 'Yassine', city: 'Casablanca', rating: 5, review: 'Le pack est propre et la qualité générale est vraiment satisfaisante pour le prix.' },
+    { customer_name: 'Meryem', city: 'Rabat', rating: 5, review: 'Très bon rapport qualité/prix. Le tapis est grand et la souris agréable à utiliser.' },
+    { customer_name: 'Hamza', city: 'Marrakech', rating: 4, review: 'Livraison rapide et pack bien présenté. Le clavier RGB donne un très bon look au setup.' },
+    { customer_name: 'Salma', city: 'Agadir', rating: 5, review: 'Commande reçue rapidement. Le pack correspond bien aux photos du site.' }
+  ];
+
+  const supa = window.kamSupabase || window.supabaseClient || window.caminfoSupabase || null;
+  const fetchReviews = async () => {
+    if (!supa) { renderReviews(fallbackReviews); return; }
     try {
-      const { error } = await sb
-        .from("reviews")
-        .insert({
-          customer_name: name.value.trim(),
-          city: qs("#reviewCity").value.trim() || null,
-          rating: state.rating,
-          emoji: emojis[state.rating],
-          review_text: text.value.trim(),
-          status: "pending",
-          user_agent: navigator.userAgent,
-          referrer: document.referrer || null,
-        });
-
+      const { data, error } = await supa
+        .from('reviews')
+        .select('customer_name, city, rating, review_text, created_at')
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false })
+        .limit(12);
       if (error) throw error;
+      renderReviews(data?.length ? data : fallbackReviews);
+    } catch (err) {
+      console.warn('reviews fetch failed', err);
+      renderReviews(fallbackReviews);
+    }
+  };
+  fetchReviews();
+  if (supa?.channel) {
+    supa.channel('public-approved-reviews-live')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => fetchReviews())
+      .subscribe();
+  }
 
-      closeShell("#reviewModal");
-      qs("#reviewForm").reset();
-      setRating(5);
-      toast("شكراً لك! رأيك وصل للإدارة للموافقة ✅");
+  const reviewForm = $('#reviewForm');
+  const formStatus = $('#formStatus');
+  reviewForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = $('#reviewName').value.trim();
+    const city = $('#reviewCity').value.trim();
+    const review = $('#reviewText').value.trim();
+    if (!rating || !name || !review) {
+      formStatus.textContent = 'Merci de compléter la note, le nom et votre avis.';
+      return;
+    }
+    formStatus.textContent = 'Envoi en cours...';
+    if (!supa) {
+      formStatus.textContent = 'Merci. Votre avis a été enregistré pour validation.';
+      reviewForm.reset(); rating = 0; paintStars(0);
+      setTimeout(closeReviewModal, 900);
+      return;
+    }
+    try {
+      const { error } = await supa.from('reviews').insert({
+        customer_name: name,
+        city: city || null,
+        rating,
+        review_text: review,
+        emoji: null,
+        status: 'pending',
+        user_agent: navigator.userAgent,
+        referrer: document.referrer || null
+      });
+      if (error) throw error;
+      formStatus.textContent = 'Merci. Votre avis sera publié après validation.';
+      reviewForm.reset(); rating = 0; paintStars(0);
+      setTimeout(closeReviewModal, 1100);
     } catch (err) {
       console.error(err);
-      toast("تعذر إرسال الرأي حالياً.");
+      formStatus.textContent = 'Une erreur est survenue. Réessayez dans quelques instants.';
     }
   });
-}
 
-async function loadReviews() {
-  const grid = qs("#reviewsGrid");
-  if (!grid || !sb) return;
+  const orderModal = $('#orderModal');
+  const openOrder = () => {
+    orderModal?.classList.add('open');
+    orderModal?.setAttribute('aria-hidden', 'false');
+    lockBody();
+  };
+  const closeOrder = () => {
+    orderModal?.classList.remove('open');
+    orderModal?.setAttribute('aria-hidden', 'true');
+    unlockBody();
+  };
+  $$('.js-open-order').forEach(btn => btn.addEventListener('click', openOrder));
+  $$('[data-close-order]').forEach(btn => btn.addEventListener('click', closeOrder));
 
-  try {
-    const { data, error } = await sb
-      .from("reviews")
-      .select("customer_name,city,rating,emoji,review_text,created_at")
-      .eq("status", "approved")
-      .order("created_at", { ascending: false })
-      .limit(12);
+  const padDesigns = [
+    { slug:'msi-dragon', name:'MSI Dragon', image:'assets/img/pads/pad-msi-dragon.webp' },
+    { slug:'msi-red', name:'MSI Red', image:'assets/img/pads/pad-msi-red.webp' },
+    { slug:'rog-black', name:'ROG Black', image:'assets/img/pads/pad-rog-black.webp' },
+    { slug:'style-1', name:'Style 1', image:'assets/img/pads/pad-style-1.webp' },
+    { slug:'style-2', name:'Style 2', image:'assets/img/pads/pad-style-2.webp' },
+    { slug:'style-3', name:'Style 3', image:'assets/img/pads/pad-style-3.webp' },
+    { slug:'style-4', name:'Style 4', image:'assets/img/pads/pad-style-4.webp' },
+    { slug:'union-jack', name:'Union Jack', image:'assets/img/pads/pad-union-jack.webp' },
+    { slug:'rog-crimson', name:'ROG Crimson', image:'assets/img/pads/pad-rog-crimson.webp' },
+    { slug:'rog-spectrum', name:'ROG Spectrum', image:'assets/img/pads/pad-rog-spectrum.webp' },
+    { slug:'rog-city', name:'ROG City', image:'assets/img/pads/pad-rog-city.webp' },
+    { slug:'msi-splash', name:'MSI Splash', image:'assets/img/pads/pad-msi-splash.webp' },
+    { slug:'logitech-blue', name:'Logitech Blue', image:'assets/img/pads/pad-logitech-blue.webp' },
+    { slug:'razer-green', name:'Razer Green', image:'assets/img/pads/pad-razer-acid-green.webp' }
+  ];
+  const padGrid = $('#padGrid');
+  const summaryPad = $('#summaryPad');
+  const orderState = { step: 0, pad: padDesigns[0] };
+  const renderPads = () => {
+    if (!padGrid) return;
+    padGrid.innerHTML = padDesigns.map((pad, i) => `
+      <button class="pad-option ${i===0?'active':''}" type="button" data-pad="${pad.slug}" aria-label="${pad.name}">
+        <img src="${pad.image}" alt="${pad.name}">
+        <b>${pad.name}</b>
+        <span class="pad-check"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
+      </button>`).join('');
+    padGrid.querySelectorAll('.pad-option').forEach(btn => btn.addEventListener('click', () => {
+      padGrid.querySelectorAll('.pad-option').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      orderState.pad = padDesigns.find(p => p.slug === btn.dataset.pad) || padDesigns[0];
+      if (summaryPad) summaryPad.textContent = orderState.pad.name;
+    }));
+  };
+  renderPads();
 
-    if (error) throw error;
+  const steps = $$('.wizard-step');
+  const progressSpans = $$('.progress span');
+  const stepCurrent = $('#stepCurrent');
+  const showStep = (index) => {
+    orderState.step = index;
+    steps.forEach((step, i) => step.classList.toggle('active', i === index));
+    progressSpans.forEach((s, i) => s.classList.toggle('active', i <= index));
+    if (stepCurrent) stepCurrent.textContent = index + 1;
+  };
+  showStep(0);
 
-    grid.innerHTML = (data || [])
-      .map(
-        (r) => `
-      <article class="review-card glass reveal visible">
-        <div class="review-head">
-          <strong>${escapeHtml(r.customer_name)}${r.city ? " - " + escapeHtml(r.city) : ""}</strong>
-          <span>${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>
-        </div>
-        <p>${r.emoji || "😊"} ${escapeHtml(r.review_text)}</p>
-      </article>
-    `,
-      )
-      .join("");
-  } catch (e) {
-    console.error(e);
-  }
-}
+    const validateField = (input, condition) => {
+    const label = input.closest('label');
+    label?.classList.toggle('invalid', !condition);
+    return !!condition;
+  };
+  const validateStep = (stepIndex) => {
+    if (stepIndex === 0) return !!orderState.pad;
+    if (stepIndex === 1) {
+      const name = $('#customerName');
+      const phone = $('#customerPhone');
+      const okName = validateField(name, name.value.trim().length >= 2);
+      const okPhone = validateField(phone, isValidMoroccanPhone(phone.value.trim()));
+      return okName && okPhone;
+    }
+    const city = $('#customerCity');
+    const address = $('#customerAddress');
+    const okCity = validateField(city, city.value.trim().length >= 2);
+    const okAddress = validateField(address, address.value.trim().length >= 8);
+    return okCity && okAddress;
+  };
+  $$('[data-next]').forEach(btn => btn.addEventListener('click', () => {
+    const next = Number(btn.dataset.next);
+    if (!validateStep(next - 1)) return;
+    showStep(next);
+  }));
+  $$('[data-back]').forEach(btn => btn.addEventListener('click', () => showStep(Number(btn.dataset.back))));
 
-function initProductModal() {
-  qsa(".product-card").forEach((card) =>
-    card.addEventListener("click", () => openProductModal(card.dataset.modal)),
-  );
-  qs("#closeProductModal")?.addEventListener("click", closeProductModal);
-  qs('[data-close="product"]')?.addEventListener("click", closeProductModal);
-}
-function openProductModal(id) {
-  const data = state.productData[id],
-    root = qs("#productModalContent");
-  if (!data || !root) return;
-  root.innerHTML = `<div class="product-modal-grid"><div class="product-gallery"><video class="modal-product-video" controls playsinline preload="none" poster="${data.poster}" data-src="${data.video}"></video>${data.images.map((src) => `<img src="${src}" alt="${escapeHtml(data.title)}" loading="lazy">`).join("")}</div><div class="product-copy"><span class="eyebrow">SHOW MORE</span><h3>${escapeHtml(data.title)}</h3><p>${escapeHtml(data.desc)}</p><ul>${data.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul><button class="btn btn-primary js-open-order" type="button">اطلب الآن</button></div></div>`;
-  openShell("#productModal");
-  const video = qs(".modal-product-video", root);
-  if (video && video.dataset.src) {
-    video.innerHTML = `<source src="${video.dataset.src}" type="video/mp4">`;
-    video.load();
-    video.play().catch(() => {});
-  }
-  qs(".product-copy .js-open-order", root)?.addEventListener("click", () => {
-    closeProductModal();
-    openShell("#orderWizard");
-    goStep(0);
-  });
-}
-function closeProductModal() {
-  const vid = qs(".modal-product-video");
-  if (vid) {
-    vid.pause();
-    vid.removeAttribute("src");
-    vid.innerHTML = "";
-    vid.load();
-  }
-  closeShell("#productModal");
-  qs("#productModalContent").innerHTML = "";
-}
-function initLazyVideos() {
-  qsa(".lazy-video-trigger").forEach((btn) =>
-    btn.addEventListener("click", () =>
-      openVideoModal(btn.dataset.video, btn.dataset.title, btn.dataset.poster),
-    ),
-  );
-  qs("#closeVideoModal")?.addEventListener("click", closeVideoModal);
-  qs('[data-close="video"]')?.addEventListener("click", closeVideoModal);
-}
-function openVideoModal(src, title = "", poster = "") {
-  const video = qs("#videoModalPlayer"),
-    loading = qs("#videoLoading");
-  if (!video || !src) return;
-  loading.style.display = "block";
-  video.poster = poster;
-  video.innerHTML = "";
-  openShell("#videoModal");
-  track("video_play", { title, src });
-  setTimeout(() => {
-    if (!qs("#videoModal").classList.contains("active")) return;
-    video.innerHTML = `<source src="${src}" type="video/mp4">`;
-    video.load();
-    video.oncanplay = () => {
-      loading.style.display = "none";
-      video.play().catch(() => {});
+  const orderForm = $('#orderForm');
+  const submitStatus = $('#submitStatus');
+  const submitOrderBtn = $('#submitOrder');
+  const customerName = $('#customerName');
+  const customerPhone = $('#customerPhone');
+  const customerCity = $('#customerCity');
+  const customerAddress = $('#customerAddress');
+
+  const buildPayload = () => {
+    const params = new URLSearchParams(location.search);
+    return {
+      customer_name: customerName.value.trim(),
+      phone: normalizePhone(customerPhone.value.trim()),
+      city: customerCity.value.trim(),
+      address: customerAddress.value.trim(),
+      quantity: 1,
+      keyboard_choice: 'Clavier Gaming Standard',
+      mouse_choice: 'Logitech G302',
+      pad_choice: orderState.pad?.name || null,
+      notes: `Pad design: ${orderState.pad?.name || 'N/A'}`,
+      product_name: 'KAM INFO Gaming Pack',
+      unit_price: 289,
+      currency: 'MAD',
+      source: 'landing_page',
+      user_agent: navigator.userAgent,
+      referrer: document.referrer || null,
+      utm_source: params.get('utm_source'),
+      utm_medium: params.get('utm_medium'),
+      utm_campaign: params.get('utm_campaign')
     };
-    qs("#videoModalTitle").textContent = title;
-  }, 120);
-}
-function closeVideoModal() {
-  const video = qs("#videoModalPlayer");
-  if (video) {
-    video.pause();
-    video.removeAttribute("src");
-    video.innerHTML = "";
-    video.load();
-    video.oncanplay = null;
-  }
-  closeShell("#videoModal");
-}
-function initYoutube() {
-  qs("#youtubeThumb")?.addEventListener("click", (e) => {
-    const btn = e.currentTarget,
-      id = btn.dataset.youtubeId;
-    if (!id) {
-      toast("أضف YouTube video ID فـ data-youtube-id باش يتشغل الفيديو.");
-      return;
+  };
+
+  orderForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateStep(2)) return;
+    submitStatus.textContent = 'Envoi de la commande...';
+    submitOrderBtn.classList.add('loading');
+    const payload = buildPayload();
+
+    const redirectSuccess = () => { window.location.href = 'merci.html'; };
+
+    try {
+      if (!supa) {
+        setTimeout(redirectSuccess, 500);
+        return;
+      }
+
+      let submitted = false;
+      if (typeof window.submitGuestOrder === 'function') {
+        try {
+          const result = await window.submitGuestOrder(payload);
+          if (!result?.error) submitted = true;
+        } catch (_) {}
+      }
+      if (!submitted) {
+        const { error } = await supa.from('orders').insert(payload);
+        if (error) throw error;
+      }
+      submitStatus.textContent = 'Commande confirmée. Redirection...';
+      setTimeout(redirectSuccess, 600);
+    } catch (err) {
+      console.error(err);
+      submitStatus.textContent = 'Impossible d’envoyer la commande pour le moment. Réessayez dans quelques instants.';
+      submitOrderBtn.classList.remove('loading');
     }
-    btn.outerHTML = `<iframe title="KAM INFO Video Drop" src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    track("video_play", { provider: "youtube", id });
   });
-}
-function initShowMore() {
-  const btn = qs("#showMorePads");
-  if (!btn) return;
 
-  btn.dataset.expanded = "0";
-  btn.textContent = "Voir plus";
+  const closeOnEscape = (e) => {
+    if (e.key !== 'Escape') return;
+    if (body.classList.contains('menu-open')) setMobileMenu(false);
+    if (productModal?.classList.contains('open')) closeProductModal();
+    if (videoModal?.classList.contains('open')) closeVideo();
+    if (reviewModal?.classList.contains('open')) closeReviewModal();
+    if (orderModal?.classList.contains('open')) closeOrder();
+  };
+  document.addEventListener('keydown', closeOnEscape);
 
-  btn.addEventListener("click", () => {
-    const shouldShow = btn.dataset.expanded !== "1";
+  const prevReview = $('#prevReview');
+  const nextReview = $('#nextReview');
+  const slideReviews = (direction) => {
+    if (!reviewsTrack) return;
+    const amount = reviewsTrack.clientWidth * 0.85;
+    reviewsTrack.scrollBy({ left: direction * amount, behavior: 'smooth' });
+  };
+  prevReview?.addEventListener('click', () => slideReviews(-1));
+  nextReview?.addEventListener('click', () => slideReviews(1));
 
-    qsa(".quicklook-extra").forEach((el) => {
-      el.classList.toggle("is-visible", shouldShow);
+  $$('.faq-item .faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      $$('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        $('.faq-question', i)?.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
     });
-
-    btn.dataset.expanded = shouldShow ? "1" : "0";
-    btn.textContent = shouldShow ? "Voir moins" : "Voir plus";
   });
-}
-
-function initImageLightbox() {
-  const shell = qs("#imageLightbox");
-  const img = qs("#lightboxImage");
-  const caption = qs("#lightboxCaption");
-
-  if (!shell || !img) return;
-
-  qs("#quicklookGrid")?.addEventListener("click", (e) => {
-    const card = e.target.closest(".gallery-card");
-    if (!card) return;
-
-    const source = card.querySelector("img");
-    if (!source) return;
-
-    const text =
-      card.querySelector("figcaption")?.textContent || source.alt || "";
-
-    img.src = source.src;
-    img.alt = source.alt || text;
-
-    if (caption) caption.textContent = text;
-
-    openShell("#imageLightbox");
-  });
-
-  qs("#closeImageLightbox")?.addEventListener("click", closeImageLightbox);
-  qs('[data-close="lightbox"]')?.addEventListener("click", closeImageLightbox);
-}
-
-function closeImageLightbox() {
-  const img = qs("#lightboxImage");
-
-  closeShell("#imageLightbox");
-
-  if (img) img.src = "";
-}
-
-function initWhatsApp() {
-  const panel = qs("#waWidget"),
-    toggle = qs("#waToggleBtn");
-  const close = () => {
-    panel.classList.remove("active");
-    panel.setAttribute("aria-hidden", "true");
-  };
-  const open = () => {
-    panel.classList.add("active");
-    panel.setAttribute("aria-hidden", "false");
-  };
-  toggle?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    panel.classList.contains("active") ? close() : open();
-  });
-  qs("#waClose")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    close();
-  });
-  panel?.addEventListener("click", (e) => e.stopPropagation());
-  document.addEventListener("click", () => {
-    if (panel?.classList.contains("active")) close();
-  });
-  qsa(".wa-q-btn").forEach((b) =>
-    b.addEventListener("click", () => {
-      qs("#waInput").value = b.dataset.wa;
-      sendWa();
-    }),
-  );
-  qs("#waSend")?.addEventListener("click", sendWa);
-  qs("#waInput")?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") sendWa();
-  });
-}
-function sendWa() {
-  const msg =
-    qs("#waInput")?.value.trim() ||
-    "سلام KAM INFO بغيت معلومات على pack gaming";
-  window.open(
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,
-    "_blank",
-    "noopener",
-  );
-}
-function initRealtime() {
-  if (!sb) return;
-  sb.channel("public-approved-reviews")
-    .on(
-      "postgres_changes",
-      { event: "UPDATE", schema: "public", table: "reviews" },
-      (payload) => {
-        if (payload.new?.status === "approved") loadReviews();
-      },
-    )
-    .subscribe();
-}
-function initServiceWorker() {
-  // تم إيقاف السيرفيس وركر القديم باش ما يبلوكيش OneSignal
-}
-function init() {
-  preloadExperience();
-  initAudio();
-  initCursorGlow();
-  initHeroVideo();
-  initReveal();
-  initTilt();
-  initMenu();
-  initPads();
-  initWizard();
-  initReviewModal();
-  initProductModal();
-  initLazyVideos();
-  initYoutube();
-  initShowMore();
-  initImageLightbox();
-  initWhatsApp();
-  loadReviews();
-  initRealtime();
-  initServiceWorker();
-  track("page_view");
-  updateSummary();
-}
-document.addEventListener("DOMContentLoaded", init);
+})();
