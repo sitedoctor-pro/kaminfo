@@ -247,6 +247,9 @@
   const reviewsTrack = $('#reviewsTrack');
   const carouselDots = $('#carouselDots');
   const reviewsState = { items: [] };
+  const allReviewsModal = $('#allReviewsModal');
+  const allReviewsList = $('#allReviewsList');
+  const reviewsMoreWrap = $('#reviewsMoreWrap');
   const starsLabel = (note) => `${note.toFixed(1)}`;
   const renderReviewCard = (review) => {
     const name = (review.customer_name || 'Client').trim();
@@ -366,7 +369,7 @@
       if (carouselDots) carouselDots.innerHTML = '';
       return;
     }
-    carouselDots.innerHTML = reviewsState.items.map((_, i) => `<span class="${i===0?'active':''}"></span>`).join('');
+    carouselDots.innerHTML = Array.from(reviewsTrack.children).map((_, i) => `<span class="${i===0?'active':''}"></span>`).join('');
     const dots = $$('#carouselDots span');
     const cardWidth = reviewsTrack.firstElementChild?.getBoundingClientRect().width || 1;
     const updateDots = () => {
@@ -377,19 +380,67 @@
     updateDots();
   };
 
+  const renderAllReviewsList = () => {
+    if (!allReviewsList) return;
+    const items = reviewsState.items;
+    allReviewsList.innerHTML = items.length
+      ? items.map(renderReviewCard).join('')
+      : `<div class="reviews-empty">Aucun avis publié pour le moment.</div>`;
+
+    $('#allReviewsModalCount') && ($('#allReviewsModalCount').textContent = String(items.length));
+  };
+
   const renderReviews = (items) => {
     reviewsState.items = items;
     if (!reviewsTrack) return;
+
     if (!items.length) {
       reviewsTrack.innerHTML = `<div class="reviews-empty">Aucun avis publié pour le moment. Soyez le premier à partager votre expérience.</div>`;
+      if (reviewsMoreWrap) reviewsMoreWrap.hidden = true;
       setStats([]);
       syncMobileDots();
+      renderAllReviewsList();
       return;
     }
-    reviewsTrack.innerHTML = items.map(renderReviewCard).join('');
+
+    // Keep the storefront compact: only the 4 newest reviews are rendered here.
+    // Every approved review remains available in the scrollable modal.
+    const featured = items.slice(0, 4);
+    reviewsTrack.innerHTML = featured.map(renderReviewCard).join('');
+
+    if (reviewsMoreWrap) reviewsMoreWrap.hidden = items.length <= 4;
+    const countBadge = $('#allReviewsCount');
+    if (countBadge) countBadge.textContent = String(items.length);
+
     setStats(items);
     syncMobileDots();
+    renderAllReviewsList();
   };
+
+
+  const openAllReviews = () => {
+    if (!allReviewsModal) return;
+    renderAllReviewsList();
+    allReviewsModal.classList.add('open');
+    allReviewsModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('all-reviews-open');
+    window.setTimeout(() => allReviewsList?.focus(), 100);
+  };
+
+  const closeAllReviews = () => {
+    if (!allReviewsModal) return;
+    allReviewsModal.classList.remove('open');
+    allReviewsModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('all-reviews-open');
+  };
+
+  $('#openAllReviews')?.addEventListener('click', openAllReviews);
+  $$('[data-close-all-reviews]').forEach(btn => btn.addEventListener('click', closeAllReviews));
+
+  $('#addReviewFromAll')?.addEventListener('click', () => {
+    closeAllReviews();
+    window.setTimeout(openReviewModal, 120);
+  });
 
   const fallbackReviews = [
     { customer_name: 'Yassine', city: 'Casablanca', rating: 5, review: 'Le pack est propre et la qualité générale est vraiment satisfaisante pour le prix.' },
@@ -407,7 +458,7 @@
         .select('customer_name, city, rating, review_text, created_at')
         .eq('status', 'approved')
         .order('created_at', { ascending: false })
-        .limit(12);
+        .limit(100);
       if (error) throw error;
       renderReviews(data?.length ? data : fallbackReviews);
     } catch (err) {
@@ -683,6 +734,7 @@
     if (productModal?.classList.contains('open')) closeProductModal();
     if (videoModal?.classList.contains('open')) closeVideo();
     if (reviewModal?.classList.contains('open')) closeReviewModal();
+    if (allReviewsModal?.classList.contains('open')) closeAllReviews();
     if (orderModal?.classList.contains('open')) closeOrder();
     if (waPanel?.classList.contains('active')) closeWhatsAppPanel();
   };
