@@ -401,7 +401,10 @@
     <section class="order-reminder" id="order">
       <div class="container reminder-grid section-container">
         <div class="reminder-copy reveal-up"><div class="section-badge"><svg viewBox="0 0 24 24"><path d="M4 4h2l2 10h9l2-7H7"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>PRÊT À PASSER COMMANDE ?</div><h1>Votre setup mérite<br><span>le pack complet.</span></h1><p>Clavier Gaming RGB + Logitech G302 + tapis gaming 30×70 cm. Choisissez votre design, indiquez vos coordonnées et nous nous occupons du reste.</p><div class="price-row"><strong>289 <small>DH</small></strong><del>399 DH</del><span>-28%</span></div><div class="micro-trust"><span><i></i>Paiement à la livraison</span><span><i></i>Livraison partout au Maroc</span></div></div>
-        <aside class="order-cta-card reveal-up"><div class="pack-collage"><img class="keyboard" src="assets/img/keyboard/keyboard-lifestyle.webp" alt="Clavier Gaming KAM INFO"><img class="mouse" src="assets/img/mouse/mouse-blue-glow.webp" alt="Souris Logitech G302"><div class="collage-glow"></div></div><div class="cta-copy"><span class="small-label">PACK KAM INFO</span><h2>Choisissez. Confirmez. Recevez.</h2><p>Commande rapide en 3 étapes. Aucun paiement en ligne.</p></div><button class="order-btn js-open-order" type="button">Commander maintenant<span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></aside>
+        <aside class="order-cta-card reveal-up"><div class="pack-collage premium-order-visual">
+  <img class="order-pack-image" src="assets/img/order-pack-premium.png" alt="Pack KAM INFO avec clavier gaming RGB, Logitech G302 et tapis gaming" loading="lazy" decoding="async">
+  <div class="order-image-vignette" aria-hidden="true"></div>
+</div><div class="cta-copy"><span class="small-label">PACK KAM INFO</span><h2>Choisissez. Confirmez. Recevez.</h2><p>Commande rapide en 3 étapes. Aucun paiement en ligne.</p></div><button class="order-btn js-open-order" type="button">Commander maintenant<span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></aside>
       </div>
     </section>
   </main>
@@ -410,7 +413,15 @@
     <div class="container footer-grid">
       <div class="footer-brand"><a class="brand footer-brand-link" href="#home"><img src="assets/img/logo.jpg" alt="KAM INFO"><span class="brand-copy"><b>KAM INFO</b><small>Laptops & Accessories</small></span></a><p>Le pack gaming pensé pour offrir une expérience simple, visuelle et convaincante — avec livraison partout au Maroc et paiement à la réception.</p><div class="footer-socials"><a href="https://www.instagram.com/kam.info1/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" class="fill-dot"/></svg></a><a href="#order" aria-label="Commander"><svg viewBox="0 0 24 24"><path d="M4 4h2l2 10h9l2-7H7"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg></a><a href="#faq" aria-label="FAQ"><svg viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="M9.5 9a2.5 2.5 0 1 1 4.7 1.2c-.8 1.1-2.2 1.4-2.2 3.1"/><path d="M12 17h.01"/></svg></a></div></div>
       <div class="footer-column"><h3>Navigation</h3><a href="#home">Accueil</a><a href="#pack">Le pack</a><a href="#videos">Vidéos</a><a href="#reviews">Avis clients</a><a href="#faq">FAQ</a></div>
-      <div class="footer-column"><h3>Informations</h3><a href="#order">Commander maintenant</a><a href="#benefits">Avantages</a><a href="#footer">Support 7j/7</a><span class="footer-note">Paiement à la livraison</span><span class="footer-note">Livraison partout au Maroc</span></div>
+      <div class="footer-column"><h3>Informations</h3>
+        <a href="#order">Commander maintenant</a>
+        <a href="#benefits">Avantages</a>
+        <a href="tel:+212645505322">+212 645 505 322</a>
+        <a href="https://wa.me/212645505322?text=Salut%20KAM%20INFO%2C%20je%20souhaite%20des%20informations%20sur%20le%20Gaming%20Pack." target="_blank" rel="noopener">WhatsApp</a>
+        <span class="footer-note">Support 7j/7</span>
+        <span class="footer-note">Paiement à la livraison</span>
+        <span class="footer-note">Livraison partout au Maroc</span>
+      </div>
       <div class="footer-column"><h3>KAM INFO Pack</h3><div class="footer-card"><small>OFFRE ACTUELLE</small><strong>289 DH</strong><p>Clavier Gaming RGB + Logitech G302 + Tapis gaming</p><button class="footer-order js-open-order" type="button">Lancer la commande</button></div></div>
     </div>
     <div class="container footer-bottom"><p>© <span id="currentYear"></span> KAM INFO. Tous droits réservés.</p><p>Version publique finale — dashboard exclu comme demandé.</p></div>
@@ -422,6 +433,61 @@
   <div class="order-modal" id="orderModal" aria-hidden="true"><div class="modal-backdrop" data-close-order></div><section class="wizard" role="dialog" aria-modal="true" aria-labelledby="wizardTitle"><button class="wizard-close" type="button" data-close-order aria-label="Fermer"></button><header class="wizard-header"><div><span class="wizard-eyebrow">COMMANDE KAM INFO</span><h2 id="wizardTitle">Finalisez votre pack.</h2></div><div class="step-count"><strong id="stepCurrent">1</strong><span>/ 3</span></div></header><div class="progress"><span class="active"></span><span></span><span></span></div><form id="orderForm" novalidate><section class="wizard-step active" data-step="0"><div class="step-heading"><span>ÉTAPE 01</span><h3>Choisissez le design du tapis</h3><p>Le clavier et la Logitech G302 restent inclus. Vous choisissez uniquement le style du tapis 30×70 cm.</p></div><div class="pad-grid" id="padGrid"></div><div class="wizard-actions single"><button class="primary next-step" type="button" data-next="1">Continuer <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></section><section class="wizard-step" data-step="1"><div class="step-heading"><span>ÉTAPE 02</span><h3>Vos coordonnées</h3><p>Ces informations servent uniquement à confirmer et livrer votre commande.</p></div><div class="fields two"><label><span>Nom complet</span><div class="input-shell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><input id="customerName" type="text" autocomplete="name" maxlength="100" required placeholder="Ex : Yassine Alaoui"></div><small class="field-error">Indiquez votre nom.</small></label><label><span>Numéro de téléphone</span><div class="input-shell"><svg viewBox="0 0 24 24"><path d="M6.6 3h3l1.5 4-2 1.7a15 15 0 0 0 6.2 6.2l1.7-2 4 1.5v3c0 1.7-1.3 3-3 3A15 15 0 0 1 3.6 6c0-1.7 1.3-3 3-3Z"/></svg><input id="customerPhone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="06 12 34 56 78"></div><small class="field-error">Entrez un numéro marocain valide.</small></label></div><div class="wizard-actions"><button class="secondary prev-step" type="button" data-back="0">Retour</button><button class="primary next-step" type="button" data-next="2">Continuer <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></section><section class="wizard-step" data-step="2"><div class="step-heading"><span>ÉTAPE 03</span><h3>Adresse de livraison</h3><p>Dernière étape. Vérifiez vos informations puis confirmez votre commande.</p></div><div class="fields"><label><span>Ville</span><div class="input-shell"><svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><input id="customerCity" type="text" autocomplete="address-level2" maxlength="100" required placeholder="Ex : Casablanca"></div><small class="field-error">Indiquez votre ville.</small></label><label><span>Adresse complète</span><div class="input-shell textarea-shell"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3V10.5Z"/><path d="M9 21v-7h6v7"/></svg><textarea id="customerAddress" rows="4" maxlength="300" required placeholder="Quartier, rue, résidence, étage..."></textarea></div><small class="field-error">Indiquez votre adresse de livraison.</small></label></div><div class="order-summary"><div><span>Pack KAM INFO</span><strong>289 DH</strong></div><p><span id="summaryPad">MSI Dragon</span> · Livraison au Maroc · Paiement à la réception</p></div><div class="wizard-actions"><button class="secondary prev-step" type="button" data-back="1">Retour</button><button class="primary submit-order" id="submitOrder" type="submit"><span class="submit-label">Confirmer la commande</span><span class="loader" aria-hidden="true"></span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div><p class="submit-status" id="submitStatus" role="status" aria-live="polite"></p></section></form></section></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <button class="whatsapp-float"
+          id="waToggleBtn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="waWidget"
+          aria-label="Contacter KAM INFO sur WhatsApp"
+          title="WhatsApp">
+    <span class="whatsapp-pulse" aria-hidden="true"></span>
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path fill="currentColor" d="M16.04 3C8.86 3 3.02 8.72 3.02 15.76c0 2.25.6 4.45 1.74 6.37L3 28.5l6.57-1.7a13.15 13.15 0 0 0 6.46 1.66h.01c7.18 0 13.02-5.72 13.02-12.76C29.06 8.72 23.22 3 16.04 3Zm0 23.31h-.01a10.98 10.98 0 0 1-5.6-1.51l-.4-.24-3.9 1.01 1.04-3.72-.26-.42a10.5 10.5 0 0 1-1.7-5.67c0-5.85 4.86-10.61 10.84-10.61 5.97 0 10.83 4.76 10.83 10.61 0 5.85-4.86 10.55-10.84 10.55Zm5.94-7.91c-.33-.16-1.93-.93-2.23-1.04-.3-.1-.52-.16-.74.16-.22.32-.85 1.04-1.04 1.25-.19.21-.38.24-.71.08-.33-.16-1.38-.5-2.63-1.58a9.72 9.72 0 0 1-1.82-2.22c-.19-.32-.02-.5.14-.66.15-.14.33-.37.49-.56.16-.18.22-.32.33-.53.11-.21.05-.4-.03-.56-.08-.16-.74-1.75-1.01-2.39-.27-.64-.54-.55-.74-.56h-.63c-.22 0-.57.08-.87.4-.3.32-1.15 1.1-1.15 2.68 0 1.59 1.18 3.12 1.34 3.33.16.21 2.32 3.48 5.62 4.88.79.33 1.4.53 1.88.68.79.25 1.5.21 2.07.13.63-.09 1.93-.77 2.2-1.51.27-.74.27-1.38.19-1.51-.08-.13-.3-.21-.63-.37Z"/>
+    </svg>
+    <span class="whatsapp-label">WhatsApp</span>
+  </button>
+
+  <aside class="wa-panel" id="waWidget" aria-hidden="true" aria-label="Contact WhatsApp KAM INFO">
+    <div class="wa-panel__head">
+      <div class="wa-avatar" aria-hidden="true">
+        <img src="assets/img/logo.jpg" alt="">
+        <span></span>
+      </div>
+      <div class="wa-head-copy">
+        <strong>KAM INFO</strong>
+        <small>Support WhatsApp · réponse rapide</small>
+      </div>
+      <button class="wa-close" id="waClose" type="button" aria-label="Fermer WhatsApp"></button>
+    </div>
+
+    <div class="wa-panel__body">
+      <div class="wa-chat-bubble">
+        <small>KAM INFO</small>
+        <p>Bonjour 👋 Comment pouvons-nous vous aider avec le Gaming Pack ?</p>
+      </div>
+
+      <p class="wa-shortcuts-title">Réponses rapides</p>
+      <div class="wa-shortcuts">
+        <button class="wa-q-btn" type="button" data-wa="Salut KAM INFO, je souhaite des informations sur le Gaming Pack à 289 DH.">Informations sur le pack</button>
+        <button class="wa-q-btn" type="button" data-wa="Salut KAM INFO, je souhaite voir les designs de tapis gaming disponibles.">Designs du tapis</button>
+        <button class="wa-q-btn" type="button" data-wa="Salut KAM INFO, je souhaite passer une commande pour le Gaming Pack.">Passer une commande</button>
+      </div>
+
+      <div class="wa-input">
+        <input id="waInput" type="text" inputmode="text" autocomplete="off" aria-label="Votre message WhatsApp" placeholder="Écrivez votre message...">
+        <button id="waSend" type="button" aria-label="Envoyer sur WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="m4 4 16 8-16 8 3-8-3-8Z"/><path d="M7 12h13"/></svg>
+        </button>
+      </div>
+
+      <a class="wa-phone" href="tel:+212645505322">
+        <span>Ou appelez-nous</span>
+        <strong>+212 645 505 322</strong>
+      </a>
+    </div>
+  </aside>
+
   <script src="assets/js/supabase-client.js"></script>
   <script src="assets/js/app.js"></script>
 </body>

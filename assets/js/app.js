@@ -63,6 +63,9 @@
     headerLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === `#${current}`));
   };
   window.addEventListener('scroll', setActiveLink, { passive: true });
+  window.addEventListener('scroll', () => {
+    if (typeof runStatsAnimation === 'function') runStatsAnimation();
+  }, { passive: true });
   setActiveLink();
 
   const normalizePhone = (value = '') => value.trim().replace(/[\s().-]/g, '');
@@ -269,13 +272,93 @@
       </article>`;
   };
 
+  const statsAnimationState = {
+    values: { average: 0, count: 0, recommend: 0 },
+    hasAnimated: false,
+    ready: false
+  };
+
+  const animateStatNumber = (el, target, decimals = 0, duration = 1250, delay = 0) => {
+    if (!el) return;
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) {
+      el.textContent = Number(target).toFixed(decimals);
+      return;
+    }
+
+    window.setTimeout(() => {
+      const startTime = performance.now();
+      const startValue = 0;
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+      const frame = now => {
+        const progress = Math.min(1, (now - startTime) / duration);
+        const value = startValue + (target - startValue) * easeOutCubic(progress);
+        el.textContent = value.toFixed(decimals);
+
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          el.textContent = Number(target).toFixed(decimals);
+        }
+      };
+
+      requestAnimationFrame(frame);
+    }, delay);
+  };
+
+  const runStatsAnimation = () => {
+    if (!statsAnimationState.ready || statsAnimationState.hasAnimated) return;
+
+    const panel = $('#statsPanel');
+    if (!panel) return;
+
+    const rect = panel.getBoundingClientRect();
+    const visible = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
+    if (!visible) return;
+
+    statsAnimationState.hasAnimated = true;
+
+    animateStatNumber(
+      $('[data-stat="average"]'),
+      statsAnimationState.values.average,
+      1,
+      1200,
+      40
+    );
+    animateStatNumber(
+      $('[data-stat="count"]'),
+      statsAnimationState.values.count,
+      0,
+      1350,
+      150
+    );
+    animateStatNumber(
+      $('[data-stat="recommend"]'),
+      statsAnimationState.values.recommend,
+      0,
+      1450,
+      260
+    );
+  };
+
   const setStats = (items) => {
     const count = items.length;
     const avg = count ? items.reduce((s, i) => s + Number(i.rating || 0), 0) / count : 0;
     const recommend = count ? Math.round(items.filter(i => Number(i.rating || 0) >= 4).length / count * 100) : 0;
-    $('[data-stat="average"]').textContent = avg ? avg.toFixed(1) : '0.0';
-    $('[data-stat="count"]').textContent = count;
-    $('[data-stat="recommend"]').textContent = recommend;
+
+    statsAnimationState.values = {
+      average: avg,
+      count,
+      recommend
+    };
+    statsAnimationState.ready = true;
+
+    $('[data-stat="average"]').textContent = '0.0';
+    $('[data-stat="count"]').textContent = '0';
+    $('[data-stat="recommend"]').textContent = '0';
+
+    runStatsAnimation();
   };
 
   const syncMobileDots = () => {
@@ -533,6 +616,67 @@
     }
   });
 
+
+
+  // V10 — WhatsApp widget using the real KAM INFO contact number
+  const WHATSAPP_NUMBER = '212645505322';
+  const waPanel = $('#waWidget');
+  const waToggleBtn = $('#waToggleBtn');
+  const waCloseBtn = $('#waClose');
+  const waInput = $('#waInput');
+
+  const buildWhatsAppUrl = (message) => {
+    const text = (message || '').trim() || 'Salut KAM INFO, je souhaite des informations sur le Gaming Pack.';
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  };
+
+  const openWhatsAppPanel = () => {
+    if (!waPanel || !waToggleBtn) return;
+    waPanel.classList.add('active');
+    waPanel.setAttribute('aria-hidden', 'false');
+    waToggleBtn.setAttribute('aria-expanded', 'true');
+    window.setTimeout(() => waInput?.focus(), 180);
+  };
+
+  const closeWhatsAppPanel = () => {
+    if (!waPanel || !waToggleBtn) return;
+    waPanel.classList.remove('active');
+    waPanel.setAttribute('aria-hidden', 'true');
+    waToggleBtn.setAttribute('aria-expanded', 'false');
+  };
+
+  const sendWhatsAppMessage = (message) => {
+    window.open(buildWhatsAppUrl(message), '_blank', 'noopener,noreferrer');
+  };
+
+  waToggleBtn?.addEventListener('click', event => {
+    event.stopPropagation();
+    waPanel?.classList.contains('active') ? closeWhatsAppPanel() : openWhatsAppPanel();
+  });
+
+  waCloseBtn?.addEventListener('click', closeWhatsAppPanel);
+
+  waPanel?.addEventListener('click', event => event.stopPropagation());
+
+  $$('.wa-q-btn').forEach(button => {
+    button.addEventListener('click', () => sendWhatsAppMessage(button.dataset.wa));
+  });
+
+  $('#waSend')?.addEventListener('click', () => sendWhatsAppMessage(waInput?.value));
+
+  waInput?.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      sendWhatsAppMessage(event.currentTarget.value);
+    }
+  });
+
+  document.addEventListener('click', event => {
+    if (!waPanel?.classList.contains('active')) return;
+    if (event.target.closest('#waWidget') || event.target.closest('#waToggleBtn')) return;
+    closeWhatsAppPanel();
+  });
+
   const closeOnEscape = (e) => {
     if (e.key !== 'Escape') return;
     if (body.classList.contains('menu-open')) setMobileMenu(false);
@@ -540,6 +684,7 @@
     if (videoModal?.classList.contains('open')) closeVideo();
     if (reviewModal?.classList.contains('open')) closeReviewModal();
     if (orderModal?.classList.contains('open')) closeOrder();
+    if (waPanel?.classList.contains('active')) closeWhatsAppPanel();
   };
   document.addEventListener('keydown', closeOnEscape);
 
