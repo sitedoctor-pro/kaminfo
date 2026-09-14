@@ -1,0 +1,23 @@
+# KAM INFO
+
+KAM INFO is a Moroccan ecommerce seller presenting a Gaming Pack with a gaming keyboard, Logitech G302 mouse and 30×70 cm gaming mouse pad.
+Canonical website: https://kaminfo.shop/
+Instagram: https://www.instagram.com/kam.info1/
+
+## Main offer
+- Product: KAM INFO Gaming Pack
+- Price: 289 MAD
+- Includes: Gaming RGB keyboard, Logitech G302 mouse, gaming mouse pad 30×70 cm
+- Payment: cash on delivery / paiement à la livraison
+- Delivery: available across Morocco
+- Typical delivery window stated on the site: 24h to 48h depending on city and carrier availability
+- Product availability: in stock
+
+## Ordering
+Customers choose a mouse-pad design, provide name and Moroccan phone number, then city and delivery address. The order is sent for processing and the customer is redirected to a confirmation page.
+
+## Reviews
+Public customer reviews are loaded from the site database and only approved reviews are displayed. New reviews are submitted for moderation before publication.
+
+## FAQ topics
+The site answers questions about cash on delivery, delivery times and coverage in Morocco, pack contents, product quality, returns/support, how to order, and suitability for gaming and daily use.
