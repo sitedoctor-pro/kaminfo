@@ -3,6 +3,7 @@
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
   const body = document.body;
   const isAR = document.documentElement.lang.toLowerCase().startsWith('ar');
+  const assetPath = (path) => `${isAR ? '../' : ''}assets/${String(path).replace(/^\/+/, '')}`;
   const i18n = (fr, ar) => isAR ? ar : fr;
   const hasArabic = (value = '') => /[\u0600-\u06FF]/.test(String(value));
 
@@ -85,9 +86,9 @@
       title: 'Clavier Gaming RGB',
       intro: 'Un clavier pensé pour offrir une frappe réactive, un look RGB marqué et une présence forte sur le bureau. Il complète parfaitement le pack KAM INFO.',
       images: [
-        '/assets/img/keyboard/keyboard-top.webp',
-        '/assets/img/keyboard/keyboard-lifestyle.webp',
-        '/assets/img/keyboard/keyboard-box.webp'
+        assetPath('img/keyboard/keyboard-top.webp'),
+        assetPath('img/keyboard/keyboard-lifestyle.webp'),
+        assetPath('img/keyboard/keyboard-box.webp')
       ],
       specs: [
         { icon: 'keyboard', title: 'Rétroéclairage RGB', text: 'Effet lumineux gaming pour un setup plus immersif.' },
@@ -101,10 +102,10 @@
       title: 'Logitech G302',
       intro: 'Une souris légère et précise qui accompagne parfaitement le clavier du pack. Son design favorise la maîtrise et la rapidité des mouvements.',
       images: [
-        '/assets/img/mouse/mouse-blue-glow.webp',
-        '/assets/img/mouse/mouse-side-glow.webp',
-        '/assets/img/mouse/mouse-front-glow.webp',
-        '/assets/img/mouse/mouse-close-glow.webp'
+        assetPath('img/mouse/mouse-blue-glow.webp'),
+        assetPath('img/mouse/mouse-side-glow.webp'),
+        assetPath('img/mouse/mouse-front-glow.webp'),
+        assetPath('img/mouse/mouse-close-glow.webp')
       ],
       specs: [
         { icon: 'target', title: 'Capteur précis', text: 'Suivi rapide et fiable pour jouer avec précision.' },
@@ -118,10 +119,10 @@
       title: 'Tapis Gaming 30×70 cm',
       intro: 'Un tapis large pour stabiliser vos mouvements et valoriser visuellement votre bureau. Plusieurs designs sont proposés pour personnaliser votre setup.',
       images: [
-        '/assets/img/pads/pad-style-1.webp',
-        '/assets/img/pads/pad-style-2.webp',
-        '/assets/img/pads/pad-style-3.webp',
-        '/assets/img/pads/pad-style-4.webp'
+        assetPath('img/pads/pad-style-1.webp'),
+        assetPath('img/pads/pad-style-2.webp'),
+        assetPath('img/pads/pad-style-3.webp'),
+        assetPath('img/pads/pad-style-4.webp')
       ],
       specs: [
         { icon: 'size', title: 'Dimension 30×70 cm', text: 'Espace confortable pour souris et clavier.' },
@@ -138,12 +139,12 @@
         ...productData.keyboard,
         label: '01 · كلافية Gaming RGB',
         title: 'كلافية Gaming RGB',
-        intro: 'كلافية مصممة باستجابة سريعة وإضاءة RGB واضحة باش تكمل الـsetup ديالك وتخدم مزيان فاللعب والاستعمال اليومي.',
+        intro: 'كلافية بإضاءة RGB واستجابة سريعة، مناسبة للغيمينغ والاستعمال اليومي وكتكمل الـSetup ديالك بشكل واضح.',
         specs: [
-          { icon: 'keyboard', title: 'إضاءة RGB', text: 'إضاءة غيمينغ كتزيد شكل مميز للـsetup.' },
+          { icon: 'keyboard', title: 'إضاءة RGB', text: 'إضاءة RGB كتزيد لمسة غيمينغ واضحة للـSetup.' },
           { icon: 'response', title: 'أزرار سريعة الاستجابة', text: 'كتابة سلسة واستجابة سريعة فالاستعمال اليومي.' },
           { icon: 'shield', title: 'Anti-ghosting', text: 'تحكم أدق ملي كتضغط على عدة أزرار بسرعة.' },
-          { icon: 'target', title: 'حجم كامل', text: 'تنظيم عملي للغيمينغ والخدمة.' }
+          { icon: 'target', title: 'حجم كامل', text: 'حجم كامل ومناسب للغيمينغ والاستعمال اليومي.' }
         ]
       },
       mouse: {
@@ -155,19 +156,19 @@
           { icon: 'target', title: 'مستشعر دقيق', text: 'تتبع سريع وموثوق للحركات.' },
           { icon: 'feather', title: 'تصميم خفيف', text: 'قبضة مريحة وحركة أسلس.' },
           { icon: 'mouse', title: 'تحكم سهل', text: 'أزرار سهلة الوصول واستعمال مريح.' },
-          { icon: 'shield', title: 'جودة Logitech', text: 'اختيار معروف فالـsetup من ناحية الاستعمال والاعتمادية.' }
+          { icon: 'shield', title: 'جودة Logitech', text: 'ماوس Logitech معروفة بسهولة الاستعمال والتحكم المريح.' }
         ]
       },
       pad: {
         ...productData.pad,
         label: '03 · تابيس Gaming 30×70 سم',
         title: 'تابيس Gaming 30×70 سم',
-        intro: 'تابيس كبير كيخلي حركة الماوس مستقرة وكيعطي للمكتب شكل منظم. كاينين عدة ديزاينات باش تختار اللي مناسب ليك.',
+        intro: 'تابيس كبير كيخلي حركة الماوس مستقرة وكيعطي للمكتب شكل منظم. كاينين عدة تصاميم باش تختار الشكل اللي مناسب للـSetup ديالك.',
         specs: [
           { icon: 'size', title: 'قياس 30×70 سم', text: 'مساحة مريحة للماوس والكلافية.' },
           { icon: 'glide', title: 'حركة سلسة', text: 'سطح مناسب للحركات الطويلة والدقيقة.' },
           { icon: 'base', title: 'قاعدة ثابتة', text: 'ثبات أحسن فوق المكتب.' },
-          { icon: 'target', title: 'ديزاين على اختيارك', text: 'اختار الستايل اللي مناسب للـsetup ديالك.' }
+          { icon: 'target', title: 'تصميم على اختيارك', text: 'اختار التصميم اللي مناسب للـSetup ديالك.' }
         ]
       }
     });
@@ -416,7 +417,7 @@
     if (!reviewsTrack) return;
 
     if (!items.length) {
-      reviewsTrack.innerHTML = `<div class="reviews-empty">${i18n('Aucun avis publié pour le moment. Soyez le premier à partager votre expérience.', 'ما كاين حتى رأي منشور حالياً. كون أول واحد يشارك تجربتو.')}</div>`;
+      reviewsTrack.innerHTML = `<div class="reviews-empty">${i18n('Aucun avis publié pour le moment. Soyez le premier à partager votre expérience.', 'ما كاين حتى رأي منشور حالياً. تقدر تكون أول واحد يشارك تجربته.')}</div>`;
       if (reviewsMoreWrap) reviewsMoreWrap.hidden = true;
       setStats([]);
       syncMobileDots();
@@ -502,12 +503,12 @@
     const city = $('#reviewCity').value.trim();
     const review = $('#reviewText').value.trim();
     if (!rating || !name || !review) {
-      formStatus.textContent = i18n('Merci de compléter la note, le nom et votre avis.', 'عمر التقييم والاسم والرأي ديالك.');
+      formStatus.textContent = i18n('Merci de compléter la note, le nom et votre avis.', 'كمّل التقييم والاسم والرأي ديالك.');
       return;
     }
     formStatus.textContent = i18n('Envoi en cours...', 'جاري الإرسال...');
     if (!supa) {
-      formStatus.textContent = i18n('Service d’avis temporairement indisponible. Réessayez dans quelques instants.', 'خدمة الآراء غير متوفرة مؤقتاً. عاود حاول من بعد.');
+      formStatus.textContent = i18n('Service d’avis temporairement indisponible. Réessayez dans quelques instants.', 'خدمة الآراء غير متوفرة مؤقتاً. حاول مرة أخرى بعد قليل.');
       return;
     }
     try {
@@ -527,7 +528,7 @@
       setTimeout(closeReviewModal, 1100);
     } catch (err) {
       console.warn('Review submission failed:', err);
-      formStatus.textContent = i18n('Une erreur est survenue. Réessayez dans quelques instants.', 'وقع مشكل. عاود حاول من بعد.');
+      formStatus.textContent = i18n('Une erreur est survenue. Réessayez dans quelques instants.', 'وقع مشكل. حاول مرة أخرى بعد قليل.');
     }
   });
 
@@ -549,20 +550,20 @@
   $$('[data-close-order]').forEach(btn => btn.addEventListener('click', closeOrder));
 
   const padDesigns = [
-    { slug:'msi-dragon', name:'MSI Dragon', image:'/assets/img/pads/pad-msi-dragon.webp' },
-    { slug:'msi-red', name:'MSI Red', image:'/assets/img/pads/pad-msi-red.webp' },
-    { slug:'rog-black', name:'ROG Black', image:'/assets/img/pads/pad-rog-black.webp' },
-    { slug:'style-1', name:'Style 1', image:'/assets/img/pads/pad-style-1.webp' },
-    { slug:'style-2', name:'Style 2', image:'/assets/img/pads/pad-style-2.webp' },
-    { slug:'style-3', name:'Style 3', image:'/assets/img/pads/pad-style-3.webp' },
-    { slug:'style-4', name:'Style 4', image:'/assets/img/pads/pad-style-4.webp' },
-    { slug:'union-jack', name:'Union Jack', image:'/assets/img/pads/pad-union-jack.webp' },
-    { slug:'rog-crimson', name:'ROG Crimson', image:'/assets/img/pads/pad-rog-crimson.webp' },
-    { slug:'rog-spectrum', name:'ROG Spectrum', image:'/assets/img/pads/pad-rog-spectrum.webp' },
-    { slug:'rog-city', name:'ROG City', image:'/assets/img/pads/pad-rog-city.webp' },
-    { slug:'msi-splash', name:'MSI Splash', image:'/assets/img/pads/pad-msi-splash.webp' },
-    { slug:'logitech-blue', name:'Logitech Blue', image:'/assets/img/pads/pad-logitech-blue.webp' },
-    { slug:'razer-green', name:'Razer Green', image:'/assets/img/pads/pad-razer-acid-green.webp' }
+    { slug:'msi-dragon', name:'MSI Dragon', image:assetPath('img/pads/pad-msi-dragon.webp') },
+    { slug:'msi-red', name:'MSI Red', image:assetPath('img/pads/pad-msi-red.webp') },
+    { slug:'rog-black', name:'ROG Black', image:assetPath('img/pads/pad-rog-black.webp') },
+    { slug:'style-1', name:'Style 1', image:assetPath('img/pads/pad-style-1.webp') },
+    { slug:'style-2', name:'Style 2', image:assetPath('img/pads/pad-style-2.webp') },
+    { slug:'style-3', name:'Style 3', image:assetPath('img/pads/pad-style-3.webp') },
+    { slug:'style-4', name:'Style 4', image:assetPath('img/pads/pad-style-4.webp') },
+    { slug:'union-jack', name:'Union Jack', image:assetPath('img/pads/pad-union-jack.webp') },
+    { slug:'rog-crimson', name:'ROG Crimson', image:assetPath('img/pads/pad-rog-crimson.webp') },
+    { slug:'rog-spectrum', name:'ROG Spectrum', image:assetPath('img/pads/pad-rog-spectrum.webp') },
+    { slug:'rog-city', name:'ROG City', image:assetPath('img/pads/pad-rog-city.webp') },
+    { slug:'msi-splash', name:'MSI Splash', image:assetPath('img/pads/pad-msi-splash.webp') },
+    { slug:'logitech-blue', name:'Logitech Blue', image:assetPath('img/pads/pad-logitech-blue.webp') },
+    { slug:'razer-green', name:'Razer Green', image:assetPath('img/pads/pad-razer-acid-green.webp') }
   ];
   const padGrid = $('#padGrid');
   const summaryPad = $('#summaryPad');
@@ -661,7 +662,7 @@
     submitOrderBtn.classList.add('loading');
     const payload = buildPayload();
 
-    const redirectSuccess = () => { window.location.href = isAR ? '/ar/merci.html' : '/merci.html'; };
+    const redirectSuccess = () => { window.location.href = 'merci.html'; };
 
     try {
       if (!supa) throw new Error(i18n('Service de commande indisponible', 'خدمة الطلب غير متوفرة'));
@@ -681,7 +682,7 @@
       setTimeout(redirectSuccess, 600);
     } catch (err) {
       console.warn('Order submission failed:', err);
-      submitStatus.textContent = i18n('Impossible d’envoyer la commande pour le moment. Réessayez dans quelques instants.', 'ما قدرناش نصيفطو الطلب دابا. عاود حاول من بعد.');
+      submitStatus.textContent = i18n('Impossible d’envoyer la commande pour le moment. Réessayez dans quelques instants.', 'ما قدرناش نرسلو الطلب دابا. حاول مرة أخرى بعد قليل.');
       submitOrderBtn.classList.remove('loading');
     }
   });

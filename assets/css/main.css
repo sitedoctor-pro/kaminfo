@@ -1346,3 +1346,63 @@ html[dir="rtl"] .hero-title-second .shimmer-text,html[dir="rtl"] .hero .lead [di
 @media (max-width:1080px){html[dir="rtl"] .hero h1{font-size:clamp(50px,6.2vw,66px)}}
 @media (max-width:760px){html[dir="rtl"] .hero h1{font-size:clamp(38px,10.4vw,48px);line-height:1;letter-spacing:-.025em}html[dir="rtl"] .hero-title-second{gap:.1em}}
 @media (max-width:380px){html[dir="rtl"] .hero h1{font-size:36px}}
+
+
+/* Language switcher + Arabic readability/RTL hardening */
+.lang-flag{display:inline-flex;align-items:center;justify-content:center;font-size:18px;line-height:1;flex:0 0 auto}
+.language-switcher{gap:6px}
+.language-switcher a,.language-switcher .lang-option{gap:7px;white-space:nowrap}
+.language-switcher .is-current,.mobile-language-link.is-current,.policy-language.is-current,.thankyou-language-switcher .is-current{background:rgba(22,140,255,.13);border-color:rgba(84,181,255,.36);color:#fff;cursor:default}
+.mobile-language-switcher{display:none;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin:6px 0 14px}
+.mobile-language-switcher .mobile-language-link{display:flex;margin:0;gap:8px;min-width:0}
+.policy-language-switcher,.thankyou-language-switcher{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.policy-language-switcher .policy-language,.thankyou-language-switcher>a,.thankyou-language-switcher>span{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:0 13px;border:1px solid rgba(78,164,244,.24);border-radius:12px;background:rgba(6,20,33,.82);color:#dff2ff;text-decoration:none;font-size:13px;font-weight:800}
+.thankyou-language-switcher{justify-content:center;margin:0 0 22px}
+.thankyou-language-switcher>a:hover,.policy-language-switcher a:hover{background:#0a2a45;border-color:rgba(84,181,255,.5);color:#fff}
+
+html[lang^="ar"] body{font-family:"Tajawal","DM Sans",system-ui,sans-serif;font-size:18px;line-height:1.75;letter-spacing:0;font-weight:500}
+html[lang^="ar"] h1,html[lang^="ar"] h2,html[lang^="ar"] h3,html[lang^="ar"] h4,html[lang^="ar"] button,html[lang^="ar"] input,html[lang^="ar"] textarea{font-family:"Tajawal",system-ui,sans-serif}
+html[lang^="ar"] p,html[lang^="ar"] li,html[lang^="ar"] .faq-answer-inner,html[lang^="ar"] .policy-item p,html[lang^="ar"] .success-lead{line-height:1.8}
+html[lang^="ar"] .hero .lead{font-size:18px;line-height:1.75}
+html[lang^="ar"] .section-head p,html[lang^="ar"] .section-heading p,html[lang^="ar"] .video-copy p,html[lang^="ar"] .product-kicker,html[lang^="ar"] .benefit-copy p,html[lang^="ar"] .reminder-copy>p{font-size:16px;line-height:1.8}
+html[lang^="ar"] .product-copy li small,html[lang^="ar"] .mini-trust,html[lang^="ar"] .micro-trust,html[lang^="ar"] .faq-answer-inner,html[lang^="ar"] .footer p,html[lang^="ar"] .footer a{font-size:14px;line-height:1.75}
+html[lang^="ar"] .faq-title,html[lang^="ar"] .details-btn,html[lang^="ar"] .cta,html[lang^="ar"] .nav-cta,html[lang^="ar"] .footer-order,html[lang^="ar"] .primary,html[lang^="ar"] .secondary,html[lang^="ar"] .submit-review{font-size:15px}
+html[lang^="ar"] .desktop-nav a{font-size:14px}
+html[lang^="ar"] .brand-copy small{font-size:10px}
+html[lang^="ar"] .topbar{font-size:13px}
+
+html[dir="rtl"],html[dir="rtl"] body,html[dir="rtl"] main,html[dir="rtl"] .modal,html[dir="rtl"] .review-modal,html[dir="rtl"] .order-modal{direction:rtl}
+html[dir="rtl"] .navrow,html[dir="rtl"] .desktop-nav,html[dir="rtl"] .hero-actions,html[dir="rtl"] .price,html[dir="rtl"] .mini-trust,html[dir="rtl"] .benefit-stack,html[dir="rtl"] .product-grid,html[dir="rtl"] .reviews-toolbar,html[dir="rtl"] .pack-price,html[dir="rtl"] .price-row,html[dir="rtl"] .micro-trust,html[dir="rtl"] .footer-grid,html[dir="rtl"] .policy-top,html[dir="rtl"] .success-actions{direction:rtl}
+html[dir="rtl"] .product-card,html[dir="rtl"] .benefit-card,html[dir="rtl"] .video-card,html[dir="rtl"] .review-card,html[dir="rtl"] .faq-item,html[dir="rtl"] .footer-card,html[dir="rtl"] .policy-item,html[dir="rtl"] .success-card{text-align:right}
+html[dir="rtl"] .product-copy ul,html[dir="rtl"] .product-copy li{direction:rtl;text-align:right}
+html[dir="rtl"] .product-copy li{grid-template-columns:auto 1fr}
+html[dir="rtl"] .wizard-actions,html[dir="rtl"] .success-actions,html[dir="rtl"] .policy-actions{direction:rtl}
+html[dir="rtl"] [dir="ltr"],html[dir="rtl"] .review-stars,html[dir="rtl"] input[type="tel"]{unicode-bidi:isolate;direction:ltr}
+html[dir="rtl"] .price [dir="ltr"],html[dir="rtl"] .price-row del,html[dir="rtl"] .order-summary strong{unicode-bidi:isolate;direction:ltr;display:inline-block}
+html[dir="rtl"] .language-switcher{margin-inline-start:auto;margin-inline-end:10px;direction:rtl}
+html[dir="rtl"] .policy-language-switcher,html[dir="rtl"] .thankyou-language-switcher{direction:rtl}
+
+@media (max-width:980px){
+  .mobile-language-switcher{display:grid}
+  .mobile-language-link{display:flex}
+}
+@media (max-width:760px){
+  html[lang^="ar"] body{font-size:17px;line-height:1.75}
+  html[lang^="ar"] .hero .lead{font-size:16px}
+  html[lang^="ar"] .section-head p,html[lang^="ar"] .section-heading p,html[lang^="ar"] .video-copy p,html[lang^="ar"] .benefit-copy p,html[lang^="ar"] .reminder-copy>p{font-size:15px}
+  html[lang^="ar"] .faq-title{font-size:15px;line-height:1.55}
+  html[lang^="ar"] .faq-answer-inner{font-size:14px;line-height:1.8}
+}
+
+
+html[dir="rtl"] .hero-components{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:.18em .28em;direction:rtl;max-width:100%}
+html[dir="rtl"] .hero-components>span{display:inline-flex;align-items:baseline;gap:.16em;white-space:nowrap}
+html[dir="rtl"] .hero-components i{font-style:normal;color:inherit;opacity:.9}
+html[dir="rtl"] .hero-components [dir="ltr"]{direction:ltr;unicode-bidi:isolate}
+.language-switcher [lang="fr"],.mobile-language-switcher [lang="fr"],.policy-language-switcher [lang="fr"],.thankyou-language-switcher [lang="fr"]{direction:ltr;unicode-bidi:isolate}
+.language-switcher [lang="ar"],.mobile-language-switcher [lang="ar"],.policy-language-switcher [lang="ar"],.thankyou-language-switcher [lang="ar"]{direction:rtl}
+@media (max-width:760px){html[dir="rtl"] .hero-components{font-size:clamp(20px,6vw,24px);line-height:1.5;gap:.08em .22em}}
+/* Keep the Arabic two-line hero fully inside its copy column with the longer Arabic currency label. */
+html[dir="rtl"] .hero h1{font-size:clamp(48px,4.3vw,62px)}
+@media (max-width:760px){html[dir="rtl"] .hero h1{font-size:clamp(38px,10.4vw,48px)}}
+@media (max-width:380px){html[dir="rtl"] .hero h1{font-size:36px}}
