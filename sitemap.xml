@@ -1,7 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://kaminfo.shop/</loc>
-    <lastmod>2026-09-14</lastmod>
+    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr-MA" href="https://kaminfo.shop/"/>
+    <xhtml:link rel="alternate" hreflang="ar-MA" href="https://kaminfo.shop/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kaminfo.shop/"/>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/hero-gaming-pack.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/keyboard/keyboard-box.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/keyboard/keyboard-lifestyle.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/keyboard/keyboard-top.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/mouse/mouse-blue-glow.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/mouse/mouse-close-glow.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/mouse/mouse-front-glow.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/mouse/mouse-side-glow.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/order-pack-premium.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-logitech-blue.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-msi-dragon.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-msi-red.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-msi-splash.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-razer-acid-green.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-rog-black.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-rog-city.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-rog-crimson.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-rog-spectrum.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-style-1.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-style-2.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-style-3.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-style-4.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-union-jack.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://kaminfo.shop/ar/</loc>
+    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr-MA" href="https://kaminfo.shop/"/>
+    <xhtml:link rel="alternate" hreflang="ar-MA" href="https://kaminfo.shop/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kaminfo.shop/"/>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/hero-gaming-pack.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/keyboard/keyboard-box.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/keyboard/keyboard-lifestyle.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/keyboard/keyboard-top.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/mouse/mouse-blue-glow.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/mouse/mouse-close-glow.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/mouse/mouse-front-glow.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/mouse/mouse-side-glow.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/order-pack-premium.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-logitech-blue.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-msi-dragon.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-msi-red.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-msi-splash.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-razer-acid-green.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-rog-black.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-rog-city.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-rog-crimson.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-rog-spectrum.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-style-1.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-style-2.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-style-3.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-style-4.webp</image:loc></image:image>
+    <image:image><image:loc>https://kaminfo.shop/assets/img/pads/pad-union-jack.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://kaminfo.shop/policies.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr-MA" href="https://kaminfo.shop/policies.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-MA" href="https://kaminfo.shop/ar/policies.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kaminfo.shop/policies.html"/>
+  </url>
+  <url>
+    <loc>https://kaminfo.shop/ar/policies.html</loc>
+    <lastmod>2026-09-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr-MA" href="https://kaminfo.shop/policies.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-MA" href="https://kaminfo.shop/ar/policies.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kaminfo.shop/policies.html"/>
   </url>
 </urlset>

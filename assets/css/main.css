@@ -1259,3 +1259,90 @@ body.all-reviews-open{
     transition:none !important;
   }
 }
+
+/* V11 — multilingual, image SEO, accessibility and policy pages */
+.hero-bg{background:none!important;overflow:hidden}
+.hero-bg img{display:block;width:100%;height:100%;object-fit:cover;object-position:center right}
+
+.language-switcher{display:flex;align-items:center;justify-content:center;margin-inline-start:auto;margin-inline-end:10px}
+.language-switcher a,.mobile-language-link,.policy-language{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 13px;border:1px solid rgba(78,164,244,.24);border-radius:12px;background:rgba(6,20,33,.82);color:#dff2ff;text-decoration:none;font-size:12px;font-weight:800;transition:.22s ease}
+.language-switcher a:hover,.mobile-language-link:hover,.policy-language:hover{background:#0a2a45;border-color:rgba(84,181,255,.5);color:#fff;transform:translateY(-1px)}
+.mobile-language-link{display:none;width:100%;margin:6px 0 14px}
+.footer-policy-link{color:#75c5ff!important;text-decoration:none;font-weight:700}
+
+:where(a,button,input,textarea,[tabindex]):focus-visible{outline:3px solid rgba(89,190,255,.85);outline-offset:3px}
+section[id]{scroll-margin-top:90px}
+
+/* Arabic / RTL */
+html[lang^="ar"] body{font-family:"Tajawal","DM Sans",system-ui,sans-serif;letter-spacing:0}
+html[lang^="ar"] h1,html[lang^="ar"] h2,html[lang^="ar"] h3,html[lang^="ar"] .brand-copy b,html[lang^="ar"] .price strong,html[lang^="ar"] .pack-price strong{font-family:"Tajawal","Sora",system-ui,sans-serif;letter-spacing:0}
+html[dir="rtl"] .hero::before{background:linear-gradient(270deg,rgba(1,6,12,.98) 0%,rgba(1,6,12,.85) 32%,rgba(1,6,12,.46) 62%,rgba(1,6,12,.18) 100%)}
+html[dir="rtl"] .hero-bg img{object-position:center right}
+html[dir="rtl"] .hero .copy,html[dir="rtl"] .section-head,html[dir="rtl"] .product-copy,html[dir="rtl"] .video-copy,html[dir="rtl"] .faq-copy,html[dir="rtl"] .order-copy,html[dir="rtl"] .footer-column,html[dir="rtl"] .form-head,html[dir="rtl"] .step-heading{text-align:right}
+html[dir="rtl"] .hero .copy{margin-inline-start:auto}
+html[dir="rtl"] .hero-actions,html[dir="rtl"] .mini-trust,html[dir="rtl"] .price{justify-content:flex-start}
+html[dir="rtl"] .desktop-nav,html[dir="rtl"] .topbar-inner,html[dir="rtl"] .topbar-benefits,html[dir="rtl"] .topbar-right,html[dir="rtl"] .brand,html[dir="rtl"] .reviewer,html[dir="rtl"] .video-meta,html[dir="rtl"] .benefit-card{direction:rtl}
+html[dir="rtl"] .verified{margin-left:0;margin-right:auto}
+html[dir="rtl"] .carousel-arrow.prev{left:auto;right:-68px}
+html[dir="rtl"] .carousel-arrow.next{right:auto;left:-68px}
+html[dir="rtl"] .cta svg,html[dir="rtl"] .order-btn svg,html[dir="rtl"] .next-step svg,html[dir="rtl"] .submit-order svg,html[dir="rtl"] .details-btn span,html[dir="rtl"] .mobile-menu nav a svg{transform:scaleX(-1)}
+html[dir="rtl"] .mobile-menu nav a{grid-template-columns:34px 1fr 18px;text-align:right}
+html[dir="rtl"] .form-grid label,html[dir="rtl"] .fields label,html[dir="rtl"] .rating-field{text-align:right}
+html[dir="rtl"] input,html[dir="rtl"] textarea{text-align:right;direction:rtl}
+html[dir="rtl"] input[type="tel"]{direction:ltr;text-align:right}
+html[dir="rtl"] .faq-question{text-align:right}
+html[dir="rtl"] .wa-panel,html[dir="rtl"] .wizard,html[dir="rtl"] .review-dialog,html[dir="rtl"] .all-reviews-dialog{direction:rtl;text-align:right}
+html[dir="rtl"] .wa-input input{direction:rtl;text-align:right}
+html[dir="rtl"] .review-stars{direction:ltr}
+html[dir="rtl"] .review-card{text-align:right}
+html[dir="rtl"] .order-summary{text-align:right}
+html[dir="rtl"] .modal-content{text-align:right}
+
+/* Policy pages */
+.policy-page{min-height:100vh;background:radial-gradient(circle at 80% 0,rgba(22,140,255,.13),transparent 34%),#02070d;color:#f5f9fd}
+.policy-shell{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:48px 0 64px}
+.policy-card{padding:34px;border:1px solid rgba(75,158,235,.24);border-radius:28px;background:linear-gradient(145deg,rgba(8,23,37,.98),rgba(3,10,18,.98));box-shadow:0 30px 100px rgba(0,0,0,.38)}
+.policy-top{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:40px}
+.policy-brand{text-decoration:none;color:#fff}
+.policy-brand img{border-radius:14px;object-fit:cover}
+.policy-card>.eyebrow{margin:0 0 9px;color:#58b7ff;font-weight:800;letter-spacing:.16em;font-size:11px}
+.policy-card>h1{margin:0;font-family:"Sora",sans-serif;font-size:clamp(36px,5vw,64px);line-height:1.02;letter-spacing:-.05em}
+.policy-lead{max-width:720px;margin:16px 0 34px;color:#aebfd0;font-size:17px;line-height:1.75}
+.policy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.policy-item{padding:24px;border:1px solid rgba(74,151,224,.18);border-radius:20px;background:rgba(7,20,33,.7)}
+.policy-item h2{margin:0 0 10px;font-size:20px;letter-spacing:-.025em}
+.policy-item p{margin:0;color:#b6c6d5;font-size:14px;line-height:1.8}
+.policy-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+.policy-actions .cta{text-decoration:none;justify-content:center}
+.policy-whatsapp{min-height:58px;padding:0 20px;display:inline-flex;align-items:center;border:1px solid rgba(78,164,244,.28);border-radius:16px;background:#071726;color:#e8f6ff;text-decoration:none;font-weight:800}
+.policy-whatsapp:hover{background:#0b2943}
+html[dir="rtl"] .policy-card>h1,html[dir="rtl"] .policy-card>.eyebrow,html[dir="rtl"] .policy-lead,html[dir="rtl"] .policy-item{text-align:right}
+
+/* Confirmation page RTL */
+html[dir="rtl"] .success-card,html[dir="rtl"] .success-steps{text-align:right}
+html[dir="rtl"] .success-actions{direction:rtl}
+
+@media(max-width:980px){
+  .language-switcher{display:none}
+  .mobile-language-link{display:inline-flex}
+  html[dir="rtl"] .carousel-arrow.prev{right:8px}
+  html[dir="rtl"] .carousel-arrow.next{left:8px}
+}
+@media(max-width:700px){
+  .policy-shell{width:min(100% - 20px,1120px);padding:18px 0 30px}
+  .policy-card{padding:22px 16px;border-radius:22px}
+  .policy-top{margin-bottom:28px}
+  .policy-grid{grid-template-columns:1fr}
+  .policy-card>h1{font-size:36px}
+  .policy-actions>a{width:100%}
+  .hero-bg img{object-position:63% center}
+  html[dir="rtl"] .hero-bg img{object-position:65% center}
+}
+
+/* Arabic hero typography: keep mixed Arabic/Latin price text inside the approved hero composition. */
+html[dir="rtl"] .hero h1{font-family:"Tajawal","Sora",sans-serif;font-size:clamp(54px,5.6vw,82px);line-height:.96;letter-spacing:-.035em;text-transform:none}
+html[dir="rtl"] .hero-title-second{justify-content:flex-start;max-width:100%;direction:rtl}
+html[dir="rtl"] .hero-title-second .shimmer-text,html[dir="rtl"] .hero .lead [dir="ltr"],html[dir="rtl"] .price [dir="ltr"]{unicode-bidi:isolate}
+@media (max-width:1080px){html[dir="rtl"] .hero h1{font-size:clamp(50px,6.2vw,66px)}}
+@media (max-width:760px){html[dir="rtl"] .hero h1{font-size:clamp(38px,10.4vw,48px);line-height:1;letter-spacing:-.025em}html[dir="rtl"] .hero-title-second{gap:.1em}}
+@media (max-width:380px){html[dir="rtl"] .hero h1{font-size:36px}}

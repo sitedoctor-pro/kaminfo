@@ -2,10 +2,12 @@
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
   const body = document.body;
+  const isAR = document.documentElement.lang.toLowerCase().startsWith('ar');
+  const i18n = (fr, ar) => isAR ? ar : fr;
+  const hasArabic = (value = '') => /[\u0600-\u06FF]/.test(String(value));
 
   const year = $('#currentYear');
   if (year) year.textContent = new Date().getFullYear();
-  const header = $('#siteHeader');
   const mobileMenu = $('#mobileMenu');
   const burger = $('#burger');
 
@@ -14,7 +16,7 @@
     body.classList.toggle('menu-open', open);
     burger.classList.toggle('active', open);
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    burger.setAttribute('aria-label', open ? i18n('Fermer le menu', 'إغلاق القائمة') : i18n('Ouvrir le menu', 'فتح القائمة'));
     mobileMenu.classList.toggle('open', open);
     mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
     body.style.overflow = open ? 'hidden' : '';
@@ -49,7 +51,7 @@
       const rect = section.getBoundingClientRect();
       if (rect.top <= threshold && rect.bottom > threshold) current = section.id;
     });
-    headerLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === `#${current}`));
+    headerLinks.forEach(a => { const active = a.getAttribute('href') === `#${current}`; a.classList.toggle('is-active', active); if (active) a.setAttribute('aria-current','location'); else a.removeAttribute('aria-current'); });
   };
   window.addEventListener('scroll', setActiveLink, { passive: true });
   window.addEventListener('scroll', () => {
@@ -72,6 +74,10 @@
 
   const lockBody = () => { body.style.overflow = 'hidden'; };
   const unlockBody = () => { if (!body.classList.contains('menu-open')) body.style.overflow = ''; };
+  let lastModalTrigger = null;
+  const rememberTrigger = () => { lastModalTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null; };
+  const focusDialog = (root) => window.setTimeout(() => root?.querySelector('button,[href],input,textarea,[tabindex]:not([tabindex=\"-1\"])')?.focus(), 40);
+  const restoreTrigger = () => window.setTimeout(() => lastModalTrigger?.focus?.(), 20);
 
   const productData = {
     keyboard: {
@@ -79,9 +85,9 @@
       title: 'Clavier Gaming RGB',
       intro: 'Un clavier pensé pour offrir une frappe réactive, un look RGB marqué et une présence forte sur le bureau. Il complète parfaitement le pack KAM INFO.',
       images: [
-        'assets/img/keyboard/keyboard-top.webp',
-        'assets/img/keyboard/keyboard-lifestyle.webp',
-        'assets/img/keyboard/keyboard-box.webp'
+        '/assets/img/keyboard/keyboard-top.webp',
+        '/assets/img/keyboard/keyboard-lifestyle.webp',
+        '/assets/img/keyboard/keyboard-box.webp'
       ],
       specs: [
         { icon: 'keyboard', title: 'Rétroéclairage RGB', text: 'Effet lumineux gaming pour un setup plus immersif.' },
@@ -95,10 +101,10 @@
       title: 'Logitech G302',
       intro: 'Une souris légère et précise qui accompagne parfaitement le clavier du pack. Son design favorise la maîtrise et la rapidité des mouvements.',
       images: [
-        'assets/img/mouse/mouse-blue-glow.webp',
-        'assets/img/mouse/mouse-side-glow.webp',
-        'assets/img/mouse/mouse-front-glow.webp',
-        'assets/img/mouse/mouse-close-glow.webp'
+        '/assets/img/mouse/mouse-blue-glow.webp',
+        '/assets/img/mouse/mouse-side-glow.webp',
+        '/assets/img/mouse/mouse-front-glow.webp',
+        '/assets/img/mouse/mouse-close-glow.webp'
       ],
       specs: [
         { icon: 'target', title: 'Capteur précis', text: 'Suivi rapide et fiable pour jouer avec précision.' },
@@ -112,10 +118,10 @@
       title: 'Tapis Gaming 30×70 cm',
       intro: 'Un tapis large pour stabiliser vos mouvements et valoriser visuellement votre bureau. Plusieurs designs sont proposés pour personnaliser votre setup.',
       images: [
-        'assets/img/pads/pad-style-1.webp',
-        'assets/img/pads/pad-style-2.webp',
-        'assets/img/pads/pad-style-3.webp',
-        'assets/img/pads/pad-style-4.webp'
+        '/assets/img/pads/pad-style-1.webp',
+        '/assets/img/pads/pad-style-2.webp',
+        '/assets/img/pads/pad-style-3.webp',
+        '/assets/img/pads/pad-style-4.webp'
       ],
       specs: [
         { icon: 'size', title: 'Dimension 30×70 cm', text: 'Espace confortable pour souris et clavier.' },
@@ -125,6 +131,47 @@
       ]
     }
   };
+
+  if (isAR) {
+    Object.assign(productData, {
+      keyboard: {
+        ...productData.keyboard,
+        label: '01 · كلافية Gaming RGB',
+        title: 'كلافية Gaming RGB',
+        intro: 'كلافية مصممة باستجابة سريعة وإضاءة RGB واضحة باش تكمل الـsetup ديالك وتخدم مزيان فاللعب والاستعمال اليومي.',
+        specs: [
+          { icon: 'keyboard', title: 'إضاءة RGB', text: 'إضاءة غيمينغ كتزيد شكل مميز للـsetup.' },
+          { icon: 'response', title: 'أزرار سريعة الاستجابة', text: 'كتابة سلسة واستجابة سريعة فالاستعمال اليومي.' },
+          { icon: 'shield', title: 'Anti-ghosting', text: 'تحكم أدق ملي كتضغط على عدة أزرار بسرعة.' },
+          { icon: 'target', title: 'حجم كامل', text: 'تنظيم عملي للغيمينغ والخدمة.' }
+        ]
+      },
+      mouse: {
+        ...productData.mouse,
+        label: '02 · Logitech G302',
+        title: 'Logitech G302',
+        intro: 'ماوس خفيفة ودقيقة كتكمّل الكلافية ديال الباك وكتساعد على تحكم أسرع فالحركة.',
+        specs: [
+          { icon: 'target', title: 'مستشعر دقيق', text: 'تتبع سريع وموثوق للحركات.' },
+          { icon: 'feather', title: 'تصميم خفيف', text: 'قبضة مريحة وحركة أسلس.' },
+          { icon: 'mouse', title: 'تحكم سهل', text: 'أزرار سهلة الوصول واستعمال مريح.' },
+          { icon: 'shield', title: 'جودة Logitech', text: 'اختيار معروف فالـsetup من ناحية الاستعمال والاعتمادية.' }
+        ]
+      },
+      pad: {
+        ...productData.pad,
+        label: '03 · تابيس Gaming 30×70 سم',
+        title: 'تابيس Gaming 30×70 سم',
+        intro: 'تابيس كبير كيخلي حركة الماوس مستقرة وكيعطي للمكتب شكل منظم. كاينين عدة ديزاينات باش تختار اللي مناسب ليك.',
+        specs: [
+          { icon: 'size', title: 'قياس 30×70 سم', text: 'مساحة مريحة للماوس والكلافية.' },
+          { icon: 'glide', title: 'حركة سلسة', text: 'سطح مناسب للحركات الطويلة والدقيقة.' },
+          { icon: 'base', title: 'قاعدة ثابتة', text: 'ثبات أحسن فوق المكتب.' },
+          { icon: 'target', title: 'ديزاين على اختيارك', text: 'اختار الستايل اللي مناسب للـsetup ديالك.' }
+        ]
+      }
+    });
+  }
 
   const iconSvg = {
     keyboard: `<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M10 10h.01M13 10h.01M16 10h.01M7 13h10M7 16h7"/></svg>`,
@@ -155,8 +202,8 @@
     modalMainImage.src = product.images[0];
     modalMainImage.alt = product.title;
     modalThumbs.innerHTML = product.images.map((src, index) => `
-      <button type="button" class="${index === 0 ? 'active' : ''}" data-src="${src}" aria-label="Voir image ${index + 1}">
-        <img src="${src}" alt="${product.title} miniature ${index + 1}" loading="lazy" decoding="async">
+      <button type="button" class="${index === 0 ? 'active' : ''}" data-src="${src}" aria-label="${i18n('Voir image', 'شوف الصورة')} ${index + 1}">
+        <img src="${src}" alt="${product.title} ${i18n('miniature', 'صورة مصغرة')} ${index + 1}" loading="lazy" decoding="async">
       </button>`).join('');
     modalSpecs.innerHTML = product.specs.map(item => `
       <article class="spec-row">
@@ -169,35 +216,43 @@
       btn.classList.add('active');
       modalMainImage.src = btn.dataset.src;
     }));
+    rememberTrigger();
     productModal.classList.add('open');
     productModal.setAttribute('aria-hidden', 'false');
     lockBody();
+    focusDialog(productModal);
   };
   const closeProductModal = () => {
     productModal?.classList.remove('open');
     productModal?.setAttribute('aria-hidden', 'true');
     unlockBody();
+    restoreTrigger();
   };
   $$('[data-open-product]').forEach(btn => btn.addEventListener('click', () => openProductModal(btn.dataset.openProduct)));
   $$('[data-close-product]').forEach(btn => btn.addEventListener('click', closeProductModal));
 
   const reviewModal = $('#reviewModal');
   const openReviewModalBtn = $('#openReviewModal');
+  const openReviewModal = () => {
+    if (!reviewModal) return;
+    rememberTrigger();
+    reviewModal.classList.add('open');
+    reviewModal.setAttribute('aria-hidden', 'false');
+    lockBody();
+    focusDialog(reviewModal);
+  };
   const closeReviewModal = () => {
     reviewModal?.classList.remove('open');
     reviewModal?.setAttribute('aria-hidden', 'true');
     unlockBody();
+    restoreTrigger();
   };
-  openReviewModalBtn?.addEventListener('click', () => {
-    reviewModal?.classList.add('open');
-    reviewModal?.setAttribute('aria-hidden', 'false');
-    lockBody();
-  });
+  openReviewModalBtn?.addEventListener('click', openReviewModal);
   $$('[data-close-review]').forEach(btn => btn.addEventListener('click', closeReviewModal));
 
   let rating = 0;
   const starButtons = $$('#starPicker button');
-  const paintStars = (value) => starButtons.forEach(btn => btn.classList.toggle('active', Number(btn.dataset.rating) <= value));
+  const paintStars = (value) => starButtons.forEach(btn => { const active = Number(btn.dataset.rating) <= value; btn.classList.toggle('active', active); btn.setAttribute('aria-checked', Number(btn.dataset.rating) === value ? 'true' : 'false'); });
   starButtons.forEach(btn => {
     btn.addEventListener('mouseenter', () => paintStars(Number(btn.dataset.rating)));
     btn.addEventListener('click', () => { rating = Number(btn.dataset.rating); paintStars(rating); });
@@ -213,28 +268,30 @@
   const starsLabel = (note) => `${note.toFixed(1)}`;
   const escapeHTML = (value = '') => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const renderReviewCard = (review) => {
-    const name = (review.customer_name || 'Client').trim();
-    const city = (review.city || 'Maroc').trim();
+    const name = (review.customer_name || i18n('Client', 'زبون')).trim();
+    const city = (review.city || i18n('Maroc', 'المغرب')).trim();
     const safeName = escapeHTML(name);
     const safeCity = escapeHTML(city);
     const initials = name.split(/\s+/).slice(0, 2).map(s => s[0]?.toUpperCase() || '').join('');
     const content = ((review.review_text ?? review.review) || '').trim();
     const safeContent = escapeHTML(content);
+    const reviewLang = hasArabic(name + city + content) ? 'ar' : 'fr';
+    const reviewDir = reviewLang === 'ar' ? 'rtl' : 'ltr';
     const note = Number(review.rating || 5);
     return `
       <article class="review-card">
         <div class="review-top">
-          <div class="review-stars" aria-label="${note} sur 5">${'★'.repeat(note)}${'☆'.repeat(5 - note)}</div>
+          <div class="review-stars" aria-label="${note} ${i18n('sur 5', 'من 5')}">${'★'.repeat(note)}${'☆'.repeat(5 - note)}</div>
           <span class="review-rating">${starsLabel(note)}/5</span>
         </div>
-        <p class="review-quote">${safeContent}</p>
+        <p class="review-quote" lang="${reviewLang}" dir="${reviewDir}">${safeContent}</p>
         <div class="reviewer">
           <div class="avatar">${initials || 'K'}</div>
           <div>
-            <strong>${safeName}</strong>
-            <small>${safeCity}</small>
+            <strong lang="${reviewLang}" dir="${reviewDir}">${safeName}</strong>
+            <small lang="${reviewLang}" dir="${reviewDir}">${safeCity}</small>
           </div>
-          <span class="verified" aria-label="Avis vérifié"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
+          <span class="verified" aria-label="${i18n('Avis vérifié', 'رأي تمت مراجعته')}"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
         </div>
       </article>`;
   };
@@ -349,7 +406,7 @@
     const items = reviewsState.items;
     allReviewsList.innerHTML = items.length
       ? items.map(renderReviewCard).join('')
-      : `<div class="reviews-empty">Aucun avis publié pour le moment.</div>`;
+      : `<div class="reviews-empty">${i18n('Aucun avis publié pour le moment.', 'ما كاين حتى رأي منشور حالياً.')}</div>`;
 
     $('#allReviewsModalCount') && ($('#allReviewsModalCount').textContent = String(items.length));
   };
@@ -359,7 +416,7 @@
     if (!reviewsTrack) return;
 
     if (!items.length) {
-      reviewsTrack.innerHTML = `<div class="reviews-empty">Aucun avis publié pour le moment. Soyez le premier à partager votre expérience.</div>`;
+      reviewsTrack.innerHTML = `<div class="reviews-empty">${i18n('Aucun avis publié pour le moment. Soyez le premier à partager votre expérience.', 'ما كاين حتى رأي منشور حالياً. كون أول واحد يشارك تجربتو.')}</div>`;
       if (reviewsMoreWrap) reviewsMoreWrap.hidden = true;
       setStats([]);
       syncMobileDots();
@@ -384,6 +441,7 @@
 
   const openAllReviews = () => {
     if (!allReviewsModal) return;
+    rememberTrigger();
     renderAllReviewsList();
     allReviewsModal.classList.add('open');
     allReviewsModal.setAttribute('aria-hidden', 'false');
@@ -396,6 +454,7 @@
     allReviewsModal.classList.remove('open');
     allReviewsModal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('all-reviews-open');
+    restoreTrigger();
   };
 
   $('#openAllReviews')?.addEventListener('click', openAllReviews);
@@ -443,12 +502,12 @@
     const city = $('#reviewCity').value.trim();
     const review = $('#reviewText').value.trim();
     if (!rating || !name || !review) {
-      formStatus.textContent = 'Merci de compléter la note, le nom et votre avis.';
+      formStatus.textContent = i18n('Merci de compléter la note, le nom et votre avis.', 'عمر التقييم والاسم والرأي ديالك.');
       return;
     }
-    formStatus.textContent = 'Envoi en cours...';
+    formStatus.textContent = i18n('Envoi en cours...', 'جاري الإرسال...');
     if (!supa) {
-      formStatus.textContent = 'Service d’avis temporairement indisponible. Réessayez dans quelques instants.';
+      formStatus.textContent = i18n('Service d’avis temporairement indisponible. Réessayez dans quelques instants.', 'خدمة الآراء غير متوفرة مؤقتاً. عاود حاول من بعد.');
       return;
     }
     try {
@@ -463,44 +522,47 @@
         referrer: document.referrer || null
       });
       if (error) throw error;
-      formStatus.textContent = 'Merci. Votre avis sera publié après validation.';
+      formStatus.textContent = i18n('Merci. Votre avis sera publié après validation.', 'شكراً. الرأي ديالك غادي يتنشر من بعد المراجعة.');
       reviewForm.reset(); rating = 0; paintStars(0);
       setTimeout(closeReviewModal, 1100);
     } catch (err) {
       console.warn('Review submission failed:', err);
-      formStatus.textContent = 'Une erreur est survenue. Réessayez dans quelques instants.';
+      formStatus.textContent = i18n('Une erreur est survenue. Réessayez dans quelques instants.', 'وقع مشكل. عاود حاول من بعد.');
     }
   });
 
   const orderModal = $('#orderModal');
   const openOrder = () => {
+    rememberTrigger();
     orderModal?.classList.add('open');
     orderModal?.setAttribute('aria-hidden', 'false');
     lockBody();
+    focusDialog(orderModal);
   };
   const closeOrder = () => {
     orderModal?.classList.remove('open');
     orderModal?.setAttribute('aria-hidden', 'true');
     unlockBody();
+    restoreTrigger();
   };
   $$('.js-open-order').forEach(btn => btn.addEventListener('click', openOrder));
   $$('[data-close-order]').forEach(btn => btn.addEventListener('click', closeOrder));
 
   const padDesigns = [
-    { slug:'msi-dragon', name:'MSI Dragon', image:'assets/img/pads/pad-msi-dragon.webp' },
-    { slug:'msi-red', name:'MSI Red', image:'assets/img/pads/pad-msi-red.webp' },
-    { slug:'rog-black', name:'ROG Black', image:'assets/img/pads/pad-rog-black.webp' },
-    { slug:'style-1', name:'Style 1', image:'assets/img/pads/pad-style-1.webp' },
-    { slug:'style-2', name:'Style 2', image:'assets/img/pads/pad-style-2.webp' },
-    { slug:'style-3', name:'Style 3', image:'assets/img/pads/pad-style-3.webp' },
-    { slug:'style-4', name:'Style 4', image:'assets/img/pads/pad-style-4.webp' },
-    { slug:'union-jack', name:'Union Jack', image:'assets/img/pads/pad-union-jack.webp' },
-    { slug:'rog-crimson', name:'ROG Crimson', image:'assets/img/pads/pad-rog-crimson.webp' },
-    { slug:'rog-spectrum', name:'ROG Spectrum', image:'assets/img/pads/pad-rog-spectrum.webp' },
-    { slug:'rog-city', name:'ROG City', image:'assets/img/pads/pad-rog-city.webp' },
-    { slug:'msi-splash', name:'MSI Splash', image:'assets/img/pads/pad-msi-splash.webp' },
-    { slug:'logitech-blue', name:'Logitech Blue', image:'assets/img/pads/pad-logitech-blue.webp' },
-    { slug:'razer-green', name:'Razer Green', image:'assets/img/pads/pad-razer-acid-green.webp' }
+    { slug:'msi-dragon', name:'MSI Dragon', image:'/assets/img/pads/pad-msi-dragon.webp' },
+    { slug:'msi-red', name:'MSI Red', image:'/assets/img/pads/pad-msi-red.webp' },
+    { slug:'rog-black', name:'ROG Black', image:'/assets/img/pads/pad-rog-black.webp' },
+    { slug:'style-1', name:'Style 1', image:'/assets/img/pads/pad-style-1.webp' },
+    { slug:'style-2', name:'Style 2', image:'/assets/img/pads/pad-style-2.webp' },
+    { slug:'style-3', name:'Style 3', image:'/assets/img/pads/pad-style-3.webp' },
+    { slug:'style-4', name:'Style 4', image:'/assets/img/pads/pad-style-4.webp' },
+    { slug:'union-jack', name:'Union Jack', image:'/assets/img/pads/pad-union-jack.webp' },
+    { slug:'rog-crimson', name:'ROG Crimson', image:'/assets/img/pads/pad-rog-crimson.webp' },
+    { slug:'rog-spectrum', name:'ROG Spectrum', image:'/assets/img/pads/pad-rog-spectrum.webp' },
+    { slug:'rog-city', name:'ROG City', image:'/assets/img/pads/pad-rog-city.webp' },
+    { slug:'msi-splash', name:'MSI Splash', image:'/assets/img/pads/pad-msi-splash.webp' },
+    { slug:'logitech-blue', name:'Logitech Blue', image:'/assets/img/pads/pad-logitech-blue.webp' },
+    { slug:'razer-green', name:'Razer Green', image:'/assets/img/pads/pad-razer-acid-green.webp' }
   ];
   const padGrid = $('#padGrid');
   const summaryPad = $('#summaryPad');
@@ -509,7 +571,7 @@
     if (!padGrid) return;
     padGrid.innerHTML = padDesigns.map((pad, i) => `
       <button class="pad-option ${i===0?'active':''}" type="button" data-pad="${pad.slug}" aria-label="${pad.name}">
-        <img src="${pad.image}" alt="Tapis gaming 30×70 cm — ${pad.name}" loading="lazy" decoding="async">
+        <img src="${pad.image}" alt="${i18n('Tapis gaming 30×70 cm', 'تابيس Gaming 30×70 سم')} — ${pad.name}" loading="lazy" decoding="async">
         <b>${pad.name}</b>
         <span class="pad-check"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span>
       </button>`).join('');
@@ -583,7 +645,7 @@
       product_name: 'KAM INFO Gaming Pack',
       unit_price: 289,
       currency: 'MAD',
-      source: 'landing_page',
+      source: isAR ? 'landing_page_ar' : 'landing_page',
       user_agent: navigator.userAgent,
       referrer: document.referrer || null,
       utm_source: params.get('utm_source'),
@@ -595,14 +657,14 @@
   orderForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!validateStep(2)) return;
-    submitStatus.textContent = 'Envoi de la commande...';
+    submitStatus.textContent = i18n('Envoi de la commande...', 'جاري إرسال الطلب...');
     submitOrderBtn.classList.add('loading');
     const payload = buildPayload();
 
-    const redirectSuccess = () => { window.location.href = 'merci.html'; };
+    const redirectSuccess = () => { window.location.href = isAR ? '/ar/merci.html' : '/merci.html'; };
 
     try {
-      if (!supa) throw new Error('Service de commande indisponible');
+      if (!supa) throw new Error(i18n('Service de commande indisponible', 'خدمة الطلب غير متوفرة'));
 
       let submitted = false;
       if (typeof window.submitGuestOrder === 'function') {
@@ -615,11 +677,11 @@
         const { error } = await supa.from('orders').insert(payload);
         if (error) throw error;
       }
-      submitStatus.textContent = 'Commande confirmée. Redirection...';
+      submitStatus.textContent = i18n('Commande confirmée. Redirection...', 'تم تأكيد الطلب. جاري التحويل...');
       setTimeout(redirectSuccess, 600);
     } catch (err) {
       console.warn('Order submission failed:', err);
-      submitStatus.textContent = 'Impossible d’envoyer la commande pour le moment. Réessayez dans quelques instants.';
+      submitStatus.textContent = i18n('Impossible d’envoyer la commande pour le moment. Réessayez dans quelques instants.', 'ما قدرناش نصيفطو الطلب دابا. عاود حاول من بعد.');
       submitOrderBtn.classList.remove('loading');
     }
   });
@@ -634,7 +696,7 @@
   const waInput = $('#waInput');
 
   const buildWhatsAppUrl = (message) => {
-    const text = (message || '').trim() || 'Salut KAM INFO, je souhaite des informations sur le Gaming Pack.';
+    const text = (message || '').trim() || i18n('Salut KAM INFO, je souhaite des informations sur le Gaming Pack.', 'سلام KAM INFO، بغيت معلومات على باك الغيمينغ.');
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
   };
 
@@ -684,6 +746,25 @@
     if (event.target.closest('#waWidget') || event.target.closest('#waToggleBtn')) return;
     closeWhatsAppPanel();
   });
+
+  const languageLinks = $$('[data-lang-link]');
+  const nearestSectionId = () => {
+    let best = null;
+    let bestDistance = Number.POSITIVE_INFINITY;
+    $$('main section[id]').forEach(section => {
+      const distance = Math.abs(section.getBoundingClientRect().top - 110);
+      if (distance < bestDistance) { best = section.id; bestDistance = distance; }
+    });
+    return location.hash ? location.hash.slice(1) : best;
+  };
+  languageLinks.forEach(link => link.addEventListener('click', event => {
+    const section = nearestSectionId();
+    if (!section) return;
+    const target = new URL(link.href, location.origin);
+    target.hash = section;
+    event.preventDefault();
+    location.href = target.pathname + target.hash;
+  }));
 
   const closeOnEscape = (e) => {
     if (e.key !== 'Escape') return;
