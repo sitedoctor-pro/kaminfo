@@ -1,0 +1,715 @@
+/* KAM INFO — Arabic / RTL design system
+   One source of truth for Arabic typography, spacing, direction and responsive behavior. */
+
+html[lang^="ar"] {
+  direction: rtl;
+  font-family: "Tajawal", system-ui, -apple-system, "Segoe UI", sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+html[lang^="ar"] body,
+html[lang^="ar"] button,
+html[lang^="ar"] input,
+html[lang^="ar"] textarea,
+html[lang^="ar"] select,
+html[lang^="ar"] p,
+html[lang^="ar"] li,
+html[lang^="ar"] small,
+html[lang^="ar"] label {
+  font-family: "Tajawal", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html[lang^="ar"] body {
+  direction: rtl;
+  font-size: 18px;
+  line-height: 1.78;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+html[lang^="ar"] h1,
+html[lang^="ar"] h2,
+html[lang^="ar"] h3,
+html[lang^="ar"] h4,
+html[lang^="ar"] .product-copy h3,
+html[lang^="ar"] .modal-content h2,
+html[lang^="ar"] .policy-card > h1,
+html[lang^="ar"] .success-card h1 {
+  font-family: "Tajawal", system-ui, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Keep the Latin brand and numeric prices crisp without forcing Latin fonts on Arabic copy. */
+html[lang^="ar"] .brand-copy b,
+html[lang^="ar"] .price strong,
+html[lang^="ar"] .price-row strong,
+html[lang^="ar"] .pack-price strong {
+  font-family: "Sora", "Tajawal", system-ui, sans-serif;
+}
+html[lang^="ar"] .brand-copy b { direction:ltr; unicode-bidi:isolate; letter-spacing:.06em; }
+
+/* Arabic should never inherit Latin tracking / uppercase treatment. */
+html[lang^="ar"] .eyebrow,
+html[lang^="ar"] .badge,
+html[lang^="ar"] .section-badge,
+html[lang^="ar"] .toolbar-kicker,
+html[lang^="ar"] .wizard-eyebrow,
+html[lang^="ar"] .step-heading > span,
+html[lang^="ar"] .success-kicker,
+html[lang^="ar"] .product-index,
+html[lang^="ar"] .modal-label,
+html[lang^="ar"] .modal-meta-card > span,
+html[lang^="ar"] .mobile-menu-heading,
+html[lang^="ar"] .mobile-social-card > p,
+html[lang^="ar"] .brand-copy small {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Global RTL layout. */
+html[dir="rtl"] body,
+html[dir="rtl"] main,
+html[dir="rtl"] .modal,
+html[dir="rtl"] .review-modal,
+html[dir="rtl"] .order-modal,
+html[dir="rtl"] .all-reviews-modal { direction: rtl; }
+
+html[dir="rtl"] .navrow,
+html[dir="rtl"] .desktop-nav,
+html[dir="rtl"] .topbar-inner,
+html[dir="rtl"] .topbar-benefits,
+html[dir="rtl"] .topbar-right,
+html[dir="rtl"] .hero-actions,
+html[dir="rtl"] .price,
+html[dir="rtl"] .mini-trust,
+html[dir="rtl"] .micro-trust,
+html[dir="rtl"] .benefit-stack,
+html[dir="rtl"] .product-grid,
+html[dir="rtl"] .reviews-toolbar,
+html[dir="rtl"] .pack-price,
+html[dir="rtl"] .price-row,
+html[dir="rtl"] .footer-grid,
+html[dir="rtl"] .policy-top,
+html[dir="rtl"] .policy-actions,
+html[dir="rtl"] .success-actions,
+html[dir="rtl"] .wizard-actions,
+html[dir="rtl"] .language-switcher,
+html[dir="rtl"] .mobile-language-switcher,
+html[dir="rtl"] .policy-language-switcher,
+html[dir="rtl"] .thankyou-language-switcher { direction: rtl; }
+
+html[dir="rtl"] .hero .copy,
+html[dir="rtl"] .section-heading,
+html[dir="rtl"] .section-head,
+html[dir="rtl"] .product-card,
+html[dir="rtl"] .product-copy,
+html[dir="rtl"] .benefit-card,
+html[dir="rtl"] .video-card,
+html[dir="rtl"] .video-copy,
+html[dir="rtl"] .review-card,
+html[dir="rtl"] .faq-item,
+html[dir="rtl"] .faq-copy,
+html[dir="rtl"] .faq-question,
+html[dir="rtl"] .faq-answer-inner,
+html[dir="rtl"] .order-copy,
+html[dir="rtl"] .footer-card,
+html[dir="rtl"] .footer-column,
+html[dir="rtl"] .form-head,
+html[dir="rtl"] .form-grid label,
+html[dir="rtl"] .fields label,
+html[dir="rtl"] .rating-field,
+html[dir="rtl"] .step-heading,
+html[dir="rtl"] .order-summary,
+html[dir="rtl"] .modal-content,
+html[dir="rtl"] .modal-meta-card,
+html[dir="rtl"] .modal-cta-box,
+html[dir="rtl"] .policy-card > h1,
+html[dir="rtl"] .policy-card > .eyebrow,
+html[dir="rtl"] .policy-lead,
+html[dir="rtl"] .policy-item,
+html[dir="rtl"] .mobile-menu-inner,
+html[dir="rtl"] .mobile-menu nav,
+html[dir="rtl"] .mobile-social-card,
+html[dir="rtl"] .wa-panel__body,
+html[dir="rtl"] .wa-q-btn { text-align: right; }
+
+/* One consistent right edge for section headings, instead of mixed center/right blocks. */
+html[dir="rtl"] .section-heading,
+html[dir="rtl"] .section-head {
+  margin-inline-start: 0;
+  margin-inline-end: auto;
+}
+html[dir="rtl"] .section-heading p,
+html[dir="rtl"] .section-head p {
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+/* Hero — one Arabic definition only. */
+html[dir="rtl"] .hero::before {
+  background: linear-gradient(270deg, rgba(1,6,12,.98) 0%, rgba(1,6,12,.85) 32%, rgba(1,6,12,.46) 62%, rgba(1,6,12,.18) 100%);
+}
+html[dir="rtl"] .hero-bg img { object-position: center right; }
+html[dir="rtl"] .hero .copy { margin-inline-start: auto; margin-inline-end: 0; }
+html[dir="rtl"] .hero h1 {
+  font-size: clamp(48px,4.3vw,62px);
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+html[dir="rtl"] .hero-title-second,
+html[dir="rtl"] .hero-components {
+  direction: rtl;
+  justify-content: flex-start;
+  max-width: 100%;
+}
+html[dir="rtl"] .hero-components {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.18em .28em;
+}
+html[dir="rtl"] .hero-components > span { display:inline-flex; align-items:baseline; gap:.16em; white-space:nowrap; }
+html[dir="rtl"] .hero-components i { font-style:normal; color:inherit; opacity:.9; }
+
+/* Readable Arabic sizes. */
+html[lang^="ar"] .hero .lead { font-size:18px; line-height:1.8; }
+html[lang^="ar"] .section-head p,
+html[lang^="ar"] .section-heading p,
+html[lang^="ar"] .video-copy p,
+html[lang^="ar"] .benefit-copy p,
+html[lang^="ar"] .reminder-copy > p,
+html[lang^="ar"] .product-desc,
+html[lang^="ar"] .modal-intro { font-size:16px; line-height:1.8; }
+html[lang^="ar"] .product-kicker,
+html[lang^="ar"] .product-copy li small,
+html[lang^="ar"] .spec-row small,
+html[lang^="ar"] .faq-answer-inner,
+html[lang^="ar"] .footer p,
+html[lang^="ar"] .footer a,
+html[lang^="ar"] .mini-trust,
+html[lang^="ar"] .micro-trust { font-size:15px; line-height:1.8; }
+html[lang^="ar"] .faq-title,
+html[lang^="ar"] .details-btn,
+html[lang^="ar"] .cta,
+html[lang^="ar"] .nav-cta,
+html[lang^="ar"] .footer-order,
+html[lang^="ar"] .primary,
+html[lang^="ar"] .secondary,
+html[lang^="ar"] .submit-review,
+html[lang^="ar"] .modal-order-btn { font-size:15px; }
+html[lang^="ar"] .product-index,
+html[lang^="ar"] .modal-label,
+html[lang^="ar"] .modal-meta-card > span { font-size:13px; }
+html[lang^="ar"] .modal-pills span { font-size:14px; }
+html[lang^="ar"] .order-summary span,
+html[lang^="ar"] .order-summary p,
+html[lang^="ar"] .field-error,
+html[lang^="ar"] .submit-status { font-size:14px; line-height:1.65; }
+html[lang^="ar"] .desktop-nav a { font-size:15px; letter-spacing:0; }
+html[lang^="ar"] .brand-copy small { font-size:12px; }
+html[lang^="ar"] .topbar-inner { font-size:13px; }
+
+/* Mixed Arabic/Latin strings: isolate direction rather than letting punctuation jump. */
+html[dir="rtl"] bdi,
+html[dir="rtl"] [dir="ltr"],
+html[dir="rtl"] .review-stars,
+html[dir="rtl"] input[type="tel"] {
+  direction:ltr;
+  unicode-bidi:isolate;
+}
+html[dir="rtl"] [dir="auto"],
+html[dir="rtl"] .product-desc,
+html[dir="rtl"] .modal-intro,
+html[dir="rtl"] .spec-row b,
+html[dir="rtl"] .spec-row small,
+html[dir="rtl"] .faq-title,
+html[dir="rtl"] .faq-answer-inner,
+html[dir="rtl"] .policy-item p { unicode-bidi: plaintext; }
+
+/* Navigation motion and indicators must follow RTL. */
+html[dir="rtl"] .desktop-nav a::after { transform-origin:right; }
+html[dir="rtl"] .mobile-menu nav a:hover,
+html[dir="rtl"] .mobile-menu nav a:active { transform:translateX(-3px); }
+html[dir="rtl"] .mobile-menu nav a { grid-template-columns:30px 1fr 18px; }
+html[dir="rtl"] .mobile-menu nav a span:first-child { margin-right:0; margin-left:10px; }
+html[dir="rtl"] .verified { margin-left:0; margin-right:auto; }
+
+/* Directional arrows: one rule for the whole Arabic UI. */
+html[dir="rtl"] .cta svg,
+html[dir="rtl"] .order-btn svg,
+html[dir="rtl"] .next-step svg,
+html[dir="rtl"] .submit-order svg,
+html[dir="rtl"] .details-btn > span,
+html[dir="rtl"] .modal-order-btn > span,
+html[dir="rtl"] .mobile-menu nav a svg,
+html[dir="rtl"] .reviews-more-btn svg,
+html[dir="rtl"] .home-link > span { transform:scaleX(-1); }
+
+/* Product cards. */
+html[dir="rtl"] .product-copy ul,
+html[dir="rtl"] .product-copy li { direction:rtl; text-align:right; }
+html[dir="rtl"] .product-copy li { grid-template-columns:auto 1fr; }
+html[lang^="ar"] .product-desc { font-family:"Tajawal",system-ui,sans-serif; }
+html[lang^="ar"] .product-index { letter-spacing:0; text-transform:none; }
+
+/* Product details — fix inherited absolute spec icons and make the layout RTL-native. */
+html[dir="rtl"] .modal-panel { direction:rtl; }
+html[dir="rtl"] .modal-gallery { direction:rtl; }
+html[dir="rtl"] .thumbs { direction:rtl; justify-content:flex-start; }
+html[dir="rtl"] .specs { direction:rtl; }
+html[dir="rtl"] .spec-row {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:10px;
+  padding:18px;
+  text-align:right;
+}
+html[dir="rtl"] .spec-icon {
+  position:static;
+  inset:auto;
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
+}
+html[dir="rtl"] .spec-row b,
+html[dir="rtl"] .spec-row small { width:100%; text-align:right; }
+html[lang^="ar"] .modal-content h2,
+html[lang^="ar"] .modal-intro,
+html[lang^="ar"] .modal-meta-card strong { font-family:"Tajawal",system-ui,sans-serif; }
+html[dir="rtl"] .modal-cta-box { align-items:center; }
+
+/* Order wizard — RTL-native cards and form fields. */
+html[dir="rtl"] .wizard,
+html[dir="rtl"] .review-dialog,
+html[dir="rtl"] .all-reviews-dialog { direction:rtl; text-align:right; }
+html[dir="rtl"] .pad-option { text-align:right; }
+html[dir="rtl"] .pad-check { right:auto; left:14px; }
+html[dir="rtl"] .input-shell > svg { left:auto; right:14px; }
+html[dir="rtl"] .input-shell input,
+html[dir="rtl"] .input-shell textarea { padding:15px 47px 15px 15px; text-align:right; direction:rtl; }
+html[dir="rtl"] .input-shell input[type="tel"] { direction:ltr; text-align:right; padding-right:47px; padding-left:15px; }
+html[dir="rtl"] .textarea-shell > svg { right:14px; left:auto; }
+html[dir="rtl"] .order-summary > div { direction:rtl; }
+html[dir="rtl"] .order-summary strong { direction:ltr; unicode-bidi:isolate; display:inline-block; }
+html[dir="rtl"] #summaryPad { direction:ltr; unicode-bidi:isolate; }
+
+/* FAQ spacing mirrors the LTR composition. */
+html[dir="rtl"] .faq-answer-inner { padding-right:67px; padding-left:56px; }
+
+/* Reviews. */
+html[dir="rtl"] .reviewer,
+html[dir="rtl"] .video-meta { direction:rtl; }
+html[dir="rtl"] .review-stars { direction:ltr; }
+
+/* Confirmation page — deliberate hierarchy: centered success message, right-aligned steps. */
+html[dir="rtl"] .success-card { text-align:center; }
+html[dir="rtl"] .success-kicker,
+html[dir="rtl"] .success-card h1,
+html[dir="rtl"] .success-lead { text-align:center; }
+html[dir="rtl"] .success-steps { direction:rtl; text-align:right; }
+html[dir="rtl"] .success-steps article { text-align:right; }
+html[lang^="ar"] .success-lead { font-size:16px; line-height:1.85; }
+html[lang^="ar"] .success-steps strong { font-size:15px; line-height:1.6; }
+html[lang^="ar"] .success-steps small { font-size:14px; line-height:1.7; }
+html[dir="rtl"] .success-actions { justify-content:center; }
+
+/* Policies — readable Arabic and a header that cannot overflow on narrow screens. */
+html[dir="rtl"] .policy-top { direction:rtl; }
+html[lang^="ar"] .policy-lead { font-size:17px; line-height:1.85; }
+html[lang^="ar"] .policy-item p { font-size:16px; line-height:1.9; }
+html[lang^="ar"] .policy-item h2 { font-size:21px; line-height:1.5; }
+html[dir="rtl"] .policy-actions { justify-content:flex-start; }
+
+/* Language controls. */
+html[dir="rtl"] .language-switcher { margin-inline-start:auto; margin-inline-end:10px; }
+html[dir="rtl"] .language-switcher [lang="fr"],
+html[dir="rtl"] .mobile-language-switcher [lang="fr"],
+html[dir="rtl"] .policy-language-switcher [lang="fr"],
+html[dir="rtl"] .thankyou-language-switcher [lang="fr"] { direction:ltr; unicode-bidi:isolate; }
+html[dir="rtl"] .language-switcher [lang="ar"],
+html[dir="rtl"] .mobile-language-switcher [lang="ar"],
+html[dir="rtl"] .policy-language-switcher [lang="ar"],
+html[dir="rtl"] .thankyou-language-switcher [lang="ar"] { direction:rtl; }
+
+/* Carousels in the natural RTL direction. */
+html[dir="rtl"] .benefit-stack,
+html[dir="rtl"] .product-grid,
+html[dir="rtl"] .reviews-track { direction:rtl; }
+html[dir="rtl"] .benefit-chip { left:auto; right:18px; }
+html[dir="rtl"] .carousel-arrow.prev { left:auto; right:-68px; }
+html[dir="rtl"] .carousel-arrow.next { right:auto; left:-68px; }
+
+@media (max-width:1080px) {
+  html[dir="rtl"] .hero h1 { font-size:clamp(46px,6vw,60px); }
+}
+
+@media (max-width:980px) {
+  html[dir="rtl"] .carousel-arrow.prev { right:8px; }
+  html[dir="rtl"] .carousel-arrow.next { left:8px; }
+}
+
+@media (max-width:760px) {
+  html[lang^="ar"] body { font-size:17px; line-height:1.8; }
+  html[dir="rtl"] .hero::before { background:linear-gradient(180deg,rgba(1,6,12,.95) 0%,rgba(1,6,12,.82) 44%,rgba(1,6,12,.58) 100%); }
+  html[dir="rtl"] .hero-bg img { object-position:65% center; }
+  html[dir="rtl"] .hero h1 { font-size:clamp(38px,10.4vw,48px); line-height:1.08; }
+  html[dir="rtl"] .hero-components { font-size:clamp(20px,6vw,24px); line-height:1.5; gap:.08em .22em; }
+
+  html[lang^="ar"] .hero .lead,
+  html[lang^="ar"] .section-head p,
+  html[lang^="ar"] .section-heading p,
+  html[lang^="ar"] .benefit-copy p,
+  html[lang^="ar"] .reminder-copy > p,
+  html[lang^="ar"] .product-desc,
+  html[lang^="ar"] .modal-intro { font-size:16px; line-height:1.85; }
+  html[lang^="ar"] .faq-title { font-size:16px; line-height:1.65; }
+  html[lang^="ar"] .faq-answer-inner { font-size:15px; line-height:1.9; }
+  html[lang^="ar"] .product-index,
+  html[lang^="ar"] .modal-label,
+  html[lang^="ar"] .modal-meta-card > span { font-size:13px; }
+
+  html[dir="rtl"] .faq-answer-inner { padding-right:56px; padding-left:30px; }
+  html[dir="rtl"] .modal-cta-box { align-items:stretch; }
+  html[dir="rtl"] .modal-order-btn { width:100%; }
+
+  html[dir="rtl"] .policy-top {
+    flex-direction:column;
+    align-items:stretch;
+    gap:14px;
+  }
+  html[dir="rtl"] .policy-brand { width:100%; }
+  html[dir="rtl"] .policy-language-switcher { width:100%; display:grid; grid-template-columns:1fr 1fr; }
+  html[dir="rtl"] .policy-language-switcher .policy-language { width:100%; min-width:0; padding-inline:8px; }
+  html[lang^="ar"] .policy-item p { font-size:16px; }
+  html[lang^="ar"] .policy-card > h1 { font-size:34px; line-height:1.25; }
+  html[dir="rtl"] .policy-actions { flex-direction:column; align-items:stretch; }
+  html[dir="rtl"] .policy-actions > a { width:100%; justify-content:center; }
+}
+
+@media (max-width:380px) {
+  html[dir="rtl"] .hero h1 { font-size:36px; }
+  html[lang^="ar"] .policy-card > h1 { font-size:31px; }
+}
+
+/* Final Arabic type normalization: prevent any higher-specificity Latin fallback from leaking through. */
+html[lang^="ar"] :where(h1,h2,h3,h4,p,li,span,a,button,label,input,textarea,small,strong,b) {
+  font-family:"Tajawal",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+html[lang^="ar"] .brand-copy b,
+html[lang^="ar"] .price strong,
+html[lang^="ar"] .price-row strong,
+html[lang^="ar"] .pack-price strong,
+html[lang^="ar"] bdi[dir="ltr"] { font-family:inherit; }
+html[lang^="ar"] .brand-copy b,
+html[lang^="ar"] .price strong,
+html[lang^="ar"] .price-row strong,
+html[lang^="ar"] .pack-price strong { font-family:"Sora","Tajawal",system-ui,sans-serif; }
+
+html[lang^="ar"] .reviewer strong[lang="ar"] { font-family:"Tajawal",system-ui,sans-serif; font-size:15px; line-height:1.65; letter-spacing:0; }
+html[lang^="ar"] .reviewer small[lang="ar"] { font-family:"Tajawal",system-ui,sans-serif; font-size:14px; line-height:1.65; letter-spacing:0; }
+html[lang^="ar"] .form-head > span,
+html[lang^="ar"] .wizard-eyebrow,
+html[lang^="ar"] .step-heading > span,
+html[lang^="ar"] .success-kicker,
+html[lang^="ar"] .toolbar-kicker { font-size:13px; line-height:1.5; }
+html[lang^="ar"] .form-head p { font-size:15px; line-height:1.8; }
+html[lang^="ar"] .rating-field > span,
+html[lang^="ar"] .form-grid label > span,
+html[lang^="ar"] .fields label > span { font-size:14px; line-height:1.6; }
+html[lang^="ar"] .wa-chat-bubble small,
+html[lang^="ar"] .wa-shortcuts-title,
+html[lang^="ar"] .wa-phone { font-size:13px; letter-spacing:0; text-transform:none; }
+html[lang^="ar"] .wa-chat-bubble p,
+html[lang^="ar"] .wa-q-btn,
+html[lang^="ar"] .wa-input input { font-size:15px; line-height:1.7; }
+html[dir="rtl"] .home-link > span { margin-left:0; margin-right:8px; }
+
+/* Arabic micro-labels: keep utility text legible and remove Latin tracking. */
+html[lang^="ar"] .scroll-cue,
+html[lang^="ar"] .pack-price small,
+html[lang^="ar"] .small-label,
+html[lang^="ar"] .footer-card small,
+html[lang^="ar"] .form-head > span,
+html[lang^="ar"] .faq-title {
+  letter-spacing:0;
+  text-transform:none;
+}
+html[lang^="ar"] .scroll-cue { font-size:13px; }
+html[lang^="ar"] .pack-price small,
+html[lang^="ar"] .small-label,
+html[lang^="ar"] .footer-card small { font-size:14px; line-height:1.6; }
+html[lang^="ar"] .faq-title { letter-spacing:0; }
+
+
+/* Arabic V2 — right-anchored composition + premium typography */
+html[lang^="ar"] body{
+  text-align:right;
+  font-size:16.5px;
+  line-height:1.76;
+  font-weight:500;
+}
+
+/* Alexandria gives Arabic headings a cleaner, less bulky gaming/e-commerce look. */
+html[lang^="ar"] h1,
+html[lang^="ar"] h2,
+html[lang^="ar"] h3,
+html[lang^="ar"] h4,
+html[lang^="ar"] .section-heading h2,
+html[lang^="ar"] .section-head h2,
+html[lang^="ar"] .benefit-copy h3,
+html[lang^="ar"] .product-copy h3,
+html[lang^="ar"] .reviews-toolbar h3,
+html[lang^="ar"] .faq-title,
+html[lang^="ar"] .cta-copy h3,
+html[lang^="ar"] .wizard-header h2,
+html[lang^="ar"] .step-heading h3,
+html[lang^="ar"] .form-head h2,
+html[lang^="ar"] .modal-content h2,
+html[lang^="ar"] .policy-item h2,
+html[lang^="ar"] .policy-card > h1,
+html[lang^="ar"] .success-card h1{
+  font-family:"Alexandria","Tajawal",system-ui,sans-serif;
+  font-weight:700;
+  letter-spacing:0;
+}
+
+/* The previous logical margins were pushing the Arabic hero copy to the LEFT. */
+html[dir="rtl"] .hero-inner{justify-content:flex-start;}
+html[dir="rtl"] .hero .copy{
+  width:min(610px,48vw);
+  max-width:610px;
+  margin-inline-start:0;
+  margin-inline-end:auto;
+  padding:48px 0 64px;
+  text-align:right;
+}
+html[dir="rtl"] .hero::before{
+  background:linear-gradient(to left,rgba(1,6,12,.985) 0%,rgba(1,6,12,.94) 31%,rgba(1,6,12,.72) 47%,rgba(1,6,12,.28) 70%,rgba(1,6,12,.08) 100%);
+}
+html[dir="rtl"] .hero-bg img{
+  object-position:center right;
+  filter:saturate(.94) brightness(.82);
+}
+html[dir="rtl"] .hero .badge{margin-inline-start:0;margin-inline-end:0;font-size:13px;font-weight:600;}
+html[dir="rtl"] .hero h1{
+  margin:22px 0 16px;
+  font-size:clamp(46px,4.1vw,60px);
+  line-height:1.16;
+  font-weight:700;
+  text-align:right;
+}
+html[dir="rtl"] .hero-title-line{width:100%;text-align:right;}
+html[dir="rtl"] .hero-title-second{
+  width:100%;
+  justify-content:flex-start;
+  gap:.24em;
+  white-space:normal;
+}
+
+/* Replace the oversized bullet list with restrained product chips. */
+html[dir="rtl"] .hero-components{
+  display:flex;
+  width:100%;
+  margin:0 0 18px;
+  gap:9px;
+  flex-wrap:wrap;
+  justify-content:flex-start;
+  font-family:"Tajawal",system-ui,sans-serif;
+  font-size:17px;
+  line-height:1.4;
+  font-weight:600;
+}
+html[dir="rtl"] .hero-components > span{
+  display:inline-flex;
+  align-items:center;
+  min-height:40px;
+  padding:0 13px;
+  border:1px solid rgba(88,167,235,.18);
+  border-radius:12px;
+  background:rgba(4,16,28,.72);
+  box-shadow:inset 0 1px rgba(255,255,255,.025);
+  white-space:nowrap;
+}
+html[dir="rtl"] .hero-components > i{display:none;}
+html[dir="rtl"] .hero .lead{
+  max-width:570px;
+  margin:0;
+  color:#d7e1ea;
+  font-size:16px;
+  line-height:1.8;
+  text-align:right;
+}
+html[dir="rtl"] .hero .lead strong{color:#5bb8ff;font-weight:700;}
+html[dir="rtl"] .price{
+  direction:rtl;
+  justify-content:flex-start;
+  margin:22px 0 18px;
+  gap:13px;
+}
+html[dir="rtl"] .price strong{font-size:54px;font-weight:700;letter-spacing:-.025em;}
+html[dir="rtl"] .price strong small{font-family:"Tajawal",system-ui,sans-serif;font-size:20px;font-weight:600;}
+html[dir="rtl"] .hero-actions,
+html[dir="rtl"] .mini-trust{justify-content:flex-start;text-align:right;}
+
+/* Arabic headings should read as Arabic, not as oversized Latin headings translated into Arabic. */
+html[dir="rtl"] .section-heading,
+html[dir="rtl"] .section-head{
+  max-width:820px;
+  margin-inline-start:0;
+  margin-inline-end:auto;
+  margin-bottom:40px;
+  text-align:right;
+}
+html[dir="rtl"] .section-heading h2,
+html[dir="rtl"] .section-head h2{
+  font-size:clamp(36px,3.6vw,54px);
+  line-height:1.24;
+  font-weight:700;
+  text-align:right;
+}
+html[dir="rtl"] .section-heading p,
+html[dir="rtl"] .section-head p{
+  max-width:720px;
+  margin:14px 0 0;
+  color:#c8d5df;
+  font-size:16px;
+  line-height:1.85;
+  text-align:right;
+}
+html[lang^="ar"] .eyebrow,
+html[lang^="ar"] .section-badge,
+html[lang^="ar"] .toolbar-kicker,
+html[lang^="ar"] .small-label{
+  font-weight:600;
+}
+
+/* Cards: right aligned, calmer emphasis, no oversized visual noise. */
+html[dir="rtl"] .benefit-card,
+html[dir="rtl"] .product-card,
+html[dir="rtl"] .review-card,
+html[dir="rtl"] .faq-item,
+html[dir="rtl"] .order-cta-card{ text-align:right; }
+html[lang^="ar"] .benefit-copy h3{font-size:18px;line-height:1.55;}
+html[lang^="ar"] .product-copy h3{font-size:20px;line-height:1.5;}
+html[lang^="ar"] .product-desc{font-size:15px;line-height:1.85;color:#adbdca;}
+html[lang^="ar"] .product-index{font-size:12px;font-weight:600;}
+html[lang^="ar"] .details-btn{font-weight:700;}
+
+/* Reviews and FAQ inherit the same right edge and softer type hierarchy. */
+html[dir="rtl"] .reviews-toolbar{align-items:flex-end;}
+html[lang^="ar"] .reviews-toolbar h3{font-size:29px;line-height:1.45;}
+html[dir="rtl"] .review-quote{font-family:"Tajawal",system-ui,sans-serif;text-align:right;line-height:1.9;}
+html[dir="rtl"] .review-quote::before{margin-inline-start:auto;text-align:right;}
+html[dir="rtl"] .faq-question{text-align:right;}
+html[lang^="ar"] .faq-title{font-weight:600;}
+
+/* Modal and wizard controls: titles stay on the right; close action moves away from them. */
+html[dir="rtl"] .modal-close,
+html[dir="rtl"] .wizard-close{right:auto;left:18px;}
+html[dir="rtl"] .wizard-header{padding-right:0;padding-left:54px;}
+html[dir="rtl"] .form-head,
+html[dir="rtl"] .step-heading,
+html[dir="rtl"] .modal-content{text-align:right;}
+html[dir="rtl"] .pad-option b{font-size:13px;font-weight:600;}
+
+/* Mobile/tablet swipe hint: keep a visible slice of the following card in RTL too. */
+@media (max-width:1024px){
+  html[dir="rtl"] .benefit-stack,
+  html[dir="rtl"] .product-grid{
+    direction:rtl;
+    padding-inline:0;
+    scroll-padding-inline:0;
+  }
+  html[dir="rtl"] .benefit-card{flex:0 0 74%;}
+  html[dir="rtl"] .product-card{flex:0 0 76%;}
+}
+
+@media (max-width:980px){
+  html[dir="rtl"] .hero .copy{
+    width:min(600px,72vw);
+    max-width:600px;
+  }
+  html[dir="rtl"] .hero h1{font-size:clamp(42px,6vw,54px);}
+}
+
+@media (max-width:760px){
+  html[lang^="ar"] body{font-size:16px;line-height:1.78;}
+  html[dir="rtl"] .hero{padding-top:50px;}
+  html[dir="rtl"] .hero .copy{
+    width:100%;
+    max-width:100%;
+    margin:0;
+    padding:28px 0 18px;
+    text-align:right;
+  }
+  html[dir="rtl"] .hero::before{
+    background:linear-gradient(180deg,rgba(1,6,12,.96) 0%,rgba(1,6,12,.87) 52%,rgba(1,6,12,.63) 100%);
+  }
+  html[dir="rtl"] .hero-bg img{filter:saturate(.90) brightness(.70);object-position:62% center;}
+  html[dir="rtl"] .hero h1{font-size:clamp(34px,9.8vw,42px);line-height:1.2;margin-top:18px;}
+  html[dir="rtl"] .hero-components{font-size:14.5px;gap:7px;margin-bottom:15px;}
+  html[dir="rtl"] .hero-components > span{min-height:36px;padding-inline:10px;border-radius:10px;}
+  html[dir="rtl"] .hero .lead{font-size:15px;line-height:1.8;}
+  html[dir="rtl"] .price strong{font-size:46px;}
+  html[dir="rtl"] .section-heading,
+  html[dir="rtl"] .section-head{margin-bottom:28px;}
+  html[dir="rtl"] .section-heading h2,
+  html[dir="rtl"] .section-head h2{font-size:clamp(31px,8.5vw,38px);line-height:1.3;}
+  html[dir="rtl"] .benefit-card{flex-basis:82%;}
+  html[dir="rtl"] .product-card{flex-basis:84%;}
+  html[dir="rtl"] .reviews-track{direction:rtl;padding-inline:0;}
+  html[dir="rtl"] .review-card,
+  html[dir="rtl"] .review-skeleton{flex:0 0 84%;}
+}
+
+@media (max-width:380px){
+  html[dir="rtl"] .hero h1{font-size:33px;}
+  html[dir="rtl"] .hero-components > span{font-size:14px;}
+}
+
+
+/* Arabic V2.1 — mixed-script paragraphs keep an Arabic paragraph base direction. */
+html[dir="rtl"] .hero .lead,
+html[dir="rtl"] .section-heading p,
+html[dir="rtl"] .section-head p,
+html[dir="rtl"] .reminder-copy > p,
+html[dir="rtl"] .pack-price p,
+html[dir="rtl"] .cta-copy p,
+html[dir="rtl"] .footer p,
+html[dir="rtl"] .order-summary p{
+  direction:rtl;
+  text-align:right;
+  unicode-bidi:plaintext;
+}
+
+
+/* On wide RTL layouts, shift the product visual slightly left so right-aligned copy gets clean breathing room. */
+@media (min-width:761px){
+  html[dir="rtl"] .hero-bg img{transform:scale(1.045) translateX(-7%);transform-origin:center center;}
+}
+@media (max-width:760px){
+  html[dir="rtl"] .hero-bg img{transform:none;}
+}
+
+/* Keep the RTL readability overlay above the hero image, not underneath it. */
+html[dir="rtl"] .hero-bg{z-index:0;}
+html[dir="rtl"] .hero::before{z-index:1;pointer-events:none;}
+html[dir="rtl"] .hero-noise{z-index:1;pointer-events:none;}
+html[dir="rtl"] .hero-inner{z-index:2;}
+
+
+/* Arabic V3 — mobile purchase bar and premium interaction alignment */
+html[dir="rtl"] .mobile-order-bar__inner{padding:9px 15px 9px 9px}
+html[lang^="ar"] .mobile-order-bar__price small{font-family:"Tajawal",system-ui,sans-serif;letter-spacing:0;font-size:11px;font-weight:600}
+html[lang^="ar"] .mobile-order-bar__price strong{font-family:"Alexandria","Tajawal",system-ui,sans-serif;font-size:21px;font-weight:700;letter-spacing:0}
+html[lang^="ar"] .mobile-order-bar__cta{font-family:"Tajawal",system-ui,sans-serif;font-size:15px;font-weight:700}
+html[dir="rtl"] .mobile-order-bar__cta svg{transform:scaleX(-1)}
+@media(max-width:380px){html[dir="rtl"] .mobile-order-bar__inner{padding-right:12px;padding-left:9px}}
+
+/* V17 — final RTL interaction polish */
+html[lang^="ar"] .carousel-guide{font-family:"Tajawal",system-ui,sans-serif;font-size:13px}
+html[lang^="ar"] .mobile-menu,html[lang^="ar"] .mobile-menu-inner{direction:rtl;text-align:right}
+html[lang^="ar"] .hero .lead,html[lang^="ar"] .section-head p,html[lang^="ar"] .section-heading p{line-height:1.9}

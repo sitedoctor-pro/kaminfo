@@ -1,0 +1,114 @@
+/* KAM INFO — French design system polish
+   Mirrors the 18 quality improvements applied to the Arabic version while preserving LTR behavior. */
+
+/* 01 — Consistent French typography */
+html[lang^="fr"]{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;text-rendering:optimizeLegibility}
+html[lang^="fr"] body,html[lang^="fr"] button,html[lang^="fr"] input,html[lang^="fr"] textarea,html[lang^="fr"] select,html[lang^="fr"] p,html[lang^="fr"] li,html[lang^="fr"] small,html[lang^="fr"] label{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+html[lang^="fr"] h1,html[lang^="fr"] h2,html[lang^="fr"] h3,html[lang^="fr"] h4,html[lang^="fr"] .product-copy h3,html[lang^="fr"] .modal-content h2,html[lang^="fr"] .policy-card>h1,html[lang^="fr"] .success-card h1{font-family:"Sora",system-ui,sans-serif}
+
+/* 02 — Readability baseline */
+html[lang^="fr"] body{font-size:16px;line-height:1.72;font-weight:500}
+html[lang^="fr"] .hero .lead,html[lang^="fr"] .section-head p,html[lang^="fr"] .section-heading p,html[lang^="fr"] .reminder-copy>p,html[lang^="fr"] .product-desc,html[lang^="fr"] .modal-intro{font-size:16px;line-height:1.75}
+html[lang^="fr"] .benefit-copy p,html[lang^="fr"] .product-copy li small,html[lang^="fr"] .spec-row small,html[lang^="fr"] .faq-answer-inner,html[lang^="fr"] .footer p,html[lang^="fr"] .footer a{font-size:14.5px;line-height:1.72}
+
+/* 03 — Calmer heading hierarchy */
+html[lang^="fr"] .section-heading h2,html[lang^="fr"] .section-head h2{font-size:clamp(38px,4.2vw,62px);line-height:1.04;letter-spacing:-.045em;text-transform:none}
+html[lang^="fr"] .hero h1{letter-spacing:-.05em}
+html[lang^="fr"] .section-heading,html[lang^="fr"] .section-head{max-width:880px;margin-inline:auto;margin-bottom:40px}
+html[lang^="fr"] .section-heading p,html[lang^="fr"] .section-head p{max-width:720px;margin-inline:auto}
+
+/* 04 — Small labels: readable, not over-tracked */
+html[lang^="fr"] .eyebrow,html[lang^="fr"] .section-badge,html[lang^="fr"] .toolbar-kicker,html[lang^="fr"] .wizard-eyebrow,html[lang^="fr"] .step-heading>span,html[lang^="fr"] .success-kicker,html[lang^="fr"] .product-index,html[lang^="fr"] .modal-label,html[lang^="fr"] .modal-meta-card>span{letter-spacing:.08em;text-transform:uppercase}
+html[lang^="fr"] .product-index,html[lang^="fr"] .modal-label{font-size:12px}
+html[lang^="fr"] .modal-meta-card>span{font-size:11px}
+
+/* 05 — Navigation feels deliberate */
+html[lang^="fr"] .desktop-nav a{font-size:14px;font-weight:700;letter-spacing:0}
+html[lang^="fr"] .desktop-nav a::after{transform-origin:left}
+html[lang^="fr"] .mobile-menu nav a{font-size:16px;line-height:1.35}
+html[lang^="fr"] .mobile-menu nav a:hover,html[lang^="fr"] .mobile-menu nav a:active{transform:translateX(3px)}
+
+/* 06 — Product cards */
+html[lang^="fr"] .product-card-refined .product-copy{padding:22px 22px 24px}
+html[lang^="fr"] .product-copy h3{font-size:21px;line-height:1.3;font-weight:700;letter-spacing:-.025em}
+html[lang^="fr"] .product-desc{color:#adbdca}
+html[lang^="fr"] .details-btn{font-size:14px;font-weight:700}
+
+/* 07 — Product details layout */
+html[lang^="fr"] .modal-panel{align-items:start}
+html[lang^="fr"] .modal-gallery{direction:ltr}
+html[lang^="fr"] .spec-row{position:relative;text-align:left}
+html[lang^="fr"] .spec-icon{position:static;inset:auto;flex:0 0 44px}
+html[lang^="fr"] .spec-row b{font-size:14px;line-height:1.35}
+
+/* 08 — Product modal metadata */
+html[lang^="fr"] .modal-label{font-weight:700}
+html[lang^="fr"] .modal-pills span{font-size:13px;line-height:1.3}
+html[lang^="fr"] .modal-meta-card strong{font-size:15px;line-height:1.45}
+html[lang^="fr"] .included{font-size:13px;line-height:1.5}
+
+/* 09 — Forms and order wizard */
+html[lang^="fr"] .fields label>span,html[lang^="fr"] .form-grid label>span,html[lang^="fr"] .rating-field>span{font-size:13px}
+html[lang^="fr"] .input-shell input,html[lang^="fr"] .input-shell textarea{font-size:15px;line-height:1.5}
+html[lang^="fr"] .field-error,html[lang^="fr"] .submit-status{font-size:12.5px;line-height:1.55}
+html[lang^="fr"] .order-summary span,html[lang^="fr"] .order-summary p{font-size:12.5px;line-height:1.6}
+html[lang^="fr"] .step-heading p{font-size:14px;line-height:1.7}
+
+/* 10 — FAQ spacing */
+html[lang^="fr"] .faq-title{font-size:15px;line-height:1.45;font-weight:700}
+html[lang^="fr"] .faq-answer-inner{padding-inline-start:56px;padding-inline-end:30px}
+
+/* 11 — Reviews */
+html[lang^="fr"] .review-quote{font-size:15px;line-height:1.75}
+html[lang^="fr"] .reviews-toolbar h3{font-size:29px;line-height:1.25}
+
+/* 12 — Success page alignment and hierarchy */
+html[lang^="fr"] .success-card h1{font-size:clamp(40px,5.2vw,64px);line-height:1.02;letter-spacing:-.05em}
+html[lang^="fr"] .success-lead{font-size:15.5px;line-height:1.75}
+html[lang^="fr"] .success-steps article{text-align:left}
+html[lang^="fr"] .success-steps strong{font-size:14px}
+html[lang^="fr"] .success-steps small{font-size:12.5px;line-height:1.6}
+
+/* 13 — Policies: desktop readability */
+html[lang^="fr"] .policy-card>h1{font-size:clamp(38px,4.8vw,58px);line-height:1.06;letter-spacing:-.045em}
+html[lang^="fr"] .policy-lead{font-size:16px;line-height:1.75}
+html[lang^="fr"] .policy-item h2{font-size:19px;line-height:1.35}
+html[lang^="fr"] .policy-item p{font-size:15px;line-height:1.8}
+
+/* 14 — Policies: responsive header */
+@media(max-width:680px){
+  html[lang^="fr"] .policy-top{align-items:flex-start;flex-wrap:wrap;gap:16px}
+  html[lang^="fr"] .policy-language-switcher{width:100%;justify-content:flex-start;overflow-x:auto}
+  html[lang^="fr"] .policy-card{padding:22px 16px}
+  html[lang^="fr"] .policy-item{padding:19px}
+}
+
+/* 15 — Directional actions stay coherent in LTR */
+html[lang^="fr"] .cta svg,html[lang^="fr"] .order-btn svg,html[lang^="fr"] .next-step svg,html[lang^="fr"] .submit-order svg,html[lang^="fr"] .details-btn>span,html[lang^="fr"] .modal-order-btn>span,html[lang^="fr"] .mobile-menu nav a svg{transform:none}
+
+/* 16 — Modal controls and touch targets */
+html[lang^="fr"] .modal-close,html[lang^="fr"] .wizard-close{right:18px;left:auto}
+html[lang^="fr"] .wizard-header{padding-right:54px}
+html[lang^="fr"] :where(.cta,.nav-cta,.details-btn,.primary,.secondary,.submit-review,.modal-order-btn,.policy-whatsapp,.success-actions a){min-height:48px}
+
+/* 17 — Carousel discoverability mirrors the polished mobile experience */
+@media(max-width:1024px){
+  html[lang^="fr"] .benefit-stack,html[lang^="fr"] .pack-section .product-grid{direction:ltr;scroll-padding-inline:0;padding-inline:0}
+  html[lang^="fr"] .benefit-card,html[lang^="fr"] .pack-section .product-card{flex:0 0 74%}
+}
+@media(max-width:760px){
+  html[lang^="fr"] .benefit-card,html[lang^="fr"] .pack-section .product-card{flex-basis:82%}
+  html[lang^="fr"] .carousel-guide{font-size:12px}
+}
+
+/* 18 — Responsive polish / no accidental tiny text */
+@media(max-width:760px){
+  html[lang^="fr"] body{font-size:16px;line-height:1.75}
+  html[lang^="fr"] .hero h1{font-size:clamp(40px,11vw,50px);line-height:1.03}
+  html[lang^="fr"] .hero .lead,html[lang^="fr"] .section-head p,html[lang^="fr"] .section-heading p{font-size:15.5px;line-height:1.75}
+  html[lang^="fr"] .section-heading h2,html[lang^="fr"] .section-head h2{font-size:clamp(32px,9vw,40px);line-height:1.12}
+  html[lang^="fr"] .product-desc,html[lang^="fr"] .modal-intro{font-size:14.5px;line-height:1.75}
+  html[lang^="fr"] .faq-title{font-size:15px}
+  html[lang^="fr"] .faq-answer-inner{font-size:14.5px;padding-inline-start:54px;padding-inline-end:22px}
+  html[lang^="fr"] .success-steps article{text-align:left}
+}
